@@ -408,7 +408,7 @@
     let uiLang = localStorage.getItem('zenhr_ui_lang') || 'ar';
     const I18N = {
       ar:{
-        saveDraft:'حفظ مسودة', reset:'مسح الشاشة', connected:'جاهز', local:'جاهز', connectionIssue:'تنبيه اتصال',
+        saveDraft:'حفظ مسودة', reset:'مسح الشاشة', connected:'متصل', local:'وضع محلي', connectionIssue:'تعذر الاتصال',
         formTitle:'نموذج بيانات الموظف', formSubtitle:'يرجى مراجعة بياناتك وتعبئة الحقول المطلوبة بدقة لاعتمادها في سجلات الشركة.',
         progress:'التقدم', completed:'مكتملة', remaining:'متبقية', steps:'الخطوات', guidance:'إرشادات التعبئة',
         guidanceText:'اكتب الأسماء الإنجليزية بالأحرف الإنجليزية فقط، والأسماء العربية باللغة العربية فقط. الحقول المعبأة مسبقًا يمكن تعديلها عند وجود خطأ، وسيتم حفظ التعديل للمراجعة.',
@@ -424,7 +424,7 @@
         langOther:'English'
       },
       en:{
-        saveDraft:'Save draft', reset:'Clear form', connected:'Ready', local:'Ready', connectionIssue:'Connection notice',
+        saveDraft:'Save draft', reset:'Clear form', connected:'جاهز', local:'جاهز', connectionIssue:'تنبيه اتصال',
         formTitle:'Employee Information Form', formSubtitle:'Please review your details and complete all required fields accurately for company records.',
         progress:'Progress', completed:'Completed', remaining:'Remaining', steps:'Steps', guidance:'Filling guidance',
         guidanceText:'English name fields must be completed in English letters only, and Arabic name fields in Arabic only. Pre-filled values may be corrected when needed; changes are recorded for review.',
@@ -639,8 +639,7 @@
     }
     function initialFamilyFromSurvey(emp){
       const raw=(emp.kidsRaw||'').trim(); if(!raw || /^(n\/a|none|not yet|0|-)$/i.test(raw)) return [];
-      return raw.split(/
-|;/).map(x=>x.trim()).filter(Boolean).map(line=>{
+      return raw.split(/\n|;/).map(x=>x.trim()).filter(Boolean).map(line=>{
         const m=line.match(/(.+?)\s+(\d{1,2}[\/\-]\d{1,2}[\/\-]\d{4})/);
         return {relation:'Child', firstName: m?m[1].split(/\s+/)[0]:line, secondName:'', thirdName:'', lastName:state.data?.lastNameEn||'', birthdate:m?normalizeDateInput(m[2]):'', gender:'', maritalStatus:'Single'};
       });
@@ -875,8 +874,7 @@
       if(window.XLSX){ const wb=XLSX.utils.book_new(); const ws=XLSX.utils.json_to_sheet(rows); XLSX.utils.book_append_sheet(wb,ws,sheetName); XLSX.writeFile(wb,filename); return; }
       const csv = toCSV(rows); downloadBlob(csv, filename.replace(/\.xlsx$/i,'.csv'), 'text/csv;charset=utf-8');
     }
-    function toCSV(rows){ if(!rows.length) return ''; const headers=Object.keys(rows[0]); return [headers.join(','),...rows.map(r=>headers.map(h=>'"'+String(r[h]??'').replace(/"/g,'""')+'"').join(','))].join('
-'); }
+    function toCSV(rows){ if(!rows.length) return ''; const headers=Object.keys(rows[0]); return [headers.join(','),...rows.map(r=>headers.map(h=>'"'+String(r[h]??'').replace(/"/g,'""')+'"').join(','))].join('\n'); }
 
     /******************** Helpers ********************/
     function loginKey(dob, init){ if(!dob || !init) return ''; return `${dob}_${String(init).trim().slice(0,1).toUpperCase()}`; }
@@ -901,7 +899,7 @@
     function applyStaticI18n(){
       document.querySelectorAll('[data-i18n]').forEach(el=>{ el.textContent=t(el.dataset.i18n); });
       const btn = document.getElementById('langToggle'); if(btn) btn.textContent=t('langOther');
-      const fs = document.getElementById('firebaseState'); if(fs && (fs.textContent==='Local Mode' || fs.textContent==='وضع محلي' || fs.textContent==='Offline draft' || fs.textContent==='جاهز')) fs.textContent=t('local');
+      const fs = document.getElementById('firebaseState'); if(fs && (fs.textContent==='Local Mode' || fs.textContent==='وضع محلي' || fs.textContent==='Offline draft')) fs.textContent=t('local');
     }
 
     /******************** Events ********************/
