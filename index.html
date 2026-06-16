@@ -3,102 +3,84 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>ZenHR Migration Portal | بوابة بيانات الموظفين</title>
-  <meta name="description" content="Typeform style HR migration portal with Firebase, hidden admin dashboard and Excel exports." />
+  <title>Employee Information Form | نموذج بيانات الموظف</title>
+  <meta name="description" content="Official employee information form for updating company records." />
   <script>window.EMPLOYEE_SEED = { generatedAt: null, records: [], departmentTranslationMap: {} };</script>
   <script defer src="https://cdn.sheetjs.com/xlsx-0.20.2/package/dist/xlsx.full.min.js"></script>
   <style>
-    :root{
-      --bg:#f5f7fb; --bg2:#eaf0f8; --card:rgba(255,255,255,.62); --card2:rgba(255,255,255,.82);
-      --text:#152033; --muted:#667085; --line:rgba(18,31,53,.12); --blue:#0a84ff; --purple:#af52de;
-      --green:#30d158; --red:#ff453a; --yellow:#ffd60a; --orange:#ff9f0a; --shadow:0 24px 80px rgba(22,33,54,.15);
-      --softShadow:0 12px 32px rgba(22,33,54,.09); --radius:28px; --radius2:18px; --font:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text","Segoe UI",Tahoma,Arial,sans-serif;
-    }
-    *{box-sizing:border-box} html{scroll-behavior:smooth} body{margin:0;min-height:100vh;font-family:var(--font);color:var(--text);background:
-      radial-gradient(circle at 0 0,rgba(10,132,255,.22),transparent 30rem),radial-gradient(circle at 100% 0,rgba(175,82,222,.18),transparent 30rem),radial-gradient(circle at 50% 100%,rgba(48,209,88,.12),transparent 30rem),linear-gradient(145deg,var(--bg),var(--bg2));overflow-x:hidden}
-    body:before{content:"";position:fixed;inset:0;background-image:linear-gradient(rgba(255,255,255,.24) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.22) 1px,transparent 1px);background-size:42px 42px;pointer-events:none;mask-image:linear-gradient(to bottom,rgba(0,0,0,.55),transparent 72%)}
-    .shell{width:min(1220px,calc(100% - 28px));min-height:calc(100vh - 28px);margin:14px auto;display:grid;grid-template-columns:315px 1fr;gap:18px;position:relative;z-index:1}
-    .side,.main,.modalCard{background:var(--card);border:1px solid rgba(255,255,255,.62);border-radius:var(--radius);box-shadow:var(--shadow);backdrop-filter:blur(30px) saturate(145%);-webkit-backdrop-filter:blur(30px) saturate(145%)}
-    .side{padding:18px;position:sticky;top:14px;height:calc(100vh - 28px);overflow:auto;display:flex;flex-direction:column;gap:16px}.traffic{display:flex;gap:8px;direction:ltr;align-items:center}.dot{width:13px;height:13px;border-radius:99px;box-shadow:inset 0 -1px 2px rgba(0,0,0,.2)}.red{background:#ff5f57}.yellow{background:#febc2e}.green{background:#28c840}
-    .brand{padding:18px;border-radius:24px;background:rgba(255,255,255,.54);border:1px solid rgba(255,255,255,.72);box-shadow:var(--softShadow)}.mark{width:60px;height:60px;border-radius:20px;background:linear-gradient(145deg,var(--blue),var(--purple));display:grid;place-items:center;color:white;font-weight:900;font-size:24px;margin-bottom:12px;box-shadow:0 16px 34px rgba(10,132,255,.25);cursor:default;user-select:none}.hint-click{font-size:11px;color:transparent;height:1px;overflow:hidden}
-    h1,h2,h3,p{margin-top:0} h1{font-size:clamp(25px,4vw,45px);letter-spacing:-.04em;line-height:1.08;margin-bottom:12px} h2{font-size:clamp(22px,3vw,34px);letter-spacing:-.035em;margin-bottom:10px} h3{font-size:18px;margin-bottom:8px}.lead,p{color:var(--muted);line-height:1.75}.small{font-size:13px;color:var(--muted);line-height:1.7}.tiny{font-size:12px;color:var(--muted)}
-    .pillrow{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.pill{display:inline-flex;align-items:center;gap:7px;padding:7px 11px;min-height:32px;border-radius:999px;background:rgba(255,255,255,.57);border:1px solid rgba(255,255,255,.72);font-weight:750;font-size:13px;color:#384154}.pill.ok{color:#087a2f;background:rgba(48,209,88,.12)}.pill.warn{color:#9a5b00;background:rgba(255,159,10,.11)}.pill.bad{color:#b42318;background:rgba(255,69,58,.09)}
-    .panel{padding:14px;border-radius:22px;background:rgba(255,255,255,.42);border:1px solid rgba(255,255,255,.62)}.sideTitle{display:flex;justify-content:space-between;align-items:center;font-size:13px;font-weight:850;margin-bottom:12px;color:#323d52}.progress{height:12px;background:rgba(17,24,39,.1);border-radius:99px;overflow:hidden}.bar{height:100%;width:0%;border-radius:99px;background:linear-gradient(90deg,var(--blue),var(--purple));transition:width .3s ease}.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:12px}.stat{padding:12px;border-radius:18px;background:rgba(255,255,255,.55);border:1px solid rgba(255,255,255,.65)}.stat strong{display:block;font-size:20px}.stat span{font-size:12px;color:var(--muted)}
-    .steps{display:grid;gap:7px}.step{display:flex;align-items:center;gap:10px;padding:10px 11px;border-radius:15px;background:transparent;border:0;color:#5d667b;font:inherit;text-align:right;cursor:pointer}.step:hover{background:rgba(255,255,255,.52)}.step.active{background:rgba(10,132,255,.12);color:#0b63c8}.num{min-width:24px;height:24px;border-radius:8px;background:rgba(17,24,39,.09);display:grid;place-items:center;font-weight:850;font-size:12px}.step.done .num{background:var(--green);color:white}.stepText{font-size:13px;font-weight:760;line-height:1.35}
-    .main{min-height:calc(100vh - 28px);overflow:hidden;display:flex;flex-direction:column}.topbar{min-height:68px;padding:16px 22px;border-bottom:1px solid rgba(255,255,255,.68);background:rgba(255,255,255,.37);display:flex;justify-content:space-between;gap:14px;align-items:center}.windowtitle{display:flex;gap:11px;align-items:center;font-weight:900}.lock{width:34px;height:34px;border-radius:12px;background:rgba(48,209,88,.13);display:grid;place-items:center;color:#098f35}.actions{display:flex;gap:9px;flex-wrap:wrap;align-items:center}
-    button,input,textarea,select{font-family:inherit}.btn{border:0;min-height:43px;padding:0 16px;border-radius:14px;cursor:pointer;font-weight:850;color:#1e293b;background:rgba(255,255,255,.66);border:1px solid rgba(255,255,255,.86);box-shadow:0 8px 18px rgba(17,24,39,.08);transition:.18s ease}.btn:hover{transform:translateY(-1px);box-shadow:0 12px 26px rgba(17,24,39,.12)}.btn:disabled{opacity:.45;cursor:not-allowed;transform:none}.primary{color:white;background:linear-gradient(135deg,var(--blue),#0066d6);border-color:transparent}.success{color:white;background:linear-gradient(135deg,#16a34a,#22c55e);border-color:transparent}.danger{color:#b42318;background:rgba(255,69,58,.09)}.ghost{box-shadow:none;background:rgba(255,255,255,.35)}
-    .content{flex:1;display:grid;place-items:center;padding:clamp(22px,4vw,52px)}.screen{width:min(820px,100%);display:none;animation:rise .25s ease}.screen.active{display:block}@keyframes rise{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
-    .questionNo{display:inline-flex;align-items:center;gap:8px;margin-bottom:14px;color:#0b63c8;font-weight:850}.qbadge{width:30px;height:30px;border-radius:10px;background:rgba(10,132,255,.12);display:grid;place-items:center}.formgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px}.field{display:grid;gap:7px;margin-bottom:13px}.field.full{grid-column:1/-1}label{font-weight:850;font-size:14px;color:#1f2937}.required:after{content:" *";color:var(--red)}.tip{font-size:12px;color:var(--muted);line-height:1.55}.input,textarea,select{width:100%;min-height:56px;border-radius:17px;border:1px solid rgba(26,36,58,.14);background:rgba(255,255,255,.74);padding:0 15px;font-size:16px;color:var(--text);outline:none;box-shadow:inset 0 1px 0 rgba(255,255,255,.55)}textarea{padding:14px 15px;min-height:104px;resize:vertical}.input:focus,textarea:focus,select:focus{border-color:rgba(10,132,255,.55);box-shadow:0 0 0 4px rgba(10,132,255,.12)}.readonly{background:rgba(243,246,250,.8);color:#667085}.error{color:#b42318;font-size:12px;display:none}.field.invalid .input,.field.invalid textarea,.field.invalid select{border-color:rgba(255,69,58,.65);box-shadow:0 0 0 4px rgba(255,69,58,.09)}.field.invalid .error{display:block}.choices{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px}.choice{min-height:56px;border-radius:17px;border:1px solid rgba(26,36,58,.14);background:rgba(255,255,255,.62);display:flex;align-items:center;gap:10px;padding:12px;font-weight:800;cursor:pointer}.choice input{width:18px;height:18px}.choice:has(input:checked){border-color:rgba(10,132,255,.55);background:rgba(10,132,255,.1)}
-    .review{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:18px 0}.reviewItem{padding:14px;border-radius:18px;background:rgba(255,255,255,.55);border:1px solid rgba(255,255,255,.68)}.reviewItem span{display:block;color:var(--muted);font-size:12px;font-weight:800;margin-bottom:5px}.reviewItem strong{font-size:15px;word-break:break-word}.notice{padding:14px 16px;border-radius:18px;background:rgba(10,132,255,.09);border:1px solid rgba(10,132,255,.18);color:#164d8f;line-height:1.7}.notice.warn{background:rgba(255,159,10,.1);border-color:rgba(255,159,10,.22);color:#7a4a00}.notice.bad{background:rgba(255,69,58,.08);border-color:rgba(255,69,58,.18);color:#9a281f}.navrow{display:flex;justify-content:space-between;gap:10px;margin-top:24px}.ltr{direction:ltr;text-align:left}.hidden{display:none!important}.loading{opacity:.7;pointer-events:none}.matchList{display:grid;gap:10px;margin-top:18px}.matchCard{border:1px solid rgba(26,36,58,.12);background:rgba(255,255,255,.61);border-radius:18px;padding:14px;text-align:right;cursor:pointer}.matchCard:hover{border-color:rgba(10,132,255,.45)}
-    .assetList{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}.assetItem{padding:11px;border:1px solid rgba(26,36,58,.13);border-radius:16px;background:rgba(255,255,255,.58);display:flex;gap:9px;align-items:flex-start;font-weight:750}.assetItem small{display:block;color:var(--muted);font-weight:650}.subcards{display:grid;gap:14px}.subcard{border:1px solid rgba(26,36,58,.13);background:rgba(255,255,255,.58);border-radius:20px;padding:14px}.subHead{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}.familyTable,.adminTable{width:100%;border-collapse:collapse;font-size:13px;background:rgba(255,255,255,.55);border-radius:16px;overflow:hidden}.familyTable th,.familyTable td,.adminTable th,.adminTable td{padding:10px;border-bottom:1px solid rgba(26,36,58,.09);text-align:right}.familyTable th,.adminTable th{background:rgba(10,132,255,.08);font-weight:900}.tableWrap{overflow:auto;border-radius:16px;border:1px solid rgba(26,36,58,.09)}
-    .modal{position:fixed;inset:0;background:rgba(8,13,24,.42);display:none;place-items:center;padding:20px;z-index:50}.modal.active{display:grid}.modalCard{width:min(1180px,100%);max-height:92vh;overflow:auto;padding:20px}.adminGrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:16px 0}.kpi{padding:16px;border-radius:20px;background:rgba(255,255,255,.6);border:1px solid rgba(255,255,255,.7)}.kpi strong{display:block;font-size:28px;letter-spacing:-.04em}.kpi span{font-size:13px;color:var(--muted);font-weight:800}.tabs{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0}.tab{border:0;border-radius:999px;background:rgba(255,255,255,.58);padding:9px 13px;font-weight:850;cursor:pointer}.tab.active{background:#0a84ff;color:white}.changeTag{display:inline-block;margin:2px;padding:4px 7px;border-radius:999px;background:rgba(255,159,10,.12);color:#915300;font-weight:800;font-size:11px}.footerNote{margin-top:18px;padding:12px 14px;border-radius:16px;background:rgba(17,24,39,.06);color:#667085;font-size:12px;line-height:1.7}
-    @media (max-width:920px){.shell{grid-template-columns:1fr}.side{position:relative;height:auto}.formgrid,.review,.adminGrid{grid-template-columns:1fr}.topbar{align-items:flex-start;flex-direction:column}.content{padding:22px}.side .panel:nth-of-type(2){display:none}}@media print{.side,.topbar,.navrow{display:none}.shell{display:block}.main{box-shadow:none;border:0}.screen{display:block}}
+    :root{--ink:#0d1b2a;--navy:#0b1f3a;--navy2:#102b4c;--slate:#42526b;--muted:#6b778c;--line:#d9e2ec;--gold:#b88a2d;--gold2:#d6b25e;--cream:#f7f3ea;--paper:#ffffff;--soft:#f4f7fb;--success:#0f8f5f;--danger:#c0392b;--warning:#a66b00;--shadow:0 26px 80px rgba(9,28,53,.14);--softShadow:0 12px 30px rgba(9,28,53,.08);--radius:24px;--radius2:16px;--font:"Inter","SF Pro Display","Segoe UI",Tahoma,Arial,sans-serif}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;min-height:100vh;font-family:var(--font);color:var(--ink);background:linear-gradient(135deg,#f9fbfd,#eef3f8 55%,#f7f3ea);overflow-x:hidden}body:before{content:"";position:fixed;inset:0;pointer-events:none;background:radial-gradient(circle at 8% 5%,rgba(184,138,45,.16),transparent 24rem),radial-gradient(circle at 90% 6%,rgba(11,31,58,.12),transparent 28rem)}
+    h1,h2,h3,p{margin-top:0}h1{font-size:clamp(30px,4.8vw,56px);letter-spacing:-.04em;line-height:1.05;margin-bottom:14px;color:var(--navy)}h2{font-size:clamp(24px,3vw,38px);letter-spacing:-.035em;margin-bottom:10px;color:var(--navy)}h3{font-size:18px;margin-bottom:8px;color:var(--navy)}.lead,p{color:var(--slate);line-height:1.8}.small{font-size:13px;color:var(--muted);line-height:1.75}.tiny{font-size:12px;color:var(--muted)}
+    .shell{width:min(1280px,calc(100% - 28px));min-height:calc(100vh - 28px);margin:14px auto;display:grid;grid-template-columns:330px minmax(0,1fr);gap:18px;position:relative;z-index:1}.side,.main{border:1px solid rgba(217,226,236,.9);background:rgba(255,255,255,.86);box-shadow:var(--shadow);backdrop-filter:blur(20px);border-radius:var(--radius)}.side{padding:20px;position:sticky;top:14px;height:calc(100vh - 28px);overflow:auto;display:flex;flex-direction:column;gap:16px}.main{min-height:calc(100vh - 28px);overflow:hidden;display:flex;flex-direction:column}
+    .brand{padding:22px;border-radius:22px;background:linear-gradient(160deg,var(--navy),var(--navy2));box-shadow:var(--softShadow);color:white;position:relative;overflow:hidden}.brand:after{content:"";position:absolute;inset:auto -30px -60px auto;width:160px;height:160px;border-radius:50%;border:1px solid rgba(214,178,94,.35)}.mark{width:62px;height:62px;border-radius:18px;background:linear-gradient(145deg,var(--gold),var(--gold2));display:grid;place-items:center;color:#16110a;font-weight:950;font-size:22px;margin-bottom:16px;letter-spacing:-.03em;box-shadow:0 18px 32px rgba(0,0,0,.18);cursor:default;user-select:none}.brand h3{color:white;margin-bottom:6px}.brand p{color:rgba(255,255,255,.78);margin-bottom:0}.brand .mini-line{height:1px;background:linear-gradient(90deg,rgba(214,178,94,.9),transparent);margin:16px 0}.official-badge{display:inline-flex;align-items:center;gap:8px;border:1px solid rgba(214,178,94,.38);background:rgba(255,255,255,.08);color:#f7e6bd;border-radius:999px;padding:7px 11px;font-weight:800;font-size:12px;margin-bottom:12px}
+    .panel{padding:16px;border-radius:20px;background:var(--paper);border:1px solid var(--line);box-shadow:0 8px 22px rgba(9,28,53,.04)}.sideTitle{display:flex;justify-content:space-between;align-items:center;font-size:13px;font-weight:900;margin-bottom:12px;color:var(--navy)}.progress{height:10px;background:#e8edf3;border-radius:99px;overflow:hidden}.bar{height:100%;width:0%;border-radius:99px;background:linear-gradient(90deg,var(--navy),var(--gold));transition:width .28s ease}.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:12px}.stat{padding:12px;border-radius:16px;background:#f7f9fc;border:1px solid #e4ebf3}.stat strong{display:block;font-size:22px;color:var(--navy)}.stat span{font-size:12px;color:var(--muted);font-weight:700}
+    .steps{display:grid;gap:7px}.step{display:flex;align-items:center;gap:10px;padding:11px;border-radius:14px;background:transparent;border:1px solid transparent;color:#58677c;font:inherit;text-align:inherit;cursor:pointer}.step:hover{background:#f7f9fc;border-color:#edf1f6}.step.active{background:#edf4ff;border-color:#cfe0fa;color:#0d3a68}.step.done{color:#0f6848}.num{min-width:26px;height:26px;border-radius:9px;background:#e8edf3;display:grid;place-items:center;font-weight:900;font-size:12px}.step.done .num{background:var(--success);color:white}.step.active .num{background:var(--navy);color:white}.stepText{font-size:13px;font-weight:800;line-height:1.35}
+    .topbar{min-height:74px;padding:18px 24px;border-bottom:1px solid var(--line);background:rgba(255,255,255,.78);display:flex;justify-content:space-between;gap:14px;align-items:center}.windowtitle{display:flex;gap:12px;align-items:center;font-weight:950;color:var(--navy)}.lock{width:38px;height:38px;border-radius:14px;background:#eef6f2;display:grid;place-items:center;color:var(--success)}.actions{display:flex;gap:10px;flex-wrap:wrap;align-items:center}.langToggle{min-width:92px}button,input,textarea,select{font-family:inherit}.btn{border:0;min-height:44px;padding:0 17px;border-radius:13px;cursor:pointer;font-weight:900;color:var(--navy);background:#fff;border:1px solid var(--line);box-shadow:0 7px 18px rgba(9,28,53,.07);transition:.18s ease}.btn:hover{transform:translateY(-1px);box-shadow:0 12px 26px rgba(9,28,53,.11)}.btn:disabled{opacity:.45;cursor:not-allowed;transform:none}.primary{color:white;background:linear-gradient(135deg,var(--navy),#163d69);border-color:transparent}.success{color:#101a12;background:linear-gradient(135deg,var(--gold2),#f1d891);border-color:transparent}.danger{color:#a32019;background:#fff5f4;border-color:#f0d0ce}.ghost{box-shadow:none;background:#f8fafc}.status-pill{background:#edf7f2;color:#0f6848;border-color:#d1eadc}
+    .content{flex:1;display:grid;place-items:center;padding:clamp(24px,4.2vw,58px)}.screen{width:min(860px,100%);display:none;animation:rise .25s ease}.screen.active{display:block}@keyframes rise{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}.questionNo{display:inline-flex;align-items:center;gap:8px;margin-bottom:16px;color:#0d3a68;font-weight:900}.qbadge{width:32px;height:32px;border-radius:11px;background:#edf4ff;display:grid;place-items:center}.formgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}.field{display:grid;gap:7px;margin-bottom:13px}.field.full{grid-column:1/-1}label{font-weight:900;font-size:14px;color:#172b4d}.required:after{content:" *";color:var(--danger)}.tip{font-size:12px;color:var(--muted);line-height:1.55}.input,textarea,select{width:100%;min-height:56px;border-radius:15px;border:1px solid #cfd8e3;background:#fff;padding:0 15px;font-size:16px;color:var(--ink);outline:none;box-shadow:inset 0 1px 0 rgba(255,255,255,.7)}textarea{padding:14px 15px;min-height:104px;resize:vertical}.input:focus,textarea:focus,select:focus{border-color:#2b5f94;box-shadow:0 0 0 4px rgba(22,61,105,.12)}.readonly{background:#f4f6f9;color:#667085}.error{color:var(--danger);font-size:12px;display:none}.field.invalid .input,.field.invalid textarea,.field.invalid select{border-color:rgba(192,57,43,.65);box-shadow:0 0 0 4px rgba(192,57,43,.09)}.field.invalid .error{display:block}.choices{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:10px}.choice{min-height:58px;border-radius:16px;border:1px solid #cfd8e3;background:#fff;display:flex;align-items:center;gap:10px;padding:13px;font-weight:900;cursor:pointer}.choice input{width:18px;height:18px}.choice:has(input:checked){border-color:var(--gold);background:#fffaf0}
+    .review{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:18px 0}.reviewItem{padding:15px;border-radius:17px;background:#fff;border:1px solid #dfe7f0}.reviewItem span{display:block;color:var(--muted);font-size:12px;font-weight:900;margin-bottom:5px}.reviewItem strong{font-size:15px;word-break:break-word}.notice{padding:14px 16px;border-radius:16px;background:#edf4ff;border:1px solid #cfe0fa;color:#0d3a68;line-height:1.7}.notice.warn{background:#fff8e9;border-color:#efd8a6;color:#7a4a00}.notice.bad{background:#fff4f2;border-color:#f2c9c4;color:#93231b}.notice.ok{background:#eef8f2;border-color:#ccebd9;color:#0f6848}.navrow{display:flex;justify-content:space-between;gap:10px;margin-top:24px}.ltr{direction:ltr;text-align:left}.hidden{display:none!important}.loading{opacity:.7;pointer-events:none}.matchList{display:grid;gap:10px;margin-top:18px}.matchCard{border:1px solid #dfe7f0;background:white;border-radius:17px;padding:15px;text-align:inherit;cursor:pointer}.matchCard:hover{border-color:var(--gold);box-shadow:0 10px 28px rgba(184,138,45,.12)}.assetList{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:10px}.assetItem{padding:12px;border:1px solid #dfe7f0;border-radius:15px;background:white;display:flex;gap:9px;align-items:flex-start;font-weight:800}.assetItem small{display:block;color:var(--muted);font-weight:700}.subcards{display:grid;gap:14px}.subcard{border:1px solid #dfe7f0;background:white;border-radius:18px;padding:15px}.subHead{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}.familyTable,.adminTable{width:100%;border-collapse:collapse;font-size:13px;background:white;border-radius:16px;overflow:hidden}.familyTable th,.familyTable td,.adminTable th,.adminTable td{padding:11px;border-bottom:1px solid #edf1f6;text-align:inherit;white-space:nowrap}.familyTable th,.adminTable th{background:#f5f7fb;font-weight:950;color:var(--navy)}.tableWrap{overflow:auto;border-radius:16px;border:1px solid #dfe7f0;background:white}
+    .modal{position:fixed;inset:0;background:linear-gradient(135deg,#071627,#0c2340 55%,#0b1f3a);display:none;z-index:50;color:white}.modal.active{display:block}.modalCard{width:100%;height:100vh;overflow:auto;padding:0;background:transparent}.adminLayout{min-height:100vh;display:grid;grid-template-columns:310px minmax(0,1fr)}.adminSide{padding:26px;background:rgba(3,12,24,.42);border-inline-end:1px solid rgba(255,255,255,.12);display:flex;flex-direction:column;gap:18px;position:sticky;top:0;height:100vh}.adminLogo{width:64px;height:64px;border-radius:20px;background:linear-gradient(145deg,var(--gold),var(--gold2));display:grid;place-items:center;color:#17120a;font-weight:950;font-size:22px}.adminSide h2{color:white}.adminSide p{color:rgba(255,255,255,.68)}.adminMain{padding:28px}.adminHero{display:flex;justify-content:space-between;gap:20px;align-items:flex-start;margin-bottom:20px;padding:24px;border-radius:26px;background:linear-gradient(135deg,rgba(255,255,255,.12),rgba(255,255,255,.05));border:1px solid rgba(255,255,255,.13);box-shadow:0 22px 70px rgba(0,0,0,.18)}.adminHero h2{color:white}.adminHero .lead{color:rgba(255,255,255,.72)}.adminGrid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:14px;margin:16px 0}.kpi{padding:18px;border-radius:20px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.14);color:white}.kpi strong{display:block;font-size:34px;letter-spacing:-.05em}.kpi span{font-size:13px;color:rgba(255,255,255,.66);font-weight:900}.adminTools{padding:18px;border-radius:22px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);margin-bottom:14px}.tabs{display:flex;gap:9px;flex-wrap:wrap;margin:14px 0}.tab{border:1px solid rgba(255,255,255,.14);border-radius:999px;background:rgba(255,255,255,.08);color:white;padding:10px 15px;font-weight:900;cursor:pointer}.tab.active{background:linear-gradient(135deg,var(--gold),var(--gold2));color:#17120a;border-color:transparent}.adminContentCard{background:#fff;color:var(--ink);border-radius:22px;padding:18px;box-shadow:0 18px 55px rgba(0,0,0,.18)}.admin-login-card{background:#fff;color:var(--ink);border-radius:22px;padding:24px;box-shadow:var(--shadow)}.admin-login-card p{color:var(--slate)}.admin-auth-ok{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}.changeTag{display:inline-block;margin:2px;padding:4px 7px;border-radius:999px;background:#fff3d6;color:#7a4a00;font-weight:900;font-size:11px}.footerNote{margin-top:auto;padding:13px 14px;border-radius:16px;background:rgba(255,255,255,.08);color:rgba(255,255,255,.62);font-size:12px;line-height:1.7}.admin-open .shell{display:none}.lang-en .screen,.lang-en .side,.lang-en .main{text-align:left}.lang-en .brand,.lang-en .sideTitle,.lang-en .topbar{direction:ltr}
+    @media (max-width:980px){.shell{grid-template-columns:1fr}.side{position:relative;height:auto}.formgrid,.review,.adminGrid{grid-template-columns:1fr}.topbar{align-items:flex-start;flex-direction:column}.content{padding:22px}.side .panel:nth-of-type(2){display:none}.adminLayout{grid-template-columns:1fr}.adminSide{position:relative;height:auto}.adminHero{flex-direction:column}}@media print{.side,.topbar,.navrow{display:none}.shell{display:block}.main{box-shadow:none;border:0}.screen{display:block}}
   </style>
 </head>
 <body>
   <div class="shell">
     <aside class="side">
-      <div class="traffic" id="secretTraffic" title=""><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
       <div class="brand">
+        <div class="official-badge" data-i18n="topTitle">تحديث بيانات الموظف</div>
         <div class="mark" id="secretAdminMark">HR</div>
-        <h3>بوابة ترحيل بيانات ZenHR</h3>
-        <p class="small">تجربة ذكية لمراجعة وتكميل بيانات الموظفين قبل رفعها إلى ZenHR.</p>
-        <div class="pillrow"><span class="pill ok">✓ محفوظ تلقائيًا</span><span class="pill">واجهة ذكية</span><span class="pill warn">Admin</span></div>
-        <div class="hint-click">Double click the HR mark to open admin</div>
+        <h3 data-i18n="formTitle">نموذج بيانات الموظف</h3>
+        <p data-i18n="formSubtitle">يرجى مراجعة بياناتك وتعبئة الحقول المطلوبة بدقة لاعتمادها في سجلات الشركة.</p>
+        <div class="mini-line"></div>
+        <p class="small">Human Resources Department</p>
       </div>
       <div class="panel">
-        <div class="sideTitle"><span>التقدم</span><span id="progressText">0%</span></div>
+        <div class="sideTitle"><span data-i18n="progress">التقدم</span><span id="progressText">0%</span></div>
         <div class="progress"><div class="bar" id="progressBar"></div></div>
-        <div class="stats"><div class="stat"><strong id="completedFields">0</strong><span>حقول مكتملة</span></div><div class="stat"><strong id="remainingFields">0</strong><span>متبقية</span></div></div>
+        <div class="stats"><div class="stat"><strong id="completedFields">0</strong><span data-i18n="completed">مكتملة</span></div><div class="stat"><strong id="remainingFields">0</strong><span data-i18n="remaining">متبقية</span></div></div>
       </div>
       <div class="panel">
-        <div class="sideTitle"><span>الخطوات</span><span>⌘</span></div>
+        <div class="sideTitle"><span data-i18n="steps">الخطوات</span><span id="secretAdminWord">●</span></div>
         <div class="steps" id="stepsNav"></div>
       </div>
       <div class="panel">
-        <div class="sideTitle"><span>نصائح</span><span>💡</span></div>
-        <p class="small">اكتب الأسماء الإنجليزية بالأحرف الإنجليزية فقط، والعربية بالعربي فقط. إذا كانت بياناتك معبأة، عدّل فقط الخطأ وسيظهر التعديل للأدمن.</p>
+        <div class="sideTitle"><span data-i18n="guidance">إرشادات التعبئة</span><span>✓</span></div>
+        <p class="small" data-i18n="guidanceText">اكتب الأسماء الإنجليزية بالأحرف الإنجليزية فقط، والأسماء العربية باللغة العربية فقط. الحقول المعبأة مسبقًا يمكن تعديلها عند وجود خطأ، وسيتم حفظ التعديل للمراجعة.</p>
       </div>
     </aside>
     <main class="main">
       <header class="topbar">
-        <div class="windowtitle"><span class="lock">🔒</span><span id="topTitle">Employee Data Review</span></div>
-        <div class="actions"><button class="btn ghost" id="saveDraftBtn">حفظ مسودة</button><button class="btn ghost" id="resetBtn">مسح الشاشة</button><button class="btn primary" id="firebaseState">Local Mode</button></div>
+        <div class="windowtitle"><span class="lock">✓</span><span id="topTitle">تحديث بيانات الموظف</span></div>
+        <div class="actions"><button class="btn ghost langToggle" id="langToggle">English</button><button class="btn ghost" id="saveDraftBtn" data-i18n="saveDraft">حفظ مسودة</button><button class="btn ghost" id="resetBtn" data-i18n="reset">مسح الشاشة</button><button class="btn status-pill" id="firebaseState" data-i18n="local">وضع محلي</button></div>
       </header>
       <section class="content" id="content"></section>
     </main>
   </div>
-
   <div class="modal" id="adminModal" aria-hidden="true">
     <div class="modalCard">
-      <div style="display:flex;justify-content:space-between;gap:12px;align-items:flex-start;flex-wrap:wrap">
-        <div><h2>Admin Dashboard</h2><p class="lead">متابعة الإرسالات، تنزيل ملفات Excel، ومعرفة الموظفين الذين لم يعبئوا البيانات.</p></div>
-        <div class="actions"><button class="btn ghost" id="refreshAdminBtn">تحديث</button><button class="btn danger" id="closeAdminBtn">إغلاق</button></div>
+      <div class="adminLayout">
+        <aside class="adminSide">
+          <div class="adminLogo">HR</div>
+          <div><h2 data-i18n="adminTitle">لوحة الإدارة</h2><p data-i18n="adminLead">متابعة حالة تعبئة النماذج، مراجعة التعديلات، وتنزيل ملفات Excel المطلوبة.</p></div>
+          <div class="footerNote">هذه الشاشة مخصصة للإدارة فقط. الدخول والصلاحيات تعتمد على Firebase Authentication و Firestore Rules.</div>
+        </aside>
+        <main class="adminMain">
+          <div class="adminHero">
+            <div><h2 data-i18n="adminTitle">لوحة الإدارة</h2><p class="lead" data-i18n="adminLead">متابعة حالة تعبئة النماذج، مراجعة التعديلات، وتنزيل ملفات Excel المطلوبة.</p></div>
+            <div class="actions"><button class="btn ghost" id="refreshAdminBtn" data-i18n="refresh">تحديث البيانات</button><button class="btn danger" id="closeAdminBtn" data-i18n="close">عودة للنموذج</button></div>
+          </div>
+          <div id="adminAuthPanel" class="notice warn" style="margin:14px 0" data-i18n="authChecking">جاري فحص صلاحية الدخول...</div>
+          <div id="adminDashboardPanel" style="display:none">
+            <div class="adminGrid"><div class="kpi"><strong id="kpiTotal">0</strong><span data-i18n="kpiTotal">إجمالي الموظفين</span></div><div class="kpi"><strong id="kpiDone">0</strong><span data-i18n="kpiDone">مكتمل</span></div><div class="kpi"><strong id="kpiMissing">0</strong><span data-i18n="kpiMissing">لم يعبئوا</span></div><div class="kpi"><strong id="kpiChanges">0</strong><span data-i18n="kpiChanges">تعديلات</span></div><div class="kpi"><strong id="kpiRate">0%</strong><span>Completion Rate</span></div></div>
+            <div class="adminTools"><div class="tabs"><button class="tab active" data-tab="submissions" data-i18n="tabSubmissions">النتائج</button><button class="tab" data-tab="missing" data-i18n="tabMissing">لم يعبئوا</button><button class="tab" data-tab="changes" data-i18n="tabChanges">التعديلات</button><button class="tab" data-tab="seed" data-i18n="tabDirectory">قاعدة الموظفين</button></div><div class="formgrid" style="margin:12px 0"><div class="field"><label>Search</label><input class="input" id="adminSearch" placeholder="Name, ID, email..."></div><div class="field"><label>Company</label><select class="input" id="adminCompanyFilter"><option value="">All companies</option><option>OWIP</option><option>OWFS</option><option>Infinity</option><option>Baianat</option><option>Bianat</option></select></div></div><div class="actions" style="margin-top:12px"><button class="btn success" id="exportEmployeesBtn" data-i18n="exportEmployees">تنزيل Employees Excel</button><button class="btn success" id="exportFamilyBtn" data-i18n="exportFamily">تنزيل Family Excel</button><button class="btn success" id="exportAssetsBtn" data-i18n="exportAssets">تنزيل Assets Excel</button><button class="btn ghost" id="importSeedBtn" data-i18n="importSeed">استيراد قاعدة الموظفين</button><button class="btn ghost" id="downloadSeedBtn" data-i18n="downloadSeed">تنزيل نسخة JSON</button></div></div>
+            <input id="seedFileInput" type="file" accept=".json,application/json" style="display:none" />
+            <div class="adminContentCard"><div id="adminTabContent"></div></div>
+          </div>
+        </main>
       </div>
-      <div id="adminAuthPanel" class="notice warn" style="margin:14px 0">جاري فحص صلاحية الأدمن...</div>
-      <div id="adminDashboardPanel" style="display:none">
-      <div class="adminGrid">
-        <div class="kpi"><strong id="kpiTotal">0</strong><span>إجمالي الموظفين</span></div>
-        <div class="kpi"><strong id="kpiDone">0</strong><span>عبّأوا الملف</span></div>
-        <div class="kpi"><strong id="kpiMissing">0</strong><span>لم يعبئوا</span></div>
-        <div class="kpi"><strong id="kpiChanges">0</strong><span>تعديلات من الموظفين</span></div>
-      </div>
-      <div class="tabs"><button class="tab active" data-tab="submissions">النتائج</button><button class="tab" data-tab="missing">لم يعبئوا</button><button class="tab" data-tab="changes">التعديلات</button><button class="tab" data-tab="seed">قاعدة الموظفين</button></div>
-      <div class="actions" style="margin-bottom:12px">
-        <button class="btn success" id="exportEmployeesBtn">تنزيل Employees Excel</button>
-        <button class="btn success" id="exportFamilyBtn">تنزيل Family Excel</button>
-        <button class="btn success" id="exportAssetsBtn">تنزيل Assets Excel</button>
-        <button class="btn ghost" id="importSeedBtn">Import Seed to Firebase</button>
-        <button class="btn ghost" id="downloadSeedBtn">Download Seed JSON</button>
-      </div>
-      <input id="seedFileInput" type="file" accept=".json,application/json" style="display:none" />
-      <div id="adminTabContent"></div>
-      </div>
-      <div class="footerNote">ملاحظة أمنية: الـ double click يخفي لوحة الأدمن بصريًا فقط، وليس حماية فعلية. في التشغيل الحقيقي استخدم Firebase Authentication و Security Rules، ولا تنشر ملف seed إذا كان يحتوي بيانات حساسة.</div>
     </div>
   </div>
 
-  <script type="module">
+<script type="module">
     /******************** Firebase optional config ********************/
     const firebaseConfig = {
       apiKey: "AIzaSyBKleLDK-Dg9smbhwIDuNz-0j3j0lX39eI",
@@ -123,8 +105,8 @@
         fb = {enabled:true, db:fsMod.getFirestore(app), auth, ...fsMod, ...authMod};
         fb.onAuthStateChanged(auth, async user => { fb.currentUser = user; if(user) adminAllowed = await checkAdmin(); });
         try { if(!auth.currentUser) await fb.signInAnonymously(auth); } catch(e) { console.warn('Anonymous sign-in failed', e); }
-        $('#firebaseState').textContent='Firebase Ready';
-      }catch(err){ console.warn(err); $('#firebaseState').textContent='Firebase Error'; }
+        $('#firebaseState').textContent = uiLang === 'ar' ? 'متصل' : 'Connected';
+      }catch(err){ console.warn(err); $('#firebaseState').textContent = uiLang === 'ar' ? 'تعذر الاتصال' : 'Connection issue'; }
     }
 
     /******************** Constants ********************/
@@ -155,8 +137,44 @@
       current:0, matched:null, matches:[], data:{}, family:[], assets:[], noAssets:false, submitted:false, adminTab:'submissions', submissions: loadLocalSubmissions()
     };
 
+    let uiLang = localStorage.getItem('zenhr_ui_lang') || 'ar';
+    const I18N = {
+      ar:{
+        saveDraft:'حفظ مسودة', reset:'مسح الشاشة', connected:'متصل', local:'وضع محلي', connectionIssue:'تعذر الاتصال',
+        formTitle:'نموذج بيانات الموظف', formSubtitle:'يرجى مراجعة بياناتك وتعبئة الحقول المطلوبة بدقة لاعتمادها في سجلات الشركة.',
+        progress:'التقدم', completed:'مكتملة', remaining:'متبقية', steps:'الخطوات', guidance:'إرشادات التعبئة',
+        guidanceText:'اكتب الأسماء الإنجليزية بالأحرف الإنجليزية فقط، والأسماء العربية باللغة العربية فقط. الحقول المعبأة مسبقًا يمكن تعديلها عند وجود خطأ، وسيتم حفظ التعديل للمراجعة.',
+        topTitle:'تحديث بيانات الموظف', next:'التالي', prev:'السابق', select:'اختر...',
+        loginTitle:'دخول الموظف', loginHero:'مرحبًا، يرجى إدخال بيانات التحقق', loginLead:'سيتم عرض البيانات المتوفرة لدينا للمراجعة والتكميل.', loginDob:'تاريخ الميلاد', loginInitial:'أول حرف من الاسم بالإنجليزية', loginInitialTip:'مثال: O إذا كان الاسم Omar', showData:'عرض بياناتي',
+        reviewTitle:'مراجعة البيانات الموجودة', reviewHero:'هذه البيانات المسجلة لدينا', reviewLead:'راجع البيانات المعروضة. إذا وجدت خطأ يمكنك تعديله في الخطوات التالية، وسيظهر التعديل للإدارة.', hiddenSalary:'الراتب وبيانات الضمان غير ظاهرة للموظف، وتستخدم فقط لأغراض الإدارة والتصدير.',
+        namesTitle:'الأسماء الرسمية', namesSub:'تأكد من كتابة الاسم كما يجب أن يظهر في سجلات الشركة.', identityTitle:'الهوية والجواز', identitySub:'تظهر بعض الحقول تلقائيًا حسب الجنسية والحالة الاجتماعية.', contactTitle:'معلومات التواصل', contactSub:'يرجى إدخال بيانات تواصل فعّالة وصحيحة.', employmentTitle:'الوظيفة والعقد', employmentSub:'بعض القيم تكون ثابتة أو محسوبة تلقائيًا حسب بيانات الشركة.', bankTitle:'المعلومات البنكية', bankSub:'يرجى التأكد من صحة بيانات البنك والآيبان.',
+        assetsTitle:'العهد', assetsHero:'هل لديك عهدة من الشركة؟', assetsLead:'اختر “ليس لدي عهدة” أو حدد العهد الموجودة لديك. كل عهدة محددة تحتاج اسم/وصف وتاريخ استلام.', noAssets:'ليس لدي عهدة', hasAssets:'لدي عهدة',
+        familyTitle:'العائلة', familyNotRequired:'لا توجد أسئلة عائلة لهذه الحالة', familyNotRequiredLead:'حسب الحالة الاجتماعية المختارة لا تظهر أسئلة أفراد العائلة.', familyRequiredNote:'أسئلة العائلة تظهر فقط للمتزوجين أو المطلقين أو الأرامل.', familyHero:'بيانات أفراد العائلة', familyLead:'أضف الزوج/الزوجة والأولاد حسب الحاجة. كل حقل داخل الفرد المضاف إجباري.', addFamily:'+ إضافة فرد عائلة',
+        submitTitle:'المراجعة النهائية', submitHero:'آخر خطوة', submitLead:'تأكد أن كل شيء صحيح قبل الإرسال. سيتم حفظ البيانات والتعديلات للإدارة.', submitBtn:'إرسال البيانات', changesCount:'عدد التعديلات على البيانات المعبأة مسبقًا',
+        adminTitle:'لوحة الإدارة', adminLead:'متابعة حالة تعبئة النماذج، مراجعة التعديلات، وتنزيل ملفات Excel المطلوبة.', close:'عودة للنموذج', refresh:'تحديث البيانات', authChecking:'جاري فحص صلاحية الدخول...', adminLogin:'دخول الإدارة', email:'البريد الإلكتروني', password:'كلمة المرور', login:'دخول', setupAdmin:'تهيئة صلاحية الأدمن والـ collections', signOut:'تسجيل خروج',
+        kpiTotal:'إجمالي الموظفين', kpiDone:'مكتمل', kpiMissing:'لم يعبئوا', kpiChanges:'تعديلات', tabSubmissions:'النتائج', tabMissing:'لم يعبئوا', tabChanges:'التعديلات', tabDirectory:'قاعدة الموظفين', exportEmployees:'تنزيل Employees Excel', exportFamily:'تنزيل Family Excel', exportAssets:'تنزيل Assets Excel', importSeed:'استيراد قاعدة الموظفين', downloadSeed:'تنزيل نسخة JSON', langOther:'English'
+      },
+      en:{
+        saveDraft:'Save draft', reset:'Clear form', connected:'Connected', local:'Offline draft', connectionIssue:'Connection issue',
+        formTitle:'Employee Information Form', formSubtitle:'Please review your details and complete all required fields accurately for company records.',
+        progress:'Progress', completed:'Completed', remaining:'Remaining', steps:'Steps', guidance:'Filling guidance',
+        guidanceText:'English name fields must be completed in English letters only, and Arabic name fields in Arabic only. Pre-filled values may be corrected when needed; changes are recorded for review.',
+        topTitle:'Employee Data Update', next:'Next', prev:'Previous', select:'Select...',
+        loginTitle:'Employee verification', loginHero:'Welcome, please enter your verification details', loginLead:'We will show the data available in company records for your review and completion.', loginDob:'Date of birth', loginInitial:'First letter of English first name', loginInitialTip:'Example: O if the name is Omar', showData:'Show my data',
+        reviewTitle:'Review existing information', reviewHero:'Information currently on record', reviewLead:'Review the details below. If anything is incorrect, you may correct it in the next steps and the change will be visible to management.', hiddenSalary:'Salary and social security details are hidden from employees and used only for administration and export.',
+        namesTitle:'Official names', namesSub:'Please make sure the name is written exactly as it should appear in company records.', identityTitle:'Identity and passport', identitySub:'Some fields appear automatically depending on nationality and marital status.', contactTitle:'Contact information', contactSub:'Please provide accurate and active contact details.', employmentTitle:'Employment and contract', employmentSub:'Some values are fixed or calculated automatically based on company records.', bankTitle:'Bank information', bankSub:'Please verify your bank details and IBAN carefully.',
+        assetsTitle:'Assets', assetsHero:'Do you hold any company assets?', assetsLead:'Select “I do not have company assets” or choose the assets you currently hold. Each selected asset requires a name/description and holding date.', noAssets:'I do not have company assets', hasAssets:'I have company assets',
+        familyTitle:'Family', familyNotRequired:'Family information is not required for this status', familyNotRequiredLead:'Based on the selected marital status, family member questions are not shown.', familyRequiredNote:'Family member questions appear only for married, divorced, or widowed employees.', familyHero:'Family members', familyLead:'Add spouse and/or children where applicable. All fields inside each added member are required.', addFamily:'+ Add family member',
+        submitTitle:'Final review', submitHero:'Final step', submitLead:'Please make sure all information is correct before submitting. Your data and changes will be saved for management review.', submitBtn:'Submit information', changesCount:'Number of changes to pre-filled values',
+        adminTitle:'Management Dashboard', adminLead:'Track form completion, review employee changes, and download the required Excel files.', close:'Back to form', refresh:'Refresh data', authChecking:'Checking access permission...', adminLogin:'Management login', email:'Email', password:'Password', login:'Login', setupAdmin:'Initialize admin access and collections', signOut:'Sign out',
+        kpiTotal:'Total employees', kpiDone:'Completed', kpiMissing:'Not submitted', kpiChanges:'Changes', tabSubmissions:'Submissions', tabMissing:'Not submitted', tabChanges:'Changes', tabDirectory:'Employee directory', exportEmployees:'Download Employees Excel', exportFamily:'Download Family Excel', exportAssets:'Download Assets Excel', importSeed:'Import employee directory', downloadSeed:'Download JSON copy', langOther:'العربية'
+      }
+    };
+    function t(key){ return (I18N[uiLang] && I18N[uiLang][key]) || I18N.ar[key] || key; }
+    function setLang(lang){ uiLang = lang; localStorage.setItem('zenhr_ui_lang', lang); document.documentElement.lang = lang; document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr'; document.body.classList.toggle('lang-en', lang === 'en'); applyStaticI18n(); render(); }
+    function stepTitle(s){ return uiLang === 'ar' ? s.titleAr : s.titleEn; }
     const steps = [
-      {id:'login', title:'الدخول'}, {id:'review', title:'مراجعة البيانات'}, {id:'names', title:'الأسماء'}, {id:'identity', title:'الهوية والجواز'}, {id:'contact', title:'التواصل'}, {id:'employment', title:'الوظيفة والعقد'}, {id:'bank', title:'البنك'}, {id:'assets', title:'العهد'}, {id:'family', title:'العائلة'}, {id:'submit', title:'الإرسال'}
+      {id:'login', titleAr:'الدخول', titleEn:'Verification'}, {id:'review', titleAr:'مراجعة البيانات', titleEn:'Review'}, {id:'names', titleAr:'الأسماء', titleEn:'Names'}, {id:'identity', titleAr:'الهوية والجواز', titleEn:'Identity'}, {id:'contact', titleAr:'التواصل', titleEn:'Contact'}, {id:'employment', titleAr:'الوظيفة والعقد', titleEn:'Employment'}, {id:'bank', titleAr:'البنك', titleEn:'Bank'}, {id:'assets', titleAr:'العهد', titleEn:'Assets'}, {id:'family', titleAr:'العائلة', titleEn:'Family'}, {id:'submit', titleAr:'الإرسال', titleEn:'Submit'}
     ];
 
     const fields = [
@@ -213,28 +231,32 @@
     /******************** Rendering ********************/
     function render(){
       renderSteps(); updateProgress();
-      const step = steps[state.current]; $('#topTitle').textContent = step.title;
+      const step = steps[state.current]; $('#topTitle').textContent = stepTitle(step);
       const content = $('#content');
-      const map = {login:screenLogin,review:screenReview,names:()=>screenFields('names','الأسماء الرسمية','تأكد من الاسم كما يجب أن يظهر في ZenHR.'),identity:()=>screenFields('identity','الهوية والجواز','الأسئلة المشروطة تظهر حسب الجنسية والحالة.'),contact:()=>screenFields('contact','معلومات التواصل','بيانات الاتصال مهمة للتنبيهات والملفات.'),employment:()=>screenFields('employment','الوظيفة والعقد','بعض القيم ثابتة أو محسوبة تلقائيًا.'),bank:()=>screenFields('bank','المعلومات البنكية','الآيبان مهم جدًا للتحويل البنكي.'),assets:screenAssets,family:screenFamily,submit:screenSubmit};
+      const map = {login:screenLogin,review:screenReview,names:()=>screenFields('names',t('namesTitle'),t('namesSub')),identity:()=>screenFields('identity',t('identityTitle'),t('identitySub')),contact:()=>screenFields('contact',t('contactTitle'),t('contactSub')),employment:()=>screenFields('employment',t('employmentTitle'),t('employmentSub')),bank:()=>screenFields('bank',t('bankTitle'),t('bankSub')),assets:screenAssets,family:screenFamily,submit:screenSubmit};
       content.innerHTML = map[step.id]();
       bindScreen();
     }
     function renderSteps(){
-      $('#stepsNav').innerHTML = steps.map((s,i)=>`<button class="step ${i===state.current?'active':''} ${i<state.current?'done':''}" data-goto="${i}"><span class="num">${i+1}</span><span class="stepText">${s.title}</span></button>`).join('');
+      $('#stepsNav').innerHTML = steps.map((s,i)=>`<button class="step ${i===state.current?'active':''} ${i<state.current?'done':''}" data-goto="${i}"><span class="num">${i+1}</span><span class="stepText">${stepTitle(s)}</span></button>`).join('');
       $$('[data-goto]').forEach(b=>b.onclick=()=>{ const i=+b.dataset.goto; if(i<=state.current || state.matched || i===0){ state.current=i; render(); }});
     }
     function screenWrap(no,title,body,extra=''){
-      return `<div class="screen active"><div class="questionNo"><span class="qbadge">${no}</span><span>${title}</span></div>${body}<div class="navrow">${state.current>0?'<button class="btn ghost" id="prevBtn">السابق</button>':'<span></span>'}${extra || '<button class="btn primary" id="nextBtn">التالي</button>'}</div></div>`;
+      const prev = state.current>0 ? `<button class="btn ghost" id="prevBtn">${t('prev')}</button>` : '<span></span>';
+      const next = extra || `<button class="btn primary" id="nextBtn">${t('next')}</button>`;
+      return `<div class="screen active"><div class="questionNo"><span class="qbadge">${no}</span><span>${title}</span></div>${body}<div class="navrow">${prev}${next}</div></div>`;
     }
     function screenLogin(){
-      return screenWrap(1,'دخول الموظف',`<h1>مرحبًا 👋<br>أدخل تاريخ ميلادك وأول حرف من اسمك الإنجليزي.</h1><p class="lead">سنبحث عن بياناتك المعبأة مسبقًا، ثم تعرض لك للمراجعة والتكميل.</p>
-      <div class="formgrid"><div class="field"><label class="required">تاريخ الميلاد</label><input class="input ltr" id="loginDob" type="date"><div class="tip">yyyy-mm-dd</div></div><div class="field"><label class="required">أول حرف من الاسم بالإنجليزية</label><input class="input ltr" id="loginInitial" maxlength="1" placeholder="A"><div class="tip">مثال: O إذا كان الاسم Omar</div></div></div>
-      <div id="loginResult"></div>`, `<button class="btn primary" id="loginBtn">عرض بياناتي</button>`);
+      return screenWrap(1,t('loginTitle'),`<h1>${t('loginHero')}</h1><p class="lead">${t('loginLead')}</p>
+      <div class="formgrid"><div class="field"><label class="required">${t('loginDob')}</label><input class="input ltr" id="loginDob" type="date"><div class="tip">yyyy-mm-dd</div></div><div class="field"><label class="required">${t('loginInitial')}</label><input class="input ltr" id="loginInitial" maxlength="1" placeholder="A"><div class="tip">${t('loginInitialTip')}</div></div></div>
+      <div id="loginResult"></div>`, `<button class="btn primary" id="loginBtn">${t('showData')}</button>`);
     }
     function screenReview(){
       const r = state.matched || {};
-      const items = [['الرقم المؤقت',r.employmentNumber],['الاسم الإنجليزي',r.fullNameEn],['الاسم العربي',r.fullNameAr],['الشركة',r.company],['الإيميل العملي',r.workEmail],['الجنسية',r.nationality],['الحالة الاجتماعية',r.maritalStatus],['تاريخ الميلاد',r.birthdate],['المسمى',r.positionEn||r.positionAr],['الدائرة',r.departmentEn]];
-      return screenWrap(2,'مراجعة البيانات الموجودة',`<h1>هذه البيانات الموجودة لدينا</h1><p class="lead">راجعها. إذا كان هناك خطأ، عدّل الحقل لاحقًا وسيظهر للأدمن بالضبط ما تم تغييره.</p><div class="review">${items.map(([k,v])=>`<div class="reviewItem"><span>${k}</span><strong>${escapeHtml(v||'غير متوفر')}</strong></div>`).join('')}</div><div class="notice warn">الراتب الأساسي، راتب الضمان، ورقم الضمان لن تظهر هنا للموظف، لكنها محفوظة للأدمن والتصدير.</div>`);
+      const labels = uiLang === 'ar' ? ['الرقم المؤقت','الاسم الإنجليزي','الاسم العربي','الشركة','الإيميل العملي','الجنسية','الحالة الاجتماعية','تاريخ الميلاد','المسمى','الدائرة'] : ['Temporary ID','English name','Arabic name','Company','Work email','Nationality','Marital status','Birthdate','Position','Department'];
+      const vals = [r.employmentNumber,r.fullNameEn,r.fullNameAr,r.company,r.workEmail,r.nationality,r.maritalStatus,r.birthdate,r.positionEn||r.positionAr,r.departmentEn];
+      const items = labels.map((l,i)=>[l, vals[i]]);
+      return screenWrap(2,t('reviewTitle'),`<h1>${t('reviewHero')}</h1><p class="lead">${t('reviewLead')}</p><div class="review">${items.map(([k,v])=>`<div class="reviewItem"><span>${k}</span><strong>${escapeHtml(v||'—')}</strong></div>`).join('')}</div><div class="notice warn">${t('hiddenSalary')}</div>`);
     }
     function screenFields(section,title,subtitle){
       const fs = fields.filter(f=>f.section===section && shouldShow(f));
@@ -246,7 +268,7 @@
       const ro = f.readonly ? ' readonly' : '';
       const cls = f.type==='textarea' ? 'field full' : 'field';
       if(f.type==='select'){
-        return `<div class="${cls}" data-field="${f.k}"><label class="${required?'required':''}">${f.label}</label><select class="input" id="${f.k}"><option value="">اختر...</option>${(f.opts||[]).map(o=>`<option ${String(val)===String(o)?'selected':''}>${escapeHtml(o)}</option>`).join('')}</select><div class="tip">${f.tip||''}</div><div class="error"></div></div>`;
+        return `<div class="${cls}" data-field="${f.k}"><label class="${required?'required':''}">${f.label}</label><select class="input" id="${f.k}"><option value="">${t('select')}</option>${(f.opts||[]).map(o=>`<option ${String(val)===String(o)?'selected':''}>${escapeHtml(o)}</option>`).join('')}</select><div class="tip">${f.tip||''}</div><div class="error"></div></div>`;
       }
       if(f.type==='textarea'){
         return `<div class="${cls}" data-field="${f.k}"><label class="${required?'required':''}">${f.label}</label><textarea id="${f.k}" class="input" ${ro}>${escapeHtml(val)}</textarea><div class="tip">${f.tip||''}</div><div class="error"></div></div>`;
@@ -254,17 +276,19 @@
       return `<div class="${cls}" data-field="${f.k}"><label class="${required?'required':''}">${f.label}</label><input class="input ${f.readonly?'readonly':''} ${['email','tel','date'].includes(f.type)?'ltr':''}" id="${f.k}" type="${f.type||'text'}" value="${escapeAttr(val)}" ${ro}><div class="tip">${f.tip||''}</div><div class="error"></div></div>`;
     }
     function screenAssets(){
-      return screenWrap(8,'العهد Assets',`<h1>هل لديك عهدة من الشركة؟</h1><p class="lead">اختر “ليس لدي عهدة” أو حدد العهد الموجودة لديك. كل عهدة محددة تحتاج اسم/وصف وتاريخ استلام.</p>
-      <div class="choices"><label class="choice"><input type="radio" name="assetMode" value="none" ${state.noAssets?'checked':''}> ليس لدي عهدة</label><label class="choice"><input type="radio" name="assetMode" value="has" ${!state.noAssets?'checked':''}> لدي عهدة</label></div>
+      return screenWrap(8,t('assetsTitle'),`<h1>${t('assetsHero')}</h1><p class="lead">${t('assetsLead')}</p>
+      <div class="choices"><label class="choice"><input type="radio" name="assetMode" value="none" ${state.noAssets?'checked':''}> ${t('noAssets')}</label><label class="choice"><input type="radio" name="assetMode" value="has" ${!state.noAssets?'checked':''}> ${t('hasAssets')}</label></div>
       <div id="assetArea" class="${state.noAssets?'hidden':''}" style="margin-top:16px"><div class="assetList">${ASSETS.map(([id,name])=>`<label class="assetItem"><input type="checkbox" class="assetCheck" value="${id}" ${state.assets.some(a=>a.assetId==id)?'checked':''}><span>${name}<small>Asset_ID: ${id}</small></span></label>`).join('')}</div><div class="subcards" id="assetDetails" style="margin-top:16px"></div></div>`);
     }
     function screenFamily(){
-      if(!needsFamily(state.data)) return screenWrap(9,'العائلة',`<h1>لا توجد أسئلة عائلة لهذه الحالة</h1><p class="lead">حسب الحالة الاجتماعية المختارة (${state.data.maritalStatus || 'غير محددة'}) لا تظهر أسئلة الزوجة/الأولاد. يمكنك المتابعة.</p><div class="notice">أسئلة العائلة تظهر فقط للمتزوجين أو المطلقين أو الأرامل.</div>`);
-      return screenWrap(9,'بيانات العائلة',`<h1>بيانات أفراد العائلة</h1><p class="lead">أضف الزوج/الزوجة والأولاد حسب الحاجة. كل حقل داخل الفرد المضاف إجباري.</p><div class="actions"><button class="btn ghost" id="addFamilyBtn">+ إضافة فرد عائلة</button></div><div class="subcards" id="familyCards" style="margin-top:16px"></div>`);
+      if(!needsFamily(state.data)) return screenWrap(9,t('familyTitle'),`<h1>${t('familyNotRequired')}</h1><p class="lead">${t('familyNotRequiredLead')}</p><div class="notice">${t('familyRequiredNote')}</div>`);
+      return screenWrap(9,t('familyTitle'),`<h1>${t('familyHero')}</h1><p class="lead">${t('familyLead')}</p><div class="actions"><button class="btn ghost" id="addFamilyBtn">${t('addFamily')}</button></div><div class="subcards" id="familyCards" style="margin-top:16px"></div>`);
     }
     function screenSubmit(){
       const changes = computeChanges();
-      return screenWrap(10,'المراجعة النهائية',`<h1>آخر خطوة ✨</h1><p class="lead">تأكد أن كل شيء صحيح قبل الإرسال. سيتم حفظ البيانات والتعديلات للأدمن.</p><div class="notice">عدد التعديلات على البيانات المعبأة مسبقًا: <strong>${changes.length}</strong></div><div class="review">${[['الاسم',fullNameFromData()],['الشركة',state.data.company],['الحالة الاجتماعية',state.data.maritalStatus],['البنك',state.data.bankName],['العهد',state.noAssets?'ليس لدي عهدة':state.assets.length+' عهدة'],['العائلة',needsFamily(state.data)?state.family.length+' أفراد':'غير مطلوب']].map(([k,v])=>`<div class="reviewItem"><span>${k}</span><strong>${escapeHtml(v||'غير مكتمل')}</strong></div>`).join('')}</div><div id="finalErrors"></div>`, `<button class="btn ghost" id="prevBtn">السابق</button><button class="btn success" id="submitBtn">إرسال البيانات</button>`);
+      const labels = uiLang === 'ar' ? ['الاسم','الشركة','الحالة الاجتماعية','البنك','العهد','العائلة'] : ['Name','Company','Marital status','Bank','Assets','Family'];
+      const values = [fullNameFromData(),state.data.company,state.data.maritalStatus,state.data.bankName,state.noAssets?t('noAssets'):state.assets.length+' assets',needsFamily(state.data)?state.family.length+' members':'Not required'];
+      return screenWrap(10,t('submitTitle'),`<h1>${t('submitHero')}</h1><p class="lead">${t('submitLead')}</p><div class="notice">${t('changesCount')}: <strong>${changes.length}</strong></div><div class="review">${labels.map((k,i)=>`<div class="reviewItem"><span>${k}</span><strong>${escapeHtml(values[i]||'—')}</strong></div>`).join('')}</div><div id="finalErrors"></div>`, `<button class="btn ghost" id="prevBtn">${t('prev')}</button><button class="btn success" id="submitBtn">${t('submitBtn')}</button>`);
     }
     function bindScreen(){
       $('#prevBtn')?.addEventListener('click',()=>{state.current=Math.max(0,state.current-1);render();});
@@ -422,7 +446,7 @@
     }
     function familyField(i,k,label,type,opts=[]){
       const val=state.family[i]?.[k]||'';
-      if(type==='select') return `<div class="field"><label class="required">${label}</label><select class="input" data-family="${i}" data-fk="${k}"><option value="">اختر...</option>${opts.map(o=>`<option ${val===o?'selected':''}>${o}</option>`).join('')}</select></div>`;
+      if(type==='select') return `<div class="field"><label class="required">${label}</label><select class="input" data-family="${i}" data-fk="${k}"><option value="">${t('select')}</option>${opts.map(o=>`<option ${val===o?'selected':''}>${o}</option>`).join('')}</select></div>`;
       return `<div class="field"><label class="required">${label}</label><input class="input ${type==='date'?'ltr':''}" type="${type}" data-family="${i}" data-fk="${k}" value="${escapeAttr(val)}"></div>`;
     }
     function validateFamily(){
@@ -477,8 +501,8 @@
       });
       return changes;
     }
-    function openAdmin(){ $('#adminModal').classList.add('active'); renderAdminAuth(); }
-    function closeAdmin(){ $('#adminModal').classList.remove('active'); }
+    function openAdmin(){ document.body.classList.add('admin-open'); $('#adminModal').classList.add('active'); renderAdminAuth(); }
+    function closeAdmin(){ document.body.classList.remove('admin-open'); $('#adminModal').classList.remove('active'); }
     async function checkAdmin(){
       if(!fb.enabled || !fb.auth?.currentUser) return false;
       try{
@@ -488,21 +512,21 @@
     }
     async function renderAdminAuth(){
       const panel=$('#adminAuthPanel'), dash=$('#adminDashboardPanel');
-      if(!fb.enabled){ panel.className='notice bad'; panel.innerHTML='Firebase غير مفعّل.'; dash.style.display='none'; return; }
+      if(!fb.enabled){ panel.className='notice bad'; panel.innerHTML= uiLang==='ar' ? 'الاتصال غير مفعّل.' : 'Connection is not enabled.'; dash.style.display='none'; return; }
       adminAllowed = await checkAdmin();
       if(adminAllowed){
         panel.className='notice ok';
-        panel.innerHTML=`تم تسجيل الدخول كأدمن. <button class="btn ghost" id="adminSignOutBtn" style="margin-inline-start:8px">تسجيل خروج</button>`;
+        panel.innerHTML=`<div class="admin-auth-ok"><strong>${uiLang==='ar'?'تم تسجيل الدخول للإدارة':'Management access confirmed'}</strong><button class="btn ghost" id="adminSignOutBtn">${t('signOut')}</button></div>`;
         $('#adminSignOutBtn').onclick=async()=>{ await fb.signOut(fb.auth); try{ await fb.signInAnonymously(fb.auth); }catch(e){console.warn(e);} adminAllowed=false; dash.style.display='none'; renderAdminAuth(); };
         dash.style.display='block'; await loadAdmin(); return;
       }
       const uid = fb.auth.currentUser?.uid || '';
-      const bootstrapHint = uid===ADMIN_UID ? `<div class="notice warn" style="margin-top:10px">هذا حساب الأدمن الصحيح لكن document الأدمن غير موجود. اضغط تهيئة الأدمن مرة واحدة.</div><button class="btn success" id="bootstrapAdminBtn" style="margin-top:10px">تهيئة الأدمن والـ collections</button>` : '';
-      panel.className='notice warn'; dash.style.display='none';
-      panel.innerHTML=`<strong>دخول الأدمن</strong><div class="formgrid" style="margin-top:10px"><div class="field"><label>Admin Email</label><input class="input ltr" id="adminEmail" type="email" autocomplete="username"></div><div class="field"><label>Password</label><input class="input ltr" id="adminPassword" type="password" autocomplete="current-password"></div></div><div class="actions"><button class="btn primary" id="adminLoginBtn">دخول</button></div><div class="small" style="margin-top:8px">الـ double click يفتح الشاشة فقط. الصلاحية الحقيقية من Firebase Authentication + Rules.</div>${bootstrapHint}`;
+      const bootstrapHint = uid===ADMIN_UID ? `<div class="notice warn" style="margin-top:14px">${uiLang==='ar'?'تم التعرف على حساب الأدمن، لكن صلاحية الأدمن لم تُنشأ بعد. اضغط التهيئة مرة واحدة.':'Admin account detected, but the admin document has not been created yet. Initialize once.'}</div><button class="btn success" id="bootstrapAdminBtn" style="margin-top:10px">${t('setupAdmin')}</button>` : '';
+      panel.className='admin-login-card'; dash.style.display='none';
+      panel.innerHTML=`<h2>${t('adminLogin')}</h2><p>${uiLang==='ar'?'يرجى تسجيل الدخول لمتابعة النتائج وإدارة التصدير.':'Please sign in to review results and manage exports.'}</p><div class="formgrid" style="margin-top:14px"><div class="field"><label>${t('email')}</label><input class="input ltr" id="adminEmail" type="email" autocomplete="username"></div><div class="field"><label>${t('password')}</label><input class="input ltr" id="adminPassword" type="password" autocomplete="current-password"></div></div><div class="actions"><button class="btn primary" id="adminLoginBtn">${t('login')}</button></div>${bootstrapHint}`;
       $('#adminLoginBtn').onclick=async()=>{
         try{ await fb.signInWithEmailAndPassword(fb.auth,$('#adminEmail').value,$('#adminPassword').value); await renderAdminAuth(); }
-        catch(e){ console.warn(e); toast('فشل دخول الأدمن. تأكد من الإيميل وكلمة السر.'); }
+        catch(e){ console.warn(e); toast(uiLang==='ar'?'فشل دخول الأدمن. تأكد من الإيميل وكلمة السر.':'Login failed. Please verify email and password.'); }
       };
       $('#bootstrapAdminBtn')?.addEventListener('click',bootstrapAdmin);
     }
@@ -526,13 +550,28 @@
       renderAdmin();
     }
     function renderAdmin(){
-      const submitted=Object.values(state.submissions); const submittedIds=new Set(submitted.map(s=>s.employeeId)); const missing=EMPLOYEES.filter(e=>!submittedIds.has(e.employmentNumber)); const changes=submitted.flatMap(s=>(s.changeSummary||s.changes||[]).map(c=>({...c,employeeId:s.employeeId,employeeName:submissionName(s),company:submissionCompany(s)})));
-      $('#kpiTotal').textContent=EMPLOYEES.length; $('#kpiDone').textContent=submitted.length; $('#kpiMissing').textContent=missing.length; $('#kpiChanges').textContent=changes.length;
+      const submitted=Object.values(state.submissions);
+      const submittedIds=new Set(submitted.map(s=>s.employeeId));
+      const missing=EMPLOYEES.filter(e=>!submittedIds.has(e.employmentNumber));
+      const changes=submitted.flatMap(s=>(s.changeSummary||s.changes||[]).map(c=>({...c,employeeId:s.employeeId,employeeName:submissionName(s),company:submissionCompany(s)})));
+      const rate = EMPLOYEES.length ? Math.round((submitted.length / EMPLOYEES.length) * 100) : 0;
+      $('#kpiTotal').textContent=EMPLOYEES.length; $('#kpiDone').textContent=submitted.length; $('#kpiMissing').textContent=missing.length; $('#kpiChanges').textContent=changes.length; $('#kpiRate').textContent=rate+'%';
+      const term = ($('#adminSearch')?.value || '').toLowerCase().trim();
+      const company = $('#adminCompanyFilter')?.value || '';
+      const hay = (...vals) => vals.map(v=>String(v??'').toLowerCase()).join(' ');
+      const byTerm = row => !term || hay(...row).includes(term);
+      const byCompanySeed = e => !company || String(e.company||'')===company;
+      const byCompanySub = s => !company || submissionCompany(s)===company;
+      const byCompanyChange = c => !company || c.company===company;
+      const shownSubmitted=submitted.filter(s=>byCompanySub(s)).filter(s=>byTerm(s.employeeId,submissionName(s),submissionCompany(s),submissionEmployee(s).workEmail));
+      const shownMissing=missing.filter(byCompanySeed).filter(e=>byTerm(e.employmentNumber,e.fullNameEn,e.fullNameAr,e.company,e.workEmail,e.birthdate));
+      const shownChanges=changes.filter(byCompanyChange).filter(c=>byTerm(c.employeeId,c.employeeName,c.field,c.before,c.after,c.company));
+      const shownEmployees=EMPLOYEES.filter(byCompanySeed).filter(e=>byTerm(e.employmentNumber,e.fullNameEn,e.fullNameAr,e.company,e.workEmail,e.birthdate));
       const box=$('#adminTabContent');
-      if(state.adminTab==='submissions') box.innerHTML=tableHtml(['Employee ID','Name','Company','Submitted At','Changes'], submitted.map(s=>[s.employeeId,submissionName(s),submissionCompany(s),formatDT(s.submittedAt),(s.changeSummary||s.changes||[]).length]));
-      if(state.adminTab==='missing') box.innerHTML=tableHtml(['Employee ID','Name EN','Name AR','Company','Work Email','Birthdate'], missing.map(e=>[e.employmentNumber,e.fullNameEn,e.fullNameAr,e.company,e.workEmail,e.birthdate]));
-      if(state.adminTab==='changes') box.innerHTML=tableHtml(['Employee ID','Name','Field','Before','After'], changes.map(c=>[c.employeeId,c.employeeName,c.field,c.before,c.after]));
-      if(state.adminTab==='seed') box.innerHTML=tableHtml(['Employee ID','Name EN','Name AR','Company','Work Email','DOB'], EMPLOYEES.map(e=>[e.employmentNumber,e.fullNameEn,e.fullNameAr,e.company,e.workEmail,e.birthdate]));
+      if(state.adminTab==='submissions') box.innerHTML=tableHtml(['Employee ID','Name','Company','Submitted At','Changes'], shownSubmitted.map(s=>[s.employeeId,submissionName(s),submissionCompany(s),formatDT(s.submittedAt),(s.changeSummary||s.changes||[]).length]));
+      if(state.adminTab==='missing') box.innerHTML=tableHtml(['Employee ID','Name EN','Name AR','Company','Work Email','Birthdate'], shownMissing.map(e=>[e.employmentNumber,e.fullNameEn,e.fullNameAr,e.company,e.workEmail,e.birthdate]));
+      if(state.adminTab==='changes') box.innerHTML=tableHtml(['Employee ID','Name','Field','Before','After'], shownChanges.map(c=>[c.employeeId,c.employeeName,c.field,c.before,c.after]));
+      if(state.adminTab==='seed') box.innerHTML=tableHtml(['Employee ID','Name EN','Name AR','Company','Work Email','DOB'], shownEmployees.map(e=>[e.employmentNumber,e.fullNameEn,e.fullNameAr,e.company,e.workEmail,e.birthdate]));
     }
     function tableHtml(headers, rows){ return `<div class="tableWrap"><table class="adminTable"><thead><tr>${headers.map(h=>`<th>${escapeHtml(h)}</th>`).join('')}</tr></thead><tbody>${rows.map(r=>`<tr>${r.map(c=>`<td>${escapeHtml(c??'')}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`; }
     async function importSeedToFirebase(){
@@ -600,18 +639,25 @@
     function toast(msg){ const t=document.createElement('div'); t.textContent=msg; t.style.cssText='position:fixed;bottom:20px;left:20px;z-index:80;background:rgba(21,32,51,.92);color:white;padding:12px 16px;border-radius:14px;box-shadow:0 12px 30px rgba(0,0,0,.22);font-weight:800'; document.body.appendChild(t); setTimeout(()=>t.remove(),2600); }
     function showInline(id,msg){ const el=document.getElementById(id); if(el && !el.querySelector('.inlineErr')) el.insertAdjacentHTML('beforeend',`<div class="notice bad inlineErr" style="margin-top:12px">${escapeHtml(msg)}</div>`); }
 
+    function applyStaticI18n(){
+      document.querySelectorAll('[data-i18n]').forEach(el=>{ el.textContent=t(el.dataset.i18n); });
+      const btn = document.getElementById('langToggle'); if(btn) btn.textContent=t('langOther');
+      const fs = document.getElementById('firebaseState');
+      if(fs && ['Local Mode','وضع محلي','Offline draft'].includes(fs.textContent)) fs.textContent=t('local');
+    }
+
     /******************** Events ********************/
-    $('#secretAdminMark').addEventListener('dblclick',openAdmin); $('#secretTraffic').addEventListener('dblclick',openAdmin);
+    $('#secretAdminMark').addEventListener('dblclick',openAdmin); $('#secretAdminWord')?.addEventListener('dblclick',openAdmin); $('#langToggle')?.addEventListener('click',()=>setLang(uiLang==='ar'?'en':'ar')); applyStaticI18n();
     $('#closeAdminBtn').onclick=closeAdmin; $('#refreshAdminBtn').onclick=loadAdmin; $('#importSeedBtn').onclick=importSeedToFirebase; $('#seedFileInput').addEventListener('change',handleSeedFile);
     $('#downloadSeedBtn').onclick=()=>downloadBlob(JSON.stringify({generatedAt:new Date().toISOString(), records:EMPLOYEES},null,2),'employee-seed.json');
     $('#exportEmployeesBtn').onclick=()=>exportRows(buildEmployeeRows(),'zenhr-employees.xlsx','Employees');
     $('#exportFamilyBtn').onclick=()=>exportRows(buildFamilyRows(),'zenhr-family-members.xlsx','Family');
     $('#exportAssetsBtn').onclick=()=>exportRows(buildAssetRows(),'zenhr-assets.xlsx','Assets');
-    $$('.tab').forEach(t=>t.onclick=()=>{ $$('.tab').forEach(x=>x.classList.remove('active')); t.classList.add('active'); state.adminTab=t.dataset.tab; renderAdmin(); });
+    $$('.tab').forEach(t=>t.onclick=()=>{ $$('.tab').forEach(x=>x.classList.remove('active')); t.classList.add('active'); state.adminTab=t.dataset.tab; renderAdmin(); }); $('#adminSearch')?.addEventListener('input',renderAdmin); $('#adminCompanyFilter')?.addEventListener('change',renderAdmin);
     $('#saveDraftBtn').onclick=()=>saveDraft(true); $('#resetBtn').onclick=()=>{ if(confirm('مسح بيانات الشاشة الحالية؟')){ state.current=0; state.matched=null; state.data={}; state.family=[]; state.assets=[]; state.noAssets=false; render(); }};
     window.addEventListener('keydown',e=>{ if(e.key==='Enter' && (e.metaKey||e.ctrlKey)) nextStep(); if(e.key==='Escape') closeAdmin(); });
 
-    await initFirebase(); render();
+    document.documentElement.lang = uiLang; document.documentElement.dir = uiLang === 'ar' ? 'rtl' : 'ltr'; document.body.classList.toggle('lang-en', uiLang === 'en'); await initFirebase(); applyStaticI18n(); render();
   </script>
 </body>
 </html>

@@ -1,0 +1,7 @@
+# Sensitive HR data - do not commit
+private-tools/
+employee-seed*.json
+*.xlsx
+*.xls
+*.csv
+*.docx
