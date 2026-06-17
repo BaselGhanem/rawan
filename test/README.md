@@ -35,3 +35,11 @@
 - Improved admin login validation and error messaging for invalid Firebase credentials.
 
 Note: `auth/invalid-credential` is not a layout bug. It means the email/password entered does not match an existing Firebase Authentication user, Email/Password sign-in is not enabled, or the password is incorrect.
+
+
+## v8.2 Stability Fix
+
+- Fixed Arabic **ابدأ التحقق** button not responding due to decorative overlay intercepting clicks in RTL layout.
+- Added delegated event binding for the start-verification action.
+- Prevented decorative pseudo-elements from capturing pointer events.
+- Preserved Firebase configuration, admin flow, validation rules, and export logic.
