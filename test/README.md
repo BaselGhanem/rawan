@@ -25,3 +25,13 @@
 ## الخصوصية
 
 لا ترفع ملفات employee seed أو ملفات Excel الأصلية إلى GitHub العام.
+
+
+## v8.1 Admin Accessibility and Login Fix
+
+- Fixed the admin modal accessibility warning caused by opening the dashboard while `aria-hidden="true"` was still applied.
+- Added `inert` to the employee application while the admin dashboard is open.
+- Added safer focus handling when opening and closing the admin dashboard.
+- Improved admin login validation and error messaging for invalid Firebase credentials.
+
+Note: `auth/invalid-credential` is not a layout bug. It means the email/password entered does not match an existing Firebase Authentication user, Email/Password sign-in is not enabled, or the password is incorrect.
