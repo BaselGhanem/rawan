@@ -1,0 +1,76 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function isAdmin() {
+      return signedIn()
+        && exists(/databases/$(database)/documents/admins/$(request.auth.uid))
+        && get(/databases/$(database)/documents/admins/$(request.auth.uid)).data.active == true;
+    }
+
+    function isBootstrapAdmin(uid) {
+      return signedIn()
+        && request.auth.uid == uid
+        && uid == "PwyarKYD7iTs1sbE0rTLqHrkqdv1";
+    }
+
+    match /admins/{uid} {
+      allow read: if request.auth != null && (request.auth.uid == uid || isAdmin());
+      allow create: if isBootstrapAdmin(uid)
+        && !exists(/databases/$(database)/documents/admins/$(uid))
+        && request.resource.data.active == true
+        && request.resource.data.role == "admin";
+      allow update, delete: if false;
+    }
+
+    match /employeeDirectory/{employeeId} {
+      allow get: if signedIn();
+      allow list: if isAdmin();
+      allow create, update, delete: if isAdmin();
+    }
+
+    match /loginIndex/{key} {
+      allow get: if signedIn();
+      allow list: if isAdmin();
+      allow create, update, delete: if isAdmin();
+    }
+
+    match /submissions/{employeeId} {
+      allow get: if isAdmin();
+      allow list: if isAdmin();
+
+      allow create, update: if signedIn()
+        && request.resource.data.employeeId == employeeId
+        && request.resource.data.keys().hasOnly([
+          'employeeId',
+          'temporaryEmploymentNumber',
+          'submittedAt',
+          'updatedAt',
+          'status',
+          'employee',
+          'familyMembers',
+          'assets',
+          'changeSummary',
+          'clientInfo'
+        ]);
+
+      allow delete: if isAdmin();
+    }
+
+    match /editLogs/{logId} {
+      allow create: if signedIn();
+      allow read, list, delete: if isAdmin();
+      allow update: if false;
+    }
+
+    match /meta/{docId} {
+      allow read, write: if isAdmin();
+      allow create: if isBootstrapAdmin("PwyarKYD7iTs1sbE0rTLqHrkqdv1");
+    }
+  }
+}
