@@ -1,1 +1,787 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Enterprise Employee Data Journey | نموذج بيانات الموظف</title>
+  <meta name="description" content="Enterprise guided employee data update journey with management dashboard." />
+  <meta name="theme-color" content="#0b1f3a" />
+  <link rel="icon" href="./favicon.ico" sizes="any" />
+  <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+  <link rel="apple-touch-icon" href="./apple-touch-icon.png" />
+  <script>window.EMPLOYEE_SEED = { generatedAt: null, records: [], departmentTranslationMap: {} };</script>
+  <script defer src="https://cdn.sheetjs.com/xlsx-0.20.2/package/dist/xlsx.full.min.js"></script>
+  <style>
 
+:root{
+  --navy:#071d36; --navy2:#0d2d50; --navy3:#123e68;
+  --gold:#b98a2d; --gold2:#d9b766; --green:#14865a; --green2:#eaf7f1;
+  --red:#c63d32; --red2:#fff1ef; --amber:#9b6500; --amber2:#fff6df;
+  --ink:#102033; --slate:#536276; --muted:#78869a; --line:#dce5ef;
+  --paper:#ffffff; --soft:#f5f8fb; --soft2:#edf3f8;
+  --shadow:0 22px 70px rgba(8,28,54,.13); --shadow2:0 10px 34px rgba(8,28,54,.08);
+  --radius:26px; --radius2:18px; --font:"Inter","Segoe UI",Tahoma,Arial,sans-serif;
+}
+*{box-sizing:border-box} html{scroll-behavior:smooth} body{margin:0;min-height:100vh;font-family:var(--font);color:var(--ink);background:linear-gradient(135deg,#f8fafc 0%,#edf3f8 55%,#f8f4ea 100%);overflow-x:hidden;text-rendering:optimizeLegibility;-webkit-text-size-adjust:100%}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;background:radial-gradient(circle at 7% 4%,rgba(185,138,45,.16),transparent 26rem),radial-gradient(circle at 96% 3%,rgba(7,29,54,.12),transparent 28rem);z-index:0}
+button,input,select,textarea{font-family:inherit} h1,h2,h3,p{margin-top:0} h1{font-size:clamp(30px,4vw,54px);line-height:1.08;letter-spacing:-.04em;color:var(--navy);margin-bottom:12px} h2{font-size:clamp(23px,2.7vw,38px);line-height:1.15;letter-spacing:-.035em;color:var(--navy);margin-bottom:10px} h3{font-size:18px;color:var(--navy);margin-bottom:8px}.lead,p{color:var(--slate);line-height:1.75}.small{font-size:13px;color:var(--muted);line-height:1.7}.tiny{font-size:12px;color:var(--muted)}.hidden{display:none!important}.ltr{direction:ltr;text-align:left}.arOnly{direction:rtl}.enOnly{direction:ltr}.enterpriseApp{position:relative;z-index:1;min-height:100vh;padding:16px}.employeeTop{width:min(1480px,100%);margin:0 auto 14px;background:rgba(255,255,255,.86);border:1px solid rgba(220,229,239,.95);border-radius:28px;box-shadow:var(--shadow2);backdrop-filter:blur(16px);display:grid;grid-template-columns:auto 1fr auto;gap:14px;align-items:center;padding:14px 16px}.brandMini{display:flex;align-items:center;gap:12px}.brandMark{width:46px;height:46px;border-radius:16px;background:linear-gradient(145deg,var(--gold),var(--gold2));display:grid;place-items:center;color:#17100a;font-weight:950;letter-spacing:-.05em;box-shadow:0 12px 26px rgba(185,138,45,.22);user-select:none}.brandMini strong{display:block;color:var(--navy);font-size:15px}.brandMini span{display:block;color:var(--muted);font-size:12px;margin-top:2px}.topSearch{position:relative;min-width:260px}.searchInput{width:100%;min-height:44px;border:1px solid var(--line);border-radius:16px;background:#fff;padding:0 16px;color:var(--ink);outline:none}.searchInput:focus{border-color:#275b91;box-shadow:0 0 0 4px rgba(18,62,104,.11)}.searchResults{position:absolute;top:calc(100% + 8px);left:0;right:0;background:#fff;border:1px solid var(--line);box-shadow:var(--shadow2);border-radius:18px;padding:8px;display:none;z-index:40;max-height:320px;overflow:auto}.searchResults.active{display:block}.searchItem{width:100%;border:0;background:#f7f9fc;border-radius:13px;padding:10px 12px;text-align:inherit;cursor:pointer;color:var(--navy);font-weight:800;margin-bottom:6px}.searchItem:hover{background:#edf4ff}.topActions,.actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap}.btn{border:1px solid var(--line);min-height:44px;padding:0 16px;border-radius:14px;background:#fff;color:var(--navy);font-weight:900;cursor:pointer;box-shadow:0 7px 18px rgba(8,28,54,.07);transition:.18s ease;white-space:nowrap}.btn:hover{transform:translateY(-1px);box-shadow:0 12px 26px rgba(8,28,54,.11)}.btn:disabled{opacity:.5;cursor:not-allowed;transform:none}.primary{background:linear-gradient(135deg,var(--navy),var(--navy3));color:#fff;border-color:transparent}.success{background:linear-gradient(135deg,var(--gold2),#f3d989);color:#17110a;border-color:transparent}.danger{background:var(--red2);color:#9f2b22;border-color:#f1c5c0}.ghost{background:#f8fafc}.status-pill{background:var(--green2);color:#0f6848;border-color:#cfeedd}.autosave{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted);font-weight:800}.autosaveDot{width:9px;height:9px;border-radius:50%;background:var(--green);box-shadow:0 0 0 4px rgba(20,134,90,.10)}.journeyLayout{width:min(1480px,100%);margin:0 auto;display:grid;grid-template-columns:360px minmax(0,1fr);gap:14px}.journeyPanel{position:sticky;top:16px;align-self:start;max-height:calc(100vh - 32px);overflow:auto;background:rgba(255,255,255,.86);border:1px solid rgba(220,229,239,.96);border-radius:30px;box-shadow:var(--shadow);backdrop-filter:blur(16px);padding:16px}.heroPanel{position:relative;overflow:hidden;border-radius:24px;background:linear-gradient(145deg,var(--navy),var(--navy2));color:white;padding:20px}.heroPanel:after{content:"";position:absolute;right:-40px;bottom:-56px;width:175px;height:175px;border-radius:50%;border:1px solid rgba(217,183,102,.38)}.heroBadge{display:inline-flex;border:1px solid rgba(217,183,102,.42);color:#f7e7bd;border-radius:999px;padding:6px 11px;font-size:11px;font-weight:900;background:rgba(255,255,255,.08);position:relative;z-index:1}.heroPanel h2{color:white;font-size:23px;margin:14px 0 6px;position:relative;z-index:1}.heroPanel p{color:rgba(255,255,255,.78);font-size:13px;line-height:1.6;margin:0;position:relative;z-index:1}.metricCard,.timelineCard,.alertCard{margin-top:12px;border:1px solid var(--line);background:#fff;border-radius:22px;padding:16px}.sideTitle{display:flex;align-items:center;justify-content:space-between;margin-bottom:11px;color:var(--navy);font-size:13px;font-weight:950}.progress{height:10px;background:#e8eef5;border-radius:999px;overflow:hidden}.bar{height:100%;width:0%;background:linear-gradient(90deg,var(--navy),var(--gold));border-radius:999px;transition:width .3s ease}.stats{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:11px}.stat{background:#f7f9fc;border:1px solid #e4ebf3;border-radius:16px;padding:11px}.stat strong{display:block;font-size:24px;color:var(--navy);letter-spacing:-.05em}.stat span{display:block;font-size:11px;color:var(--muted);font-weight:800;margin-top:3px}.etaBox{margin-top:10px;padding:10px 12px;border-radius:15px;background:var(--amber2);border:1px solid #f0d49a;color:#744b00;font-size:12px;font-weight:900}.timeline{display:grid;gap:8px}.step{width:100%;display:grid;grid-template-columns:30px minmax(0,1fr) auto;gap:10px;align-items:center;text-align:inherit;padding:10px;border-radius:16px;border:1px solid transparent;background:transparent;cursor:pointer;color:#5e6c80}.step:hover{background:#f7f9fc;border-color:#e8eef5}.num{width:30px;height:30px;border-radius:12px;background:#e8eef5;display:grid;place-items:center;font-weight:950;font-size:12px}.stepText{font-size:13px;font-weight:900}.stepState{font-size:10px;font-weight:950;border-radius:999px;padding:4px 7px;background:#eef2f6;color:#69778c}.step.done{color:#0f6848}.step.done .num{background:var(--green);color:white}.step.done .stepState{background:var(--green2);color:#0f6848}.step.active{background:#edf5ff;border-color:#cfe2f8;color:#0d3a68}.step.active .num{background:var(--navy);color:white}.step.active .stepState{background:#fff6df;color:#744b00}.formStage{min-width:0}.identityHeader{position:sticky;top:16px;z-index:15;margin-bottom:14px;border:1px solid var(--line);border-radius:28px;background:rgba(255,255,255,.9);box-shadow:var(--shadow2);backdrop-filter:blur(18px);padding:14px 16px;display:none}.identityHeader.active{display:grid;grid-template-columns:auto 1fr auto;gap:14px;align-items:center}.avatar{width:52px;height:52px;border-radius:18px;background:linear-gradient(145deg,var(--navy),var(--navy3));color:white;display:grid;place-items:center;font-weight:950;font-size:20px}.identityHeader strong{display:block;color:var(--navy);font-size:16px}.identityHeader span{display:block;color:var(--muted);font-size:12px;margin-top:3px}.identityChips{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}.chip{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:7px 10px;font-size:11px;font-weight:950;border:1px solid var(--line);background:#fff}.chip.gold{background:var(--amber2);border-color:#f0d49a;color:#744b00}.chip.green{background:var(--green2);border-color:#cfeedd;color:#0f6848}.chip.red{background:var(--red2);border-color:#f1c5c0;color:#9f2b22}.content{min-width:0}.screenCard{background:rgba(255,255,255,.9);border:1px solid rgba(220,229,239,.96);border-radius:32px;box-shadow:var(--shadow);padding:clamp(22px,3vw,40px);animation:rise .25s ease}@keyframes rise{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}.openingGrid{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(280px,.8fr);gap:18px;align-items:stretch}.openingHero{border-radius:28px;background:linear-gradient(145deg,var(--navy),#153d66);padding:clamp(24px,4vw,48px);color:white;position:relative;overflow:hidden}.openingHero:after{content:"";position:absolute;right:-60px;bottom:-80px;width:260px;height:260px;border-radius:50%;border:1px solid rgba(217,183,102,.35)}.openingHero h1{color:white}.openingHero p{color:rgba(255,255,255,.78)}.openingMeta{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:24px 0}.openingMeta .mini{background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.14);border-radius:18px;padding:14px}.mini strong{display:block;font-size:24px;color:inherit}.mini span{font-size:11px;color:rgba(255,255,255,.68);font-weight:800}.featureStack{display:grid;gap:12px}.feature{padding:18px;border-radius:22px;background:#fff;border:1px solid var(--line);box-shadow:var(--shadow2);display:grid;grid-template-columns:42px 1fr;gap:12px;align-items:start}.featureIcon{width:42px;height:42px;border-radius:15px;display:grid;place-items:center;background:#edf5ff;color:var(--navy);font-weight:950}.feature h3{margin:0 0 5px;font-size:16px}.feature p{margin:0;font-size:13px;line-height:1.55;color:var(--muted)}.sectionIntro{display:grid;grid-template-columns:64px minmax(0,1fr) auto;gap:16px;align-items:start;margin-bottom:20px}.sectionIcon{width:64px;height:64px;border-radius:22px;background:linear-gradient(145deg,#edf5ff,#fff);border:1px solid #d9e6f5;color:var(--navy);display:grid;place-items:center;font-size:28px}.sectionMeta strong{display:inline-flex;align-items:center;gap:7px;font-size:13px;color:#0d3a68;margin-bottom:8px}.sectionProgress{min-width:170px;background:#f7f9fc;border:1px solid #e4ebf3;border-radius:18px;padding:12px}.stateGrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:16px 0}.stateCard{padding:14px;border-radius:18px;border:1px solid #e4ebf3;background:#fff}.stateCard b{display:block;font-size:24px;color:var(--navy)}.stateCard span{font-size:11px;color:var(--muted);font-weight:900}.notice{padding:14px 16px;border-radius:18px;border:1px solid #cfe2f8;background:#edf5ff;color:#0d3a68;line-height:1.65}.notice.warn{background:var(--amber2);border-color:#f0d49a;color:#744b00}.notice.bad{background:var(--red2);border-color:#f1c5c0;color:#9f2b22}.notice.ok{background:var(--green2);border-color:#cfeedd;color:#0f6848}.notice + .notice{margin-top:10px}.formgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.field{position:relative;display:grid;gap:8px;margin-bottom:12px;border:1px solid #e2eaf3;background:#fff;border-radius:20px;padding:14px;box-shadow:0 8px 22px rgba(8,28,54,.04);transition:.18s ease}.field:hover{border-color:#ccdbea;box-shadow:0 12px 30px rgba(8,28,54,.07)}.field.full{grid-column:1/-1}.fieldTop{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}.field label{font-weight:950;font-size:14px;color:#162b45;line-height:1.45}.required:after{content:" *";color:var(--red)}.fieldStatus{font-size:10px;font-weight:950;border-radius:999px;padding:5px 8px;background:#eef2f6;color:#69778c;white-space:nowrap}.field.status-complete .fieldStatus{background:var(--green2);color:#0f6848}.field.status-missing .fieldStatus,.field.invalid .fieldStatus{background:var(--red2);color:#9f2b22}.field.status-changed .fieldStatus{background:var(--amber2);color:#744b00}.tip{font-size:12px;color:var(--muted);line-height:1.55}.input,textarea,select{width:100%;min-height:52px;border-radius:15px;border:1px solid #ccd8e5;background:#fff;padding:0 14px;font-size:15px;color:var(--ink);outline:none}.input:focus,textarea:focus,select:focus{border-color:#275b91;box-shadow:0 0 0 4px rgba(18,62,104,.11)}textarea{padding:13px 14px;min-height:98px;resize:vertical}.readonly{background:#f4f6f9;color:#667085}.error{display:none;color:var(--red);font-size:12px}.field.invalid{border-color:#efb7b2;background:#fffafa}.field.invalid .error{display:block}.field.status-changed{border-color:#e8c57d;background:#fffdf7}.changeNote{font-size:11px;color:#744b00;background:var(--amber2);border:1px solid #f0d49a;border-radius:12px;padding:7px 9px}.choices{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:10px}.choice{min-height:58px;border-radius:18px;border:1px solid #d5dfeb;background:#fff;display:flex;align-items:center;gap:10px;padding:13px;font-weight:900;cursor:pointer}.choice:has(input:checked){border-color:var(--gold);background:#fffaf0}.review{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:18px 0}.reviewItem{padding:15px;border-radius:18px;background:#fff;border:1px solid #e2eaf3}.reviewItem span{display:block;color:var(--muted);font-size:12px;font-weight:900;margin-bottom:6px}.reviewItem strong{font-size:15px;word-break:break-word}.sapSummary{border:1px solid var(--line);background:#fff;border-radius:24px;overflow:hidden;margin-top:18px}.sapRow{display:grid;grid-template-columns:240px 1fr 120px;border-bottom:1px solid #edf1f6}.sapRow:last-child{border-bottom:0}.sapRow div{padding:12px 14px}.sapRow .k{background:#f7f9fc;color:var(--muted);font-weight:900}.sapRow .v{font-weight:800;color:var(--ink);word-break:break-word}.sapRow .s{font-size:11px;font-weight:950;color:#0f6848}.navrow{display:flex;justify-content:space-between;gap:10px;margin-top:24px}.missingPanel{margin:16px 0;border:1px solid #efc1bc;background:#fff9f8;border-radius:22px;padding:16px}.missingPanel h3{color:#9f2b22}.missingList{display:grid;gap:8px;grid-template-columns:repeat(auto-fit,minmax(230px,1fr))}.missingItem{border:1px solid #f1c5c0;background:#fff;border-radius:14px;padding:9px 10px;color:#9f2b22;font-size:12px;font-weight:900;cursor:pointer}.matchList{display:grid;gap:10px;margin-top:18px}.matchCard{border:1px solid #dfe7f0;background:white;border-radius:17px;padding:15px;text-align:inherit;cursor:pointer}.matchCard:hover{border-color:var(--gold);box-shadow:0 10px 28px rgba(184,138,45,.12)}.assetList{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:10px}.assetItem{padding:12px;border:1px solid #dfe7f0;border-radius:15px;background:white;display:flex;gap:9px;align-items:flex-start;font-weight:800}.assetItem small{display:block;color:var(--muted);font-weight:700}.subcards{display:grid;gap:14px}.subcard{border:1px solid #dfe7f0;background:white;border-radius:18px;padding:15px}.subHead{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}.tableWrap{width:100%;overflow:auto;-webkit-overflow-scrolling:touch}.adminTable,.familyTable{width:100%;border-collapse:collapse;min-width:780px}.adminTable th,.adminTable td{border-bottom:1px solid #263b55;padding:12px;text-align:inherit;font-size:13px}.adminTable th{color:#aebdd0;background:#112d4d;position:sticky;top:0}.adminTable td{color:#dfe8f2}.changeTag{display:inline-block;margin:2px;padding:4px 8px;border-radius:999px;background:var(--amber2);color:#744b00;font-weight:950;font-size:11px}.modal{display:none;position:fixed;inset:0;z-index:90;background:#07111f;color:#e9f1fa;overflow:auto}.modal.active{display:block}.adminLayout{min-height:100vh;display:grid;grid-template-columns:300px 1fr;background:radial-gradient(circle at 10% 0,rgba(217,183,102,.16),transparent 26rem),linear-gradient(135deg,#07111f,#0b1f3a)}.adminSide{position:sticky;top:0;height:100vh;padding:22px;border-inline-end:1px solid rgba(255,255,255,.12);display:flex;flex-direction:column;gap:16px;background:rgba(255,255,255,.04);backdrop-filter:blur(16px)}.adminLogo{width:62px;height:62px;border-radius:22px;background:linear-gradient(145deg,var(--gold),var(--gold2));color:#17110a;display:grid;place-items:center;font-weight:950;font-size:20px}.adminSide h2{color:white;margin:0}.adminSide p{color:#aebdd0}.adminNav{display:grid;gap:8px;margin-top:10px}.tab{border:1px solid rgba(255,255,255,.12);border-radius:16px;background:rgba(255,255,255,.06);color:#dfe8f2;padding:12px 14px;font-weight:900;cursor:pointer;text-align:inherit}.tab.active{background:linear-gradient(135deg,var(--gold),var(--gold2));color:#17110a;border-color:transparent}.adminMain{padding:22px}.adminHero{border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.07);border-radius:28px;padding:22px;display:flex;align-items:center;justify-content:space-between;gap:14px;box-shadow:0 24px 80px rgba(0,0,0,.22)}.adminHero h2{color:white}.adminHero p{color:#aebdd0;margin:0}.adminGrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin:16px 0}.kpi{padding:18px;border-radius:22px;background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.12)}.kpi strong{display:block;color:white;font-size:36px;letter-spacing:-.05em}.kpi span{color:#aebdd0;font-size:12px;font-weight:900}.executiveGrid{display:grid;grid-template-columns:1.2fr .8fr;gap:14px;margin-bottom:14px}.adminCard{border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.07);border-radius:24px;padding:18px}.adminCard h3{color:white}.chartBars{display:grid;gap:10px}.chartRow{display:grid;grid-template-columns:130px 1fr 42px;gap:10px;align-items:center;color:#dfe8f2;font-size:12px}.chartTrack{height:10px;background:rgba(255,255,255,.12);border-radius:999px;overflow:hidden}.chartFill{height:100%;background:linear-gradient(90deg,var(--gold),var(--gold2));border-radius:999px}.heatmap{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}.heatCell{min-height:54px;border-radius:14px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.10);padding:8px;font-size:11px;color:#dfe8f2}.heatCell strong{display:block;color:white;font-size:16px}.adminTools{border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.07);border-radius:24px;padding:16px;margin-bottom:14px}.adminContentCard{background:#0d213a;border:1px solid rgba(255,255,255,.12);border-radius:24px;padding:18px;box-shadow:0 18px 55px rgba(0,0,0,.22);color:#e9f1fa}.admin-login-card{background:#fff;color:var(--ink);border-radius:24px;padding:24px;box-shadow:var(--shadow);max-width:780px}.admin-login-card p{color:var(--slate)}.admin-auth-ok{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}.footerNote{margin-top:auto;padding:13px 14px;border-radius:16px;background:rgba(255,255,255,.08);color:rgba(255,255,255,.62);font-size:12px;line-height:1.7}.admin-open .enterpriseApp{display:none}.lang-en{direction:ltr}.lang-en .employeeTop,.lang-en .journeyLayout,.lang-en .screenCard{text-align:left}.toast{position:fixed;bottom:20px;left:20px;z-index:120;background:rgba(16,32,51,.94);color:white;padding:12px 16px;border-radius:14px;box-shadow:0 12px 30px rgba(0,0,0,.22);font-weight:800}.savePulse{animation:pulse .75s ease}@keyframes pulse{0%{transform:scale(1)}50%{transform:scale(1.08)}100%{transform:scale(1)}}
+@media(max-width:1180px){.employeeTop{grid-template-columns:1fr;align-items:stretch}.topSearch{min-width:0}.journeyLayout{grid-template-columns:1fr}.journeyPanel{position:relative;top:auto;max-height:none;display:grid;grid-template-columns:1fr 1fr;gap:12px}.heroPanel,.timelineCard{grid-column:1/-1}.timeline{display:flex;overflow-x:auto;padding-bottom:2px}.step{min-width:150px}.identityHeader{position:relative;top:auto}.openingGrid,.executiveGrid{grid-template-columns:1fr}.adminLayout{grid-template-columns:1fr}.adminSide{height:auto;position:relative;flex-direction:row;align-items:center}.footerNote{display:none}.adminGrid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:760px){.enterpriseApp{padding:0}.employeeTop{border-radius:0;border-inline:0;margin:0;padding:10px 12px;box-shadow:none}.brandMini span{display:none}.topActions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.btn{min-height:40px;padding:0 11px;font-size:12px}.journeyLayout{width:100%;gap:0}.journeyPanel{border-radius:0;border-inline:0;box-shadow:none;padding:10px 12px;grid-template-columns:1fr}.heroPanel{display:none}.metricCard{margin-top:0}.timelineCard,.alertCard{display:none}.formStage{padding:0}.identityHeader{border-radius:0;border-inline:0;margin:0;grid-template-columns:auto 1fr}.identityChips{grid-column:1/-1;justify-content:flex-start}.screenCard{border-radius:0;border-inline:0;box-shadow:none;padding:18px 12px}.openingMeta,.stateGrid,.formgrid,.review{grid-template-columns:1fr}.openingHero{border-radius:22px;padding:22px}.sectionIntro{grid-template-columns:48px 1fr}.sectionIcon{width:48px;height:48px;border-radius:16px;font-size:22px}.sectionProgress{grid-column:1/-1;width:100%}.sapRow{grid-template-columns:1fr}.sapRow .k{border-bottom:1px solid #edf1f6}.navrow{position:sticky;bottom:0;background:rgba(255,255,255,.95);backdrop-filter:blur(12px);padding:10px;margin:18px -12px -18px;z-index:12}.adminMain{padding:12px}.adminHero{border-radius:20px;flex-direction:column;align-items:stretch}.adminGrid,.executiveGrid{grid-template-columns:1fr}.adminSide{padding:12px}.adminSide p{display:none}}
+@media print{.employeeTop,.journeyPanel,.navrow,.identityHeader{display:none}.journeyLayout{display:block}.screenCard{box-shadow:none;border:0}}
+
+</style>
+</head>
+<body>
+  
+  <div class="enterpriseApp">
+    <header class="employeeTop">
+      <div class="brandMini">
+        <div class="brandMark" id="secretAdminMark" title="HR">HR</div>
+        <div><strong data-i18n="formTitle">نموذج بيانات الموظف</strong><span>Human Resources Department</span></div>
+      </div>
+      <div class="topSearch">
+        <input class="searchInput" id="fieldSearch" type="search" placeholder="ابحث عن أي حقل أو سؤال" autocomplete="off" />
+        <div class="searchResults" id="searchResults"></div>
+      </div>
+      <div class="topActions">
+        <button class="btn ghost langToggle" id="langToggle">English</button>
+        <button class="btn ghost" id="saveDraftBtn" data-i18n="saveDraft">حفظ مسودة</button>
+        <button class="btn ghost" id="scanMissingBtn">فحص النواقص</button>
+        <button class="btn ghost" id="resetBtn" data-i18n="reset">مسح الشاشة</button>
+        <button class="btn status-pill" id="firebaseState" data-i18n="local">وضع محلي</button>
+        <div class="autosave" id="autosaveStatus"><span class="autosaveDot"></span><span>الحفظ التلقائي جاهز</span></div>
+      </div>
+    </header>
+    <div class="journeyLayout">
+      <aside class="journeyPanel">
+        <section class="heroPanel">
+          <span class="heroBadge" data-i18n="topTitle">تحديث بيانات الموظف</span>
+          <h2>رحلة تحديث البيانات</h2>
+          <p>اتبع المسار خطوة بخطوة. سيقوم النظام بحفظ تقدمك، فحص النواقص، وتنبيهك عند وجود تعديل أو خطأ.</p>
+        </section>
+        <section class="metricCard">
+          <div class="sideTitle"><span data-i18n="progress">التقدم</span><span id="progressText">0%</span></div>
+          <div class="progress"><div class="bar" id="progressBar"></div></div>
+          <div class="stats">
+            <div class="stat"><strong id="completedFields">0</strong><span data-i18n="completed">مكتملة</span></div>
+            <div class="stat"><strong id="remainingFields">0</strong><span data-i18n="remaining">متبقية</span></div>
+          </div>
+          <div class="etaBox" id="etaBox">الوقت المتوقع يظهر بعد بدء النموذج.</div>
+        </section>
+        <section class="timelineCard">
+          <div class="sideTitle"><span>Timeline</span><span id="secretAdminWord">●</span></div>
+          <div class="timeline" id="stepsNav"></div>
+        </section>
+        <section class="alertCard" id="sideAlerts">
+          <div class="sideTitle"><span>Assistant Alerts</span><span>!</span></div>
+          <p class="small">ستظهر هنا أهم التنبيهات أثناء التعبئة.</p>
+        </section>
+      </aside>
+      <main class="formStage">
+        <section class="identityHeader" id="identityHeader"></section>
+        <section class="content" id="content"></section>
+      </main>
+    </div>
+  </div>
+
+  <div class="modal" id="adminModal" aria-hidden="true">
+    <div class="adminLayout">
+      <aside class="adminSide">
+        <div class="adminLogo">HR</div>
+        <div>
+          <h2 data-i18n="adminTitle">لوحة الإدارة</h2>
+          <p data-i18n="adminLead">متابعة حالة تعبئة النماذج، مراجعة التعديلات، وتنزيل ملفات Excel المطلوبة.</p>
+        </div>
+        <nav class="adminNav">
+          <button class="tab active" data-tab="submissions" data-i18n="tabSubmissions">النتائج</button>
+          <button class="tab" data-tab="missing" data-i18n="tabMissing">لم يعبئوا</button>
+          <button class="tab" data-tab="changes" data-i18n="tabChanges">التعديلات</button>
+          <button class="tab" data-tab="seed" data-i18n="tabDirectory">قاعدة الموظفين</button>
+        </nav>
+        <div class="footerNote">Audit Center • Export Center • Completion Analytics • Country-ready foundation</div>
+      </aside>
+      <main class="adminMain">
+        <section class="adminHero">
+          <div><h2>Executive Admin Dashboard</h2><p class="lead">Completion analytics, audit tracking, missing information, export control, and multi-country readiness.</p></div>
+          <div class="topActions"><button class="btn ghost" id="refreshAdminBtn" data-i18n="refresh">تحديث البيانات</button><button class="btn danger" id="closeAdminBtn" data-i18n="close">عودة للنموذج</button></div>
+        </section>
+        <div id="adminAuthPanel" class="notice warn" style="margin:14px 0" data-i18n="authChecking">جاري فحص صلاحية الدخول...</div>
+        <section id="adminDashboardPanel" style="display:none">
+          <div class="adminGrid">
+            <div class="kpi"><strong id="kpiTotal">0</strong><span data-i18n="kpiTotal">إجمالي الموظفين</span></div>
+            <div class="kpi"><strong id="kpiDone">0</strong><span data-i18n="kpiDone">مكتمل</span></div>
+            <div class="kpi"><strong id="kpiMissing">0</strong><span data-i18n="kpiMissing">لم يعبئوا</span></div>
+            <div class="kpi"><strong id="kpiChanges">0</strong><span data-i18n="kpiChanges">تعديلات</span></div>
+          </div>
+          <div class="executiveGrid">
+            <div class="adminCard"><h3>Completion Rate by Company</h3><div id="companyChart" class="chartBars"></div></div>
+            <div class="adminCard"><h3>Missing Fields Heatmap</h3><div id="missingHeatmap" class="heatmap"></div></div>
+          </div>
+          <div class="adminTools">
+            <div class="topActions">
+              <input class="searchInput" id="adminFilter" placeholder="Filter by name, company, department, field" />
+              <button class="btn success" id="exportEmployeesBtn" data-i18n="exportEmployees">تنزيل Employees Excel</button>
+              <button class="btn success" id="exportFamilyBtn" data-i18n="exportFamily">تنزيل Family Excel</button>
+              <button class="btn success" id="exportAssetsBtn" data-i18n="exportAssets">تنزيل Assets Excel</button>
+              <button class="btn ghost" id="importSeedBtn" data-i18n="importSeed">استيراد قاعدة الموظفين</button>
+              <button class="btn ghost" id="downloadSeedBtn" data-i18n="downloadSeed">تنزيل نسخة JSON</button>
+            </div>
+          </div>
+          <input id="seedFileInput" type="file" accept=".json,application/json" style="display:none" />
+          <div class="adminContentCard"><div id="adminTabContent"></div></div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+
+  <datalist id="nationalityList"><option value="Jordanian"><option value="Egyptian"><option value="Saudi"><option value="Emirati"><option value="Kuwaiti"><option value="Qatari"><option value="Lebanese"><option value="Syrian"><option value="Palestinian"><option value="Iraqi"></datalist>
+  <datalist id="countryList"><option value="Jordan"><option value="Saudi Arabia"><option value="United Arab Emirates"><option value="Qatar"><option value="Kuwait"><option value="Egypt"><option value="Iraq"><option value="Lebanon"></datalist>
+  <datalist id="cityList"><option value="Amman"><option value="Irbid"><option value="Zarqa"><option value="Aqaba"><option value="Riyadh"><option value="Dubai"><option value="Abu Dhabi"><option value="Doha"><option value="Kuwait City"><option value="Cairo"></datalist>
+<script type="module">
+    /******************** Firebase optional config ********************/
+    const firebaseConfig = {
+      apiKey: "AIzaSyBKleLDK-Dg9smbhwIDuNz-0j3j0lX39eI",
+      authDomain: "rawan-f903d.firebaseapp.com",
+      projectId: "rawan-f903d",
+      storageBucket: "rawan-f903d.firebasestorage.app",
+      messagingSenderId: "1003852548044",
+      appId: "1:1003852548044:web:5702e871713e47ea32ff69"
+    };
+    const FIREBASE_ENABLED = !firebaseConfig.apiKey.includes('REPLACE_WITH');
+    const ADMIN_UID = 'PwyarKYD7iTs1sbE0rTLqHrkqdv1';
+    let fb = {enabled:false, db:null, auth:null, currentUser:null};
+    let adminAllowed = false;
+    async function initFirebase(){
+      if(!FIREBASE_ENABLED) return;
+      try{
+        const appMod = await import('https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js');
+        const fsMod = await import('https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js');
+        const authMod = await import('https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js');
+        const app = appMod.initializeApp(firebaseConfig);
+        const auth = authMod.getAuth(app);
+        fb = {enabled:true, db:fsMod.getFirestore(app), auth, ...fsMod, ...authMod};
+        fb.onAuthStateChanged(auth, async user => { fb.currentUser = user; if(user) adminAllowed = await checkAdmin(); });
+        try { if(!auth.currentUser) await fb.signInAnonymously(auth); } catch(e) { console.warn('Anonymous sign-in failed', e); }
+        $('#firebaseState').textContent = uiLang === 'ar' ? 'متصل' : 'Connected';
+      }catch(err){ console.warn(err); $('#firebaseState').textContent = uiLang === 'ar' ? 'تعذر الاتصال' : 'Connection issue'; }
+    }
+
+    /******************** Constants ********************/
+    let SEED = window.EMPLOYEE_SEED || {records:[]};
+    let EMPLOYEES = (SEED.records || []).map(r => ({...r}));
+    const ASSETS = [
+      [31,'Screen | شاشة'],[30,'Scanner | الماسح الصوئي'],[29,'Laptop Bag | حقيبة لابتوب'],[28,'Company Stamp | ختم الشركة'],[27,'Keyboard / Mouse | لوحة المفاتيح / فأرة'],[26,'Camera | كاميرا'],[25,'Printer | طابعة'],[24,'Petty Cash | عهدة نقدية'],[23,'Bus | باص'],[22,'PC Monitor | شاشة الكمبيوتر'],[21,'Tools | أدوات'],[20,'Passport | جواز سفر'],[19,'Equipment | معدات'],[18,'Furniture | أثاث'],[17,'Visa Card | بطاقة فيزا'],[16,'Phone | هاتف'],[15,'Headset | سماعات'],[14,'Document | مستند'],[13,'Tablet | تابلت'],[12,'Monitors | شاشات عرض ومراقبة'],[11,'Networking Equipment | معدات شبكات'],[10,'TV | شاشة تلفاز'],[9,'Motorcycle | دراجة نارية'],[8,'Uniform | لباس عمل موحد'],[7,'Keys / Accessories | مفتاح / بطاقة دخول'],[6,'Car | سيارة'],[5,'Desktop PC | جهاز حاسوب'],[4,'SIM Card | شريحة هاتف'],[3,'Laptop | حاسوب محمول'],[2,'Mobile | محمول'],[1,'Other | أُخرى']
+    ];
+    const BANKS = [
+      'البنك العربي (Arab Bank)','بنك الإسكان للتجارة والتمويل (Housing Bank for Trade and Finance)','بنك الاتحاد (Bank al Etihad)','البنك الأهلي الأردني (Jordan Ahli Bank)','بنك الأردن (Bank of Jordan)','بنك القاهرة عمان (Cairo Amman Bank)','كابيتال بنك / بنك المال الأردني (Capital Bank of Jordan)','بنك الكويت الأردني (Jordan Kuwait Bank)','بنك الاستثمار العربي الأردني (Arab Jordan Investment Bank - AJIB)','البنك التجاري الأردني (Jordan Commercial Bank)','المؤسسة العربية المصرفية - الأردن (Bank ABC Jordan)','البنك الاستثماري (INVESTBANK)','بنك سوسيتيه جنرال - الأردن (Société Générale de Banque Jordanie)','البنك الإسلامي الأردني (Jordan Islamic Bank)','البنك العربي الإسلامي الدولي (Islamic International Arab Bank)','بنك صفوة الإسلامي (Safwa Islamic Bank)','مصرف الراجحي (Al-Rajhi Bank)','سيتي بنك (Citibank N.A)','ستاندرد تشارترد (Standard Chartered Bank)'
+    ];
+    const RE = {
+      enName:/^[A-Za-z][A-Za-z\s.'\-]*$/,
+      arName:/^[\u0600-\u06FF\s]+$/,
+      email:/^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+      mobile:/^(\+962|00962|0)?7[789]\d{7}$|^\+?[0-9]{7,15}$/,
+      ibanJO:/^JO[0-9A-Z]{28}$/,
+      number:/^[0-9]+$/,
+      passport:/^[A-Za-z0-9\-\/]{4,20}$/
+    };
+    const $ = s => document.querySelector(s);
+    const $$ = s => [...document.querySelectorAll(s)];
+    const todayISO = () => new Date().toISOString().slice(0,10);
+    const isJordanian = data => /jordan|اردن|أردن/i.test((data.nationality||'').trim());
+    const needsFamily = data => ['Married','Divorced','Widowed'].includes(data.maritalStatus);
+
+    const state = {
+      current:0, matched:null, matches:[], data:{}, family:[], assets:[], noAssets:false, submitted:false, adminTab:'submissions', submissions: loadLocalSubmissions(), scanOpen:false, searchQuery:'', lastSavedAt:null
+    };
+
+    let uiLang = localStorage.getItem('zenhr_ui_lang') || 'ar';
+    const I18N = {
+      ar:{
+        saveDraft:'حفظ مسودة', reset:'مسح الشاشة', connected:'متصل', local:'وضع محلي', connectionIssue:'تعذر الاتصال',
+        formTitle:'نموذج بيانات الموظف', formSubtitle:'يرجى مراجعة بياناتك وتعبئة الحقول المطلوبة بدقة لاعتمادها في سجلات الشركة.',
+        progress:'التقدم', completed:'مكتملة', remaining:'متبقية', steps:'الخطوات', guidance:'إرشادات التعبئة',
+        guidanceText:'اكتب الأسماء الإنجليزية بالأحرف الإنجليزية فقط، والأسماء العربية باللغة العربية فقط. الحقول المعبأة مسبقًا يمكن تعديلها عند وجود خطأ، وسيتم حفظ التعديل للمراجعة.',
+        topTitle:'تحديث بيانات الموظف', next:'التالي', prev:'السابق', select:'اختر...',
+        loginTitle:'دخول الموظف', loginHero:'مرحبًا، يرجى إدخال بيانات التحقق', loginLead:'سيتم عرض البيانات المتوفرة لدينا للمراجعة والتكميل.', loginDob:'تاريخ الميلاد', loginInitial:'أول حرف من الاسم بالإنجليزية', loginInitialTip:'مثال: O إذا كان الاسم Omar', showData:'عرض بياناتي',
+        reviewTitle:'مراجعة البيانات الموجودة', reviewHero:'هذه البيانات المسجلة لدينا', reviewLead:'راجع البيانات المعروضة. إذا وجدت خطأ يمكنك تعديله في الخطوات التالية، وسيظهر التعديل للإدارة.', hiddenSalary:'الراتب وبيانات الضمان غير ظاهرة للموظف، وتستخدم فقط لأغراض الإدارة والتصدير.',
+        namesTitle:'الأسماء الرسمية', namesSub:'تأكد من كتابة الاسم كما يجب أن يظهر في سجلات الشركة.', identityTitle:'الهوية والجواز', identitySub:'تظهر بعض الحقول تلقائيًا حسب الجنسية والحالة الاجتماعية.', contactTitle:'معلومات التواصل', contactSub:'يرجى إدخال بيانات تواصل فعّالة وصحيحة.', employmentTitle:'الوظيفة والعقد', employmentSub:'بعض القيم تكون ثابتة أو محسوبة تلقائيًا حسب بيانات الشركة.', bankTitle:'المعلومات البنكية', bankSub:'يرجى التأكد من صحة بيانات البنك والآيبان.',
+        assetsTitle:'العهد', assetsHero:'هل لديك عهدة من الشركة؟', assetsLead:'اختر “ليس لدي عهدة” أو حدد العهد الموجودة لديك. كل عهدة محددة تحتاج اسم/وصف وتاريخ استلام.', noAssets:'ليس لدي عهدة', hasAssets:'لدي عهدة',
+        familyTitle:'العائلة', familyNotRequired:'لا توجد أسئلة عائلة لهذه الحالة', familyNotRequiredLead:'حسب الحالة الاجتماعية المختارة لا تظهر أسئلة أفراد العائلة.', familyRequiredNote:'أسئلة العائلة تظهر فقط للمتزوجين أو المطلقين أو الأرامل.', familyHero:'بيانات أفراد العائلة', familyLead:'أضف الزوج/الزوجة والأولاد حسب الحاجة. كل حقل داخل الفرد المضاف إجباري.', addFamily:'+ إضافة فرد عائلة',
+        submitTitle:'المراجعة النهائية', submitHero:'آخر خطوة', submitLead:'تأكد أن كل شيء صحيح قبل الإرسال. سيتم حفظ البيانات والتعديلات للإدارة.', submitBtn:'إرسال البيانات', changesCount:'عدد التعديلات على البيانات المعبأة مسبقًا',
+        adminTitle:'لوحة الإدارة', adminLead:'متابعة حالة تعبئة النماذج، مراجعة التعديلات، وتنزيل ملفات Excel المطلوبة.', close:'عودة للنموذج', refresh:'تحديث البيانات', authChecking:'جاري فحص صلاحية الدخول...', adminLogin:'دخول الإدارة', email:'البريد الإلكتروني', password:'كلمة المرور', login:'دخول', setupAdmin:'تهيئة صلاحية الأدمن والـ collections', signOut:'تسجيل خروج',
+        kpiTotal:'إجمالي الموظفين', kpiDone:'مكتمل', kpiMissing:'لم يعبئوا', kpiChanges:'تعديلات', tabSubmissions:'النتائج', tabMissing:'لم يعبئوا', tabChanges:'التعديلات', tabDirectory:'قاعدة الموظفين', exportEmployees:'تنزيل Employees Excel', exportFamily:'تنزيل Family Excel', exportAssets:'تنزيل Assets Excel', importSeed:'استيراد قاعدة الموظفين', downloadSeed:'تنزيل نسخة JSON',
+        langOther:'English'
+      },
+      en:{
+        saveDraft:'Save draft', reset:'Clear form', connected:'جاهز', local:'جاهز', connectionIssue:'تنبيه اتصال',
+        formTitle:'Employee Information Form', formSubtitle:'Please review your details and complete all required fields accurately for company records.',
+        progress:'Progress', completed:'Completed', remaining:'Remaining', steps:'Steps', guidance:'Filling guidance',
+        guidanceText:'English name fields must be completed in English letters only, and Arabic name fields in Arabic only. Pre-filled values may be corrected when needed; changes are recorded for review.',
+        topTitle:'Employee Data Update', next:'Next', prev:'Previous', select:'Select...',
+        loginTitle:'Employee verification', loginHero:'Welcome, please enter your verification details', loginLead:'We will show the data available in company records for your review and completion.', loginDob:'Date of birth', loginInitial:'First letter of English first name', loginInitialTip:'Example: O if the name is Omar', showData:'Show my data',
+        reviewTitle:'Review existing information', reviewHero:'Information currently on record', reviewLead:'Review the details below. If anything is incorrect, you may correct it in the next steps and the change will be visible to management.', hiddenSalary:'Salary and social security details are hidden from employees and used only for administration and export.',
+        namesTitle:'Official names', namesSub:'Please make sure the name is written exactly as it should appear in company records.', identityTitle:'Identity and passport', identitySub:'Some fields appear automatically depending on nationality and marital status.', contactTitle:'Contact information', contactSub:'Please provide accurate and active contact details.', employmentTitle:'Employment and contract', employmentSub:'Some values are fixed or calculated automatically based on company records.', bankTitle:'Bank information', bankSub:'Please verify your bank details and IBAN carefully.',
+        assetsTitle:'Assets', assetsHero:'Do you hold any company assets?', assetsLead:'Select “I do not have company assets” or choose the assets you currently hold. Each selected asset requires a name/description and holding date.', noAssets:'I do not have company assets', hasAssets:'I have company assets',
+        familyTitle:'Family', familyNotRequired:'Family information is not required for this status', familyNotRequiredLead:'Based on the selected marital status, family member questions are not shown.', familyRequiredNote:'Family member questions appear only for married, divorced, or widowed employees.', familyHero:'Family members', familyLead:'Add spouse and/or children where applicable. All fields inside each added member are required.', addFamily:'+ Add family member',
+        submitTitle:'Final review', submitHero:'Final step', submitLead:'Please make sure all information is correct before submitting. Your data and changes will be saved for management review.', submitBtn:'Submit information', changesCount:'Number of changes to pre-filled values',
+        adminTitle:'Management Dashboard', adminLead:'Track form completion, review employee changes, and download the required Excel files.', close:'Back to form', refresh:'Refresh data', authChecking:'Checking access permission...', adminLogin:'Management login', email:'Email', password:'Password', login:'Login', setupAdmin:'Initialize admin access and collections', signOut:'Sign out',
+        kpiTotal:'Total employees', kpiDone:'Completed', kpiMissing:'Not submitted', kpiChanges:'Changes', tabSubmissions:'Submissions', tabMissing:'Not submitted', tabChanges:'Changes', tabDirectory:'Employee directory', exportEmployees:'Download Employees Excel', exportFamily:'Download Family Excel', exportAssets:'Download Assets Excel', importSeed:'Import employee directory', downloadSeed:'Download JSON copy',
+        langOther:'العربية'
+      }
+    };
+    function t(key){ return (I18N[uiLang] && I18N[uiLang][key]) || I18N.ar[key] || key; }
+    function setLang(lang){ uiLang = lang; localStorage.setItem('zenhr_ui_lang', lang); document.documentElement.lang = lang; document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr'; document.body.classList.toggle('lang-en', lang === 'en'); applyStaticI18n(); render(); }
+    function stepTitle(s){ return uiLang === 'ar' ? s.titleAr : s.titleEn; }
+    const steps = [
+      {id:'dashboard', titleAr:'البداية', titleEn:'Start'}, {id:'login', titleAr:'الدخول', titleEn:'Verification'}, {id:'review', titleAr:'مراجعة البيانات', titleEn:'Review'}, {id:'names', titleAr:'الأسماء', titleEn:'Names'}, {id:'identity', titleAr:'الهوية والجواز', titleEn:'Identity'}, {id:'contact', titleAr:'التواصل', titleEn:'Contact'}, {id:'employment', titleAr:'الوظيفة والعقد', titleEn:'Employment'}, {id:'bank', titleAr:'البنك', titleEn:'Bank'}, {id:'assets', titleAr:'العهد', titleEn:'Assets'}, {id:'family', titleAr:'العائلة', titleEn:'Family'}, {id:'submit', titleAr:'الإرسال', titleEn:'Submit'}
+    ];
+
+    const fields = [
+      {k:'firstNameEn', label:'الاسم الأول - باللغة الإنجليزية / First Name En', section:'names', type:'text', req:true, tip:'English letters only. مثال: Omar', pattern:'enName'},
+      {k:'secondNameEn', label:'الاسم الثاني - باللغة الإنجليزية / Second Name En', section:'names', type:'text', req:true, tip:'English only, no Arabic letters.', pattern:'enName'},
+      {k:'thirdNameEn', label:'الاسم الثالث - باللغة الإنجليزية / Third Name En', section:'names', type:'text', req:true, tip:'English only.', pattern:'enName'},
+      {k:'lastNameEn', label:'الاسم الرابع - باللغة الإنجليزية / Last Name En', section:'names', type:'text', req:true, tip:'English only.', pattern:'enName'},
+      {k:'firstNameAr', label:'الاسم الأول - باللغة العربية / First Name Ar', section:'names', type:'text', req:true, tip:'عربي فقط. مثال: روان', pattern:'arName'},
+      {k:'secondNameAr', label:'الاسم الثاني - باللغة العربية / Second Name Ar', section:'names', type:'text', req:true, tip:'عربي فقط.', pattern:'arName'},
+      {k:'thirdNameAr', label:'الاسم الثالث - باللغة العربية / Third Name Ar', section:'names', type:'text', req:true, tip:'عربي فقط.', pattern:'arName'},
+      {k:'lastNameAr', label:'الاسم الرابع - باللغة العربية / Last Name Ar', section:'names', type:'text', req:true, tip:'عربي فقط.', pattern:'arName'},
+      {k:'passportNumber', label:'Passport_Number / رقم الجواز', section:'identity', type:'text', req:true, tip:'أرقام وحروف إنجليزية فقط بدون مسافات.', pattern:'passport'},
+      {k:'passportIssueDate', label:'Passport Issue Date / تاريخ إصدار جواز السفر', section:'identity', type:'date', req:true, tip:'yyyy-mm-dd'},
+      {k:'passportExpiryDate', label:'Passport Expiry Date / تاريخ انتهاء جواز السفر', section:'identity', type:'date', req:true, tip:'يجب أن يكون بعد تاريخ الإصدار.'},
+      {k:'laborCardId', label:'Labor Card ID / بطاقة العمل', section:'identity', type:'text', req:data=>!isJordanian(data), show:data=>!isJordanian(data), tip:'لغير الأردنيين فقط.'},
+      {k:'laborCardExpiry', label:'Labor Card Expiry / تاريخ انتهاء بطاقة العمل', section:'identity', type:'date', req:data=>!isJordanian(data), show:data=>!isJordanian(data), tip:'لغير الأردنيين فقط.'},
+      {k:'residentId', label:'Resident ID / رقم الإقامة', section:'identity', type:'text', req:data=>!isJordanian(data), show:data=>!isJordanian(data), tip:'لغير الأردنيين فقط.'},
+      {k:'molNumber', label:'MOL Number / رقم الموظف داخل وزارة العمل', section:'identity', type:'text', req:data=>!isJordanian(data), show:data=>!isJordanian(data), tip:'لغير الأردنيين فقط.'},
+      {k:'birthdate', label:'Birthdate / تاريخ الميلاد', section:'identity', type:'date', req:true, tip:'yyyy-mm-dd'},
+      {k:'gender', label:'Gender / الجنس', section:'identity', type:'select', req:true, opts:['Male','Female'], tip:'اختر الجنس كما هو مطلوب في ZenHR.'},
+      {k:'maritalStatus', label:'Marital Status / الحالة الاجتماعية', section:'identity', type:'select', req:true, opts:['Single','Married','Divorced','Widowed'], tip:'تظهر أسئلة العائلة تلقائيًا حسب الاختيار.'},
+      {k:'religion', label:'Religion / الديانة', section:'identity', type:'select', req:true, opts:['Islam','Christian','Other'], tip:'اختيار من القائمة فقط.'},
+      {k:'nationality', label:'Nationality / الجنسية', section:'identity', type:'text', req:true, tip:'مثال: Jordanian'},
+      {k:'nationalId', label:'National ID / الرقم الوطني', section:'identity', type:'text', req:true, tip:'للأردنيين أرقام فقط، عادة 10 خانات.'},
+      {k:'workEmail', label:'Work_Email / الايميل الخاص بالعمل', section:'contact', type:'email', req:false, tip:'قابل للتعديل لأن بعض الموظفين قد لا يملكون بريد عمل.', pattern:'email'},
+      {k:'personalEmail', label:'Personal_Email / الايميل الشخصي', section:'contact', type:'email', req:true, tip:'يفضل بريد شخصي فعال.', pattern:'email'},
+      {k:'mobileNumber', label:'Mobile Number / رقم الجوال', section:'contact', type:'tel', req:true, tip:'مثال: 079xxxxxxx أو +96279xxxxxxx', pattern:'mobile'},
+      {k:'phoneNumber', label:'Phone Number', section:'contact', type:'tel', req:true, tip:'إذا لا يوجد رقم أرضي، اكتب رقم الجوال مرة أخرى.', pattern:'mobile'},
+      {k:'extensionNumber', label:'Extension Number / رقم الاتصال الفرعي', section:'contact', type:'text', req:false, tip:'اختياري.'},
+      {k:'address', label:'Address / العنوان السكني للموظف', section:'contact', type:'textarea', req:true, tip:'اكتب العنوان بأكبر قدر ممكن من الوضوح.'},
+      {k:'attendanceCardId', label:'Attendance Card ID / رقم الموظف داخل جهاز البصمة', section:'employment', type:'text', req:true, tip:'إن لم تعرفه اكتب Not available.'},
+      {k:'hiringDate', label:'Hiring Date / تاريخ التعيين', section:'employment', type:'date', req:true, tip:'من الضمان الاجتماعي أو العقد إن وجد.'},
+      {k:'endOfProbationDate', label:'End_of_Probation_Date / نهاية فترة التجربة', section:'employment', type:'date', req:true, tip:'تُحسب تلقائيًا 90 يوم من تاريخ التعيين.', readonly:true},
+      {k:'contractType', label:'Contract_Type / نوع العقد', section:'employment', type:'select', req:true, opts:['Limited','Unlimited'], tip:'Limited أو Unlimited.'},
+      {k:'contractDuration', label:'Contract Duration / مدة العقد', section:'employment', type:'text', req:true, tip:'ثابتة: 1 year', readonly:true},
+      {k:'endOfContractDate', label:'End_Of_Contract_Date / تاريخ انتهاء العقد', section:'employment', type:'date', req:data=>data.contractType==='Limited', show:data=>data.contractType!=='Unlimited', tip:'إلزامي للعقد المحدد.'},
+      {k:'positionEn', label:'Position in English / المسمى الوظيفي بالإنجليزية', section:'employment', type:'text', req:true, tip:'English job title only.', pattern:'enLoose'},
+      {k:'positionAr', label:'Position in Arabic / المسمى الوظيفي بالعربية', section:'employment', type:'text', req:true, tip:'Arabic job title only.', pattern:'arName'},
+      {k:'workLocationEn', label:'Work Location in English / موقع العمل بالإنجليزية', section:'employment', type:'text', req:true, tip:'مثال: Jordan'},
+      {k:'workLocationAr', label:'Work Location in Arabic / موقع العمل بالعربية', section:'employment', type:'text', req:true, tip:'القيمة الافتراضية: الأردن', pattern:'arName'},
+      {k:'departmentEn', label:'Department in English / اسم الدائرة بالإنجليزية', section:'employment', type:'text', req:true, tip:'مأخوذ من الاستبيان إن وجد.'},
+      {k:'departmentAr', label:'Department in Arabic / اسم الدائرة بالعربية', section:'employment', type:'text', req:true, tip:'تمت ترجمتها مبدئيًا ويمكن مراجعتها.', pattern:'arName'},
+      {k:'sectionEn', label:'Section in English / اسم القسم بالإنجليزية', section:'employment', type:'text', req:true, tip:'اكتب القسم/الفريق باللغة الإنجليزية.'},
+      {k:'sectionAr', label:'Section in Arabic / اسم القسم بالعربية', section:'employment', type:'text', req:true, tip:'اكتب القسم/الفريق باللغة العربية.', pattern:'arName'},
+      {k:'workType', label:'Work Type', section:'employment', type:'text', req:true, readonly:true, tip:'ثابتة: Full time'},
+      {k:'paymentMethod', label:'Payment Method', section:'bank', type:'text', req:true, readonly:true, tip:'ثابتة: Bank Transfer'},
+      {k:'bankName', label:'Bank Name / اسم بنك الموظف', section:'bank', type:'select', req:true, opts:BANKS, tip:'اختر البنك من القائمة.'},
+      {k:'bankBranch', label:'Bank Branch / فرع بنك الموظف', section:'bank', type:'text', req:true, tip:'اكتب اسم الفرع.'},
+      {k:'accountNumber', label:'Account Number / رقم حساب البنك', section:'bank', type:'text', req:true, tip:'أرقام فقط قدر الإمكان.'},
+      {k:'ibanNumber', label:'IBAN Number / رقم الآيبان', section:'bank', type:'text', req:true, tip:'للأردن يجب أن يبدأ JO ويكون 30 خانة.', pattern:'ibanJO'},
+      {k:'commercialRegister', label:'Commercial Register / اسم السجل التجاري', section:'employment', type:'text', req:true, tip:'اكتب اسم الشركة/السجل التجاري كما يجب أن يظهر في ZenHR. يتم تعبئته تلقائيًا من اسم الشركة عند توفره.'}
+    ];
+
+    
+/******************** Rendering ********************/
+    const SECTION_META = {
+      dashboard:{icon:'◈', ar:'ابدأ من هنا', en:'Start here', descAr:'نظرة سريعة قبل الدخول إلى النموذج.', descEn:'A short overview before entering the form.'},
+      login:{icon:'🔐', ar:'التحقق من الهوية', en:'Identity verification', descAr:'أدخل تاريخ الميلاد وأول حرف من اسمك الإنجليزي لعرض بياناتك.', descEn:'Enter your date of birth and first English initial to load your record.'},
+      review:{icon:'👤', ar:'مراجعة البيانات', en:'Data review', descAr:'راجع البيانات المتوفرة لدينا قبل تعبئة الناقص.', descEn:'Review the information currently available before completing missing fields.'},
+      names:{icon:'✎', ar:'الأسماء الرسمية', en:'Official names', descAr:'الأسماء يجب أن تطابق الوثائق الرسمية بالعربية والإنجليزية.', descEn:'Names must match official documents in Arabic and English.'},
+      identity:{icon:'▣', ar:'الهوية والجواز', en:'Identity & passport', descAr:'معلومات الهوية والجنسية والجواز والإقامة حسب الحالة.', descEn:'Identity, nationality, passport, and residency details where applicable.'},
+      contact:{icon:'☎', ar:'معلومات التواصل', en:'Contact information', descAr:'بيانات التواصل التي ستعتمدها الشركة للرجوع إليها.', descEn:'Contact information used for company records.'},
+      employment:{icon:'▤', ar:'الوظيفة والعقد', en:'Employment & contract', descAr:'بيانات العمل والعقد والموقع التنظيمي.', descEn:'Employment, contract, and organizational information.'},
+      bank:{icon:'◆', ar:'البنك والدفع', en:'Bank & payment', descAr:'معلومات البنك والتحويلات المالية.', descEn:'Bank information for payroll transfer.'},
+      assets:{icon:'▦', ar:'العهد', en:'Assets', descAr:'اختر العهد الموجودة لديك أو حدد أنه لا توجد عهدة.', descEn:'Select company assets held by you, or indicate none.'},
+      family:{icon:'◌', ar:'العائلة', en:'Family', descAr:'تظهر هذه الأسئلة فقط للحالات الاجتماعية ذات الصلة.', descEn:'This section appears only for applicable marital statuses.'},
+      submit:{icon:'✓', ar:'المراجعة النهائية', en:'Final review', descAr:'راجع الملخص النهائي قبل الإرسال.', descEn:'Review the final summary before submission.'}
+    };
+    function tr(ar,en){ return uiLang === 'ar' ? ar : en; }
+    function render(){
+      renderSteps(); updateProgress(); renderIdentityHeader(); renderSideAlerts();
+      const step = steps[state.current] || steps[0];
+      const top = $('#topTitle'); if(top) top.textContent = stepTitle(step);
+      const content = $('#content');
+      const map = {dashboard:screenDashboard, login:screenLogin, review:screenReview, names:()=>screenFields('names'), identity:()=>screenFields('identity'), contact:()=>screenFields('contact'), employment:()=>screenFields('employment'), bank:()=>screenFields('bank'), assets:screenAssets, family:screenFamily, submit:screenSubmit};
+      content.innerHTML = (map[step.id] || screenDashboard)();
+      bindScreen(); renderFieldSearchResults();
+    }
+    function renderSteps(){
+      const nav = $('#stepsNav'); if(!nav) return;
+      nav.innerHTML = steps.map((s,i)=>{
+        const stateLabel = i<state.current ? tr('مكتمل','Completed') : i===state.current ? tr('الحالي','Current') : tr('قادم','Pending');
+        return `<button class="step ${i===state.current?'active':''} ${i<state.current?'done':''}" data-goto="${i}"><span class="num">${i<state.current?'✓':i+1}</span><span class="stepText">${stepTitle(s)}</span><span class="stepState">${stateLabel}</span></button>`;
+      }).join('');
+      $$('[data-goto]').forEach(b=>b.onclick=()=>{ const i=+b.dataset.goto; if(i<=state.current || state.matched || i<2){ state.current=i; render(); }});
+    }
+    function renderIdentityHeader(){
+      const box=$('#identityHeader'); if(!box) return;
+      if(!state.matched){ box.classList.remove('active'); box.innerHTML=''; return; }
+      const name=fullNameFromData() || state.matched.fullNameEn || state.matched.fullNameAr || tr('موظف','Employee');
+      const initials=(name||'HR').split(/\s+/).filter(Boolean).slice(0,2).map(x=>x[0]).join('').toUpperCase();
+      const changes=computeChanges().length; const missing=computeMissingFields().length;
+      box.classList.add('active');
+      box.innerHTML=`<div class="avatar">${escapeHtml(initials)}</div><div><strong>${escapeHtml(name)}</strong><span>${escapeHtml(state.matched.employmentNumber||state.matched.temporaryId||'')} • ${escapeHtml(state.data.company||state.matched.company||'')}</span></div><div class="identityChips"><span class="chip green">${tr('حفظ تلقائي','Auto save')}</span><span class="chip gold">${changes} ${tr('تعديل','changes')}</span><span class="chip ${missing?'red':'green'}">${missing} ${tr('ناقص','missing')}</span></div>`;
+    }
+    function renderSideAlerts(){
+      const box=$('#sideAlerts'); if(!box) return;
+      const missing=computeMissingFields(); const changes=computeChanges();
+      let html=`<div class="sideTitle"><span>Assistant Alerts</span><span>${missing.length?missing.length:'✓'}</span></div>`;
+      if(!state.matched) html+=`<p class="small">${tr('ابدأ بالتحقق من بياناتك. سيتم عرض المسار المناسب بعد الدخول.','Start by verifying your information. The right path will appear after login.')}</p>`;
+      else if(missing.length) html+=`<div class="notice warn">${tr('يوجد حقول ناقصة. استخدم فحص النواقص للانتقال إليها مباشرة.','Some required fields are missing. Use the scanner to jump to them.')}</div>`;
+      else html+=`<div class="notice ok">${tr('كل الحقول المطلوبة مكتملة حسب القواعد الحالية.','All required fields are complete under the current rules.')}</div>`;
+      if(changes.length) html+=`<div class="notice warn" style="margin-top:10px">${changes.length} ${tr('حقول تم تعديلها عن سجلات الشركة.','fields changed from company records.')}</div>`;
+      box.innerHTML=html;
+    }
+    function screenDashboard(){
+      const total=fields.filter(f=>typeof f.req==='function' || f.req).length + 2;
+      return `<div class="screenCard"><div class="openingGrid"><div class="openingHero"><span class="heroBadge">${tr('نموذج رسمي للموظفين','Official Employee Form')}</span><h1>${tr('مسار واضح لتحديث بياناتك','A clear path to update your information')}</h1><p>${tr('سيتم إرشادك خطوة بخطوة. كل حقل يحتوي على تنبيه أو مثال أو تحقق مباشر، ويمكنك إكمال النموذج لاحقًا من نفس الجهاز.','You will be guided step by step. Each field includes tips, examples, and live validation. You can resume later from the same device.')}</p><div class="openingMeta"><div class="mini"><strong>10</strong><span>${tr('مراحل منظمة','guided stages')}</span></div><div class="mini"><strong>${total}</strong><span>${tr('حقل تقريبًا','approx. fields')}</span></div><div class="mini"><strong>3-7</strong><span>${tr('دقائق متوقعة','estimated minutes')}</span></div></div><button class="btn success" id="startJourneyBtn">${tr('ابدأ التحقق','Start verification')}</button></div><div class="featureStack"><div class="feature"><div class="featureIcon">✓</div><div><h3>${tr('حفظ تلقائي','Auto save')}</h3><p>${tr('يتم حفظ التقدم كل 5 ثواني بعد الدخول.','Progress is saved every 5 seconds after verification.')}</p></div></div><div class="feature"><div class="featureIcon">!</div><div><h3>${tr('تنبيهات فورية','Live warnings')}</h3><p>${tr('أي خطأ أو حقل ناقص يظهر مباشرة أثناء التعبئة.','Errors and missing information appear while typing.')}</p></div></div><div class="feature"><div class="featureIcon">↻</div><div><h3>${tr('استكمال لاحقًا','Resume later')}</h3><p>${tr('يمكنك الرجوع وإكمال النموذج من آخر بيانات محفوظة.','Return later and continue from saved progress.')}</p></div></div><div class="feature"><div class="featureIcon">◉</div><div><h3>${tr('مراجعة نهائية احترافية','Professional final review')}</h3><p>${tr('ستراجع ملخصًا واضحًا قبل الإرسال النهائي.','Review a clear summary before final submission.')}</p></div></div></div></div></div>`;
+    }
+    function screenWrap(sectionId,body,extra=''){
+      const meta=SECTION_META[sectionId]||{}; const title=tr(meta.ar||stepTitle(steps[state.current]),meta.en||stepTitle(steps[state.current]));
+      const desc=tr(meta.descAr||'',meta.descEn||''); const prev = state.current>0 ? `<button class="btn ghost" id="prevBtn">${t('prev')}</button>` : '<span></span>'; const next = extra || `<button class="btn primary" id="nextBtn">${t('next')}</button>`;
+      const secStats = sectionStats(sectionId);
+      return `<div class="screenCard"><div class="sectionIntro"><div class="sectionIcon">${meta.icon||'•'}</div><div class="sectionMeta"><strong>${stepTitle(steps[state.current])}</strong><h1>${title}</h1><p class="lead">${desc}</p></div><div class="sectionProgress"><div class="sideTitle"><span>${tr('إكمال القسم','Section completion')}</span><span>${secStats.pct}%</span></div><div class="progress"><div class="bar" style="width:${secStats.pct}%"></div></div><p class="tiny" style="margin:8px 0 0">${secStats.done}/${secStats.total} ${tr('حقول مكتملة','fields complete')}</p></div></div>${state.scanOpen?missingPanelHtml():''}${body}<div class="navrow">${prev}${next}</div></div>`;
+    }
+    function screenLogin(){
+      const body = `<div class="stateGrid"><div class="stateCard"><b>1</b><span>${tr('أدخل تاريخ الميلاد','Enter date of birth')}</span></div><div class="stateCard"><b>A</b><span>${tr('أول حرف إنجليزي','First English initial')}</span></div><div class="stateCard"><b>✓</b><span>${tr('مطابقة آمنة','Secure match')}</span></div><div class="stateCard"><b>↻</b><span>${tr('استكمال لاحق','Resume later')}</span></div></div><div class="notice warn">${tr('استخدم تاريخ الميلاد كما هو مسجل لدى الشركة، وأول حرف من اسمك باللغة الإنجليزية فقط.','Use the date of birth recorded by the company and the first letter of your English name only.')}</div><div class="formgrid" style="margin-top:16px"><div class="field"><div class="fieldTop"><label class="required">${t('loginDob')}</label><span class="fieldStatus">${tr('مطلوب','Required')}</span></div><input class="input ltr" id="loginDob" type="date"><div class="tip">yyyy-mm-dd</div></div><div class="field"><div class="fieldTop"><label class="required">${t('loginInitial')}</label><span class="fieldStatus">A-Z</span></div><input class="input ltr" id="loginInitial" maxlength="1" placeholder="A"><div class="tip">${t('loginInitialTip')}</div></div></div><div id="loginResult"></div>`;
+      return screenWrap('login',body,`<button class="btn primary" id="loginBtn">${t('showData')}</button>`);
+    }
+    function screenReview(){
+      const r = state.matched || {}; const draft = r.employmentNumber ? loadDraft(r.employmentNumber) : null;
+      const labels = uiLang === 'ar' ? ['الرقم المؤقت','الاسم الإنجليزي','الاسم العربي','الشركة','الإيميل العملي','الجنسية','الحالة الاجتماعية','تاريخ الميلاد','المسمى','الدائرة'] : ['Temporary ID','English name','Arabic name','Company','Work email','Nationality','Marital status','Birthdate','Position','Department'];
+      const vals = [r.employmentNumber,r.fullNameEn,r.fullNameAr,r.company,r.workEmail,r.nationality,r.maritalStatus,r.birthdate,r.positionEn||r.jobTitle,r.departmentEn];
+      const body = `${draft?`<div class="notice warn">${tr('تم العثور على مسودة محفوظة من محاولة سابقة وتم تحميلها تلقائيًا.','A saved draft was found and loaded automatically.')}</div>`:''}<div class="notice">${t('hiddenSalary')}</div><div class="review">${labels.map((l,i)=>`<div class="reviewItem"><span>${l}</span><strong>${escapeHtml(vals[i]||'—')}</strong></div>`).join('')}</div>`;
+      return screenWrap('review',body);
+    }
+    function screenFields(sectionId){
+      const list=fields.filter(f=>f.section===sectionId && shouldShow(f));
+      const body = `<div class="notice">${sectionInstruction(sectionId)}</div><div class="formgrid" style="margin-top:16px">${list.map(fieldHtml).join('')}</div>`;
+      return screenWrap(sectionId,body);
+    }
+    function fieldHtml(f){
+      const val=state.data[f.k]??''; const req=isRequired(f); const changed=isChanged(f.k); const valid=validateFieldNoDom(f); const missing=req&&!String(val).trim();
+      const status = missing ? tr('ناقص','Missing') : changed ? tr('معدل','Changed') : valid ? tr('صحيح','OK') : tr('تحقق','Check');
+      const cls = missing||!valid ? 'status-missing' : changed ? 'status-changed' : String(val).trim() ? 'status-complete' : '';
+      let input=''; const common=`id="${f.k}" class="input ${f.type==='date'||f.type==='email'||f.type==='tel'?'ltr':''} ${f.readonly?'readonly':''}" ${f.readonly?'readonly':''}`;
+      if(f.type==='select') input=`<select ${common}><option value="">${t('select')}</option>${(f.opts||[]).map(o=>`<option value="${escapeAttr(o)}" ${val===o?'selected':''}>${escapeHtml(o)}</option>`).join('')}</select>`;
+      else if(f.type==='textarea') input=`<textarea ${common} placeholder="${escapeAttr(f.tip||'')}">${escapeHtml(val)}</textarea>`;
+      else input=`<input ${common} type="${f.type||'text'}" value="${escapeAttr(val)}" list="${datalistFor(f)}" placeholder="${escapeAttr(f.tip||'')}">`;
+      return `<div class="field ${f.type==='textarea'?'full':''} ${cls}" data-field="${f.k}"><div class="fieldTop"><label class="${req?'required':''}">${escapeHtml(f.label)}</label><span class="fieldStatus">${status}</span></div>${input}<div class="tip">${escapeHtml(f.tip||'')}</div>${changed?`<div class="changeNote">${tr('تم تعديل هذا الحقل عن القيمة المسجلة لدى الشركة.','This field was changed from the company record.')}</div>`:''}<div class="error"></div></div>`;
+    }
+    function screenAssets(){
+      const checkedNone=state.noAssets?'checked':'';
+      const body=`<div id="assetArea"><div class="notice warn">${tr('اختر جميع العهد الموجودة لديك. إذا لا توجد عهدة، اختر الخيار الأول بوضوح.','Select all company assets in your possession. If you have none, choose the first option clearly.')}</div><div class="choices" style="margin-top:14px"><label class="choice"><input type="radio" name="assetMode" value="none" ${checkedNone}> ${tr('ليس لدي عهدة','I do not have company assets')}</label><label class="choice"><input type="radio" name="assetMode" value="has" ${!state.noAssets?'checked':''}> ${tr('لدي عهدة','I have company assets')}</label></div>${!state.noAssets?`<div class="assetList" style="margin-top:14px">${ASSETS.map(a=>`<label class="assetItem"><input class="assetCheck" type="checkbox" value="${a[0]}" ${state.assets.some(x=>x.assetId===a[0])?'checked':''}><span>${a[1]}<small>Asset ID: ${a[0]}</small></span></label>`).join('')}</div><div id="assetDetails" class="subcards" style="margin-top:14px"></div>`:''}</div>`;
+      return screenWrap('assets',body);
+    }
+    function screenFamily(){
+      if(!needsFamily(state.data)) return screenWrap('family',`<div class="notice ok"><h3>${t('familyNotRequired')}</h3><p>${t('familyNotRequiredLead')}</p></div>`);
+      const body=`<div class="notice warn">${t('familyRequiredNote')}</div><div class="topActions" style="margin:14px 0"><button class="btn primary" id="addFamilyBtn">${t('addFamily')}</button></div><div id="familyCards" class="subcards"></div>`;
+      return screenWrap('family',body);
+    }
+    function screenSubmit(){
+      const changes=computeChanges(); const missing=computeMissingFields();
+      const summary=[['Employee ID',state.matched?.employmentNumber],['Name',fullNameFromData()],['Company',state.data.company],['Work Email',state.data.workEmail],['Nationality',state.data.nationality],['Marital Status',state.data.maritalStatus],['Changed Fields',changes.length],['Missing Fields',missing.length],['Assets',state.noAssets?'None':state.assets.length],['Family',needsFamily(state.data)?state.family.length:'Not required']];
+      const body=`${missing.length?`<div class="notice bad">${tr('لا يمكن الإرسال قبل حل جميع النواقص.','You cannot submit before resolving all missing information.')}</div>`:`<div class="notice ok">${tr('النموذج جاهز للإرسال. راجع الملخص النهائي قبل الاعتماد.','The form is ready. Review the final summary before submission.')}</div>`}<div class="sapSummary">${summary.map(r=>`<div class="sapRow"><div class="k">${escapeHtml(r[0])}</div><div class="v">${escapeHtml(r[1]??'—')}</div><div class="s">${tr('مراجعة','Review')}</div></div>`).join('')}</div>${changes.length?`<div class="missingPanel"><h3>${tr('التعديلات المكتشفة','Changes Detected')}</h3><div class="missingList">${changes.map(c=>`<button class="missingItem" data-jump-field="${c.field}">${escapeHtml(c.field)}: ${escapeHtml(c.before)} → ${escapeHtml(c.after)}</button>`).join('')}</div></div>`:''}<div id="finalErrors"></div>`;
+      return screenWrap('submit',body,`<button class="btn success" id="submitBtn" ${missing.length?'disabled':''}>${t('submitBtn')}</button>`);
+    }
+    function bindScreen(){
+      $('#prevBtn')?.addEventListener('click',()=>{state.current=Math.max(0,state.current-1);render();});
+      $('#nextBtn')?.addEventListener('click',()=>nextStep());
+      $('#startJourneyBtn')?.addEventListener('click',()=>{state.current=1;render();});
+      $('#loginBtn')?.addEventListener('click',loginEmployee);
+      $('#loginInitial')?.addEventListener('input',e=>e.target.value=e.target.value.replace(/[^A-Za-z]/g,'').toUpperCase());
+      $$('.input').forEach(el=>el.addEventListener('input',onFieldInput));
+      $$('.input').forEach(el=>el.addEventListener('change',onFieldInput));
+      $$('[data-jump-field]').forEach(b=>b.addEventListener('click',()=>jumpToField(b.dataset.jumpField)));
+      if($('#assetArea')) bindAssets(); if($('#familyCards')) bindFamily(); $('#submitBtn')?.addEventListener('click',submitForm);
+    }
+    function onFieldInput(e){
+      const k=e.target.id; state.data[k]=e.target.value;
+      if(k==='hiringDate') state.data.endOfProbationDate=addDays(e.target.value,90);
+      if(k==='contractType' && e.target.value==='Unlimited') state.data.endOfContractDate='';
+      saveDraft(false); updateProgress(); renderSideAlerts(); updateAutosaveStatus(tr('جارٍ الحفظ...','Saving...'));
+      if(['hiringDate','contractType','nationality','maritalStatus'].includes(k)) render(); else validateField(k);
+    }
+    function nextStep(){ const id=steps[state.current].id; if(!['dashboard','login'].includes(id) && !validateCurrent()) return; if(state.current<steps.length-1){ state.current++; render(); } }
+    function sectionStats(id){ const list=fields.filter(f=>f.section===id && shouldShow(f) && isRequired(f)); if(id==='assets') return {total:1, done:(state.noAssets||state.assets.length)?1:0, pct:(state.noAssets||state.assets.length)?100:0}; if(id==='family') return {total:needsFamily(state.data)?1:0, done:!needsFamily(state.data)||state.family.length?1:0, pct:!needsFamily(state.data)||state.family.length?100:0}; const done=list.filter(f=>String(state.data[f.k]||'').trim() && validateFieldNoDom(f)).length; return {total:list.length, done, pct:Math.round((done/Math.max(1,list.length))*100)}; }
+    function sectionInstruction(id){ const m=SECTION_META[id]||{}; return tr(m.descAr||'راجع هذا القسم بعناية.', m.descEn||'Review this section carefully.'); }
+    function isChanged(k){ const before=(state.matched?.[k]??'').toString().trim(); const after=(state.data?.[k]??'').toString().trim(); return !!before && !!after && before!==after; }
+    function computeMissingFields(){
+      if(!state.matched) return [];
+      const arr=[]; fields.forEach(f=>{ if(shouldShow(f) && isRequired(f) && !validateFieldNoDom(f)) arr.push(f); });
+      if(state.matched && !state.noAssets && !state.assets.length) arr.push({k:'assets',label:tr('العهد','Assets'),section:'assets'});
+      if(state.matched && needsFamily(state.data) && !validateFamily()) arr.push({k:'family',label:tr('بيانات العائلة','Family members'),section:'family'});
+      return arr;
+    }
+    function missingPanelHtml(){ const items=computeMissingFields(); if(!items.length) return `<div class="notice ok">${tr('لا توجد نواقص حالية.','No missing information detected.')}</div>`; return `<div class="missingPanel"><h3>${tr('Missing Information Scanner','Missing Information Scanner')}</h3><p class="small">${tr('اضغط على أي عنصر للانتقال إلى مكانه.','Click any item to jump to its section.')}</p><div class="missingList">${items.map(f=>`<button class="missingItem" data-jump-field="${f.k}">${escapeHtml(f.label)}</button>`).join('')}</div></div>`; }
+    function jumpToField(k){ const f=fields.find(x=>x.k===k); const section=f?.section || k; const idx=steps.findIndex(s=>s.id===section); if(idx>=0){ state.current=idx; state.scanOpen=true; render(); setTimeout(()=>document.querySelector(`[data-field="${k}"]`)?.scrollIntoView({behavior:'smooth',block:'center'}),150); } }
+    function datalistFor(f){ if(f.k==='nationality') return 'nationalityList'; if(f.k==='workLocationEn') return 'countryList'; if(f.k==='bankBranch') return 'cityList'; return ''; }
+    function renderFieldSearchResults(){ const box=$('#searchResults'); const input=$('#fieldSearch'); if(!box || !input) return; const q=(input.value||'').trim().toLowerCase(); if(!q){box.classList.remove('active'); box.innerHTML=''; return;} const found=fields.filter(f=>f.label.toLowerCase().includes(q)||String(f.tip||'').toLowerCase().includes(q)).slice(0,8); box.innerHTML=found.length?found.map(f=>`<button class="searchItem" data-search-field="${f.k}">${escapeHtml(f.label)}</button>`).join(''):`<div class="small" style="padding:10px">${tr('لا توجد نتائج','No results')}</div>`; box.classList.add('active'); $$('[data-search-field]').forEach(b=>b.onclick=()=>{ input.value=''; box.classList.remove('active'); jumpToField(b.dataset.searchField); }); }
+    function updateAutosaveStatus(msg){ const el=$('#autosaveStatus'); if(!el) return; el.innerHTML=`<span class="autosaveDot"></span><span>${escapeHtml(msg||tr('تم الحفظ تلقائيًا','Auto-saved'))}</span>`; el.classList.add('savePulse'); setTimeout(()=>el.classList.remove('savePulse'),800); }
+
+/******************** Login and data ********************/
+    async function loginEmployee(){
+      const dob=$('#loginDob').value, init=($('#loginInitial').value||'').toUpperCase(); const out=$('#loginResult');
+      if(!dob || !init){out.innerHTML='<div class="notice bad" style="margin-top:14px">أدخل تاريخ الميلاد وأول حرف.</div>';return;}
+      out.innerHTML='<div class="notice" style="margin-top:14px">جاري البحث عن بياناتك...</div>';
+      const matches = await findEmployeesByLogin(dob, init);
+      if(!matches.length){out.innerHTML='<div class="notice bad" style="margin-top:14px">لم نجد موظف بهذه البيانات. تأكد من التاريخ والحرف، أو تواصل مع HR.</div>';return;}
+      state.matches=matches;
+      if(matches.length===1){ selectEmployee(matches[0]); return; }
+      out.innerHTML = `<div class="notice warn" style="margin-top:14px">وجدنا أكثر من نتيجة. اختر اسمك:</div><div class="matchList">${matches.map((m,i)=>`<button class="matchCard" data-pick="${i}"><strong>${escapeHtml(m.fullNameEn||m.fullNameAr)}</strong><div class="small">${escapeHtml(m.company||'')} • ${escapeHtml(m.workEmail||'لا يوجد إيميل')}</div></button>`).join('')}</div>`;
+      $$('[data-pick]').forEach(b=>b.onclick=()=>selectEmployee(matches[+b.dataset.pick]));
+    }
+    async function findEmployeesByLogin(dob, init){
+      const localMatches = () => EMPLOYEES.filter(e=>(e.birthdateKey||e.birthdate)===dob && (e.firstInitialKey||'').toUpperCase()===init);
+      if(!fb.enabled) return localMatches();
+      try{
+        const key = loginKey(dob, init);
+        const idxSnap = await fb.getDoc(fb.doc(fb.db,'loginIndex',key));
+        if(idxSnap.exists()){
+          const ids = idxSnap.data().employeeIds || [];
+          const docs = await Promise.all(ids.map(id => fb.getDoc(fb.doc(fb.db,'employeeDirectory',id))));
+          const found = docs.filter(s=>s.exists()).map(s=>({...s.data(), employmentNumber:s.id, temporaryId:s.id}));
+          if(found.length) return found;
+        }
+      }catch(e){ console.warn('Firestore login lookup failed, falling back to local seed', e); }
+      return localMatches();
+    }
+    function selectEmployee(emp){
+      state.matched = emp;
+      const previous = (state.submissions[emp.employmentNumber]?.employee || state.submissions[emp.employmentNumber]?.answers) || loadDraft(emp.employmentNumber) || {};
+      state.data = defaultsFromEmployee(emp, previous);
+      state.assets = state.submissions[emp.employmentNumber]?.assets || previous.assets || [];
+      state.noAssets = state.submissions[emp.employmentNumber]?.noAssets ?? previous.noAssets ?? false;
+      state.family = state.submissions[emp.employmentNumber]?.familyMembers || previous.familyMembers || initialFamilyFromSurvey(emp);
+      state.current=2; saveDraft(false); render();
+    }
+    function defaultsFromEmployee(emp, previous={}){
+      const d = {...emp, ...previous};
+      d.company = d.company || d.commercialRegister || '';
+      d.contractDuration = d.contractDuration || '1 year';
+      d.workType = 'Full time'; d.paymentMethod = 'Bank Transfer';
+      d.directManagerEmploymentNo=''; d.supervisorEmploymentNo='';
+      d.allowances1=''; d.allowances2=''; d.allowances3='';
+      d.workLocationAr = d.workLocationAr || 'الأردن'; d.workLocationEn = d.workLocationEn || 'Jordan';
+      d.commercialRegister = d.commercialRegister || d.company || '';
+      if(!d.phoneNumber && d.mobileNumber) d.phoneNumber=d.mobileNumber;
+      if(!d.endOfProbationDate && d.hiringDate) d.endOfProbationDate=addDays(d.hiringDate,90);
+      if(!d.sectionEn && d.departmentEn) d.sectionEn=d.departmentEn;
+      if(!d.sectionAr && d.departmentAr) d.sectionAr=d.departmentAr;
+      return d;
+    }
+    function initialFamilyFromSurvey(emp){
+      const raw=(emp.kidsRaw||'').trim(); if(!raw || /^(n\/a|none|not yet|0|-)$/i.test(raw)) return [];
+      return raw.split(/\n|;/).map(x=>x.trim()).filter(Boolean).map(line=>{
+        const m=line.match(/(.+?)\s+(\d{1,2}[\/\-]\d{1,2}[\/\-]\d{4})/);
+        return {relation:'Child', firstName: m?m[1].split(/\s+/)[0]:line, secondName:'', thirdName:'', lastName:state.data?.lastNameEn||'', birthdate:m?normalizeDateInput(m[2]):'', gender:'', maritalStatus:'Single'};
+      });
+    }
+
+    /******************** Validation ********************/
+    function shouldShow(f){ return !f.show || f.show(state.data); }
+    function isRequired(f){ return typeof f.req==='function' ? f.req(state.data) : !!f.req; }
+    function validateField(k){
+      const f=fields.find(x=>x.k===k); if(!f || !shouldShow(f)) return true;
+      const wrap=document.querySelector(`[data-field="${k}"]`); if(!wrap) return true;
+      const val=(state.data[k]||'').trim(); let msg='';
+      if(isRequired(f) && !val) msg='هذا الحقل إجباري.';
+      if(!msg && val && f.pattern){
+        if(f.pattern==='enName' && !RE.enName.test(val)) msg='اكتب بالإنجليزية فقط بدون أحرف عربية.';
+        if(f.pattern==='arName' && !RE.arName.test(val)) msg='اكتب بالعربية فقط بدون أحرف إنجليزية.';
+        if(f.pattern==='email' && !RE.email.test(val)) msg='صيغة الإيميل غير صحيحة.';
+        if(f.pattern==='mobile' && !RE.mobile.test(val.replace(/\s/g,''))) msg='رقم الهاتف غير صحيح.';
+        if(f.pattern==='ibanJO' && !RE.ibanJO.test(val.replace(/\s/g,'').toUpperCase())) msg='الآيبان الأردني يجب أن يبدأ JO ويكون 30 خانة.';
+        if(f.pattern==='passport' && !RE.passport.test(val)) msg='رقم الجواز يجب أن يحتوي أرقام/حروف إنجليزية فقط.';
+        if(f.pattern==='enLoose' && /[\u0600-\u06FF]/.test(val)) msg='هذا الحقل يجب أن يكون بالإنجليزية.';
+      }
+      if(!msg && k==='passportExpiryDate' && state.data.passportIssueDate && val <= state.data.passportIssueDate) msg='تاريخ انتهاء الجواز يجب أن يكون بعد تاريخ الإصدار.';
+      if(!msg && k==='nationalId' && isJordanian(state.data) && !/^\d{10}$/.test(val)) msg='للأردنيين يفضل أن يكون الرقم الوطني 10 أرقام.';
+      wrap.classList.toggle('invalid',!!msg); const err=wrap.querySelector('.error'); if(err) err.textContent=msg; return !msg;
+    }
+    function validateCurrent(){
+      const id=steps[state.current].id; let ok=true;
+      fields.filter(f=>f.section===id).forEach(f=>{ if(!validateField(f.k)) ok=false; });
+      if(id==='assets') ok=validateAssets() && ok;
+      if(id==='family') ok=validateFamily() && ok;
+      return ok;
+    }
+    function validateAll(){
+      let ok=true; fields.forEach(f=>{ if(shouldShow(f)){ const fake={classList:{toggle(){}}}; if(!validateFieldNoDom(f)) ok=false; }});
+      if(!validateAssets()) ok=false; if(!validateFamily()) ok=false; return ok;
+    }
+    function validateFieldNoDom(f){
+      const val=(state.data[f.k]||'').trim();
+      if(isRequired(f) && !val) return false;
+      if(val && f.pattern==='enName' && !RE.enName.test(val)) return false;
+      if(val && f.pattern==='arName' && !RE.arName.test(val)) return false;
+      if(val && f.pattern==='email' && !RE.email.test(val)) return false;
+      if(val && f.pattern==='mobile' && !RE.mobile.test(val.replace(/\s/g,''))) return false;
+      if(val && f.pattern==='ibanJO' && !RE.ibanJO.test(val.replace(/\s/g,'').toUpperCase())) return false;
+      if(val && f.pattern==='passport' && !RE.passport.test(val)) return false;
+      if(val && f.pattern==='enLoose' && /[\u0600-\u06FF]/.test(val)) return false;
+      if(f.k==='passportExpiryDate' && state.data.passportIssueDate && val <= state.data.passportIssueDate) return false;
+      return true;
+    }
+
+    /******************** Assets and Family ********************/
+    function bindAssets(){
+      $$('input[name="assetMode"]').forEach(r=>r.onchange=()=>{state.noAssets=r.value==='none'; if(state.noAssets) state.assets=[]; render();});
+      $$('.assetCheck').forEach(c=>c.onchange=()=>{ const id=+c.value; const label=ASSETS.find(a=>a[0]===id)?.[1]||''; if(c.checked){ if(!state.assets.some(a=>a.assetId===id)) state.assets.push({assetId:id, assetType:label, assetName:label.split('|')[0].trim(), description:'', holdingDate:todayISO()}); } else { state.assets=state.assets.filter(a=>a.assetId!==id); } renderAssetDetails(); saveDraft(false); });
+      renderAssetDetails();
+    }
+    function renderAssetDetails(){
+      const box=$('#assetDetails'); if(!box) return;
+      box.innerHTML=state.assets.map((a,i)=>`<div class="subcard"><div class="subHead"><strong>${escapeHtml(a.assetType)}</strong><button class="btn danger" data-remove-asset="${i}">حذف</button></div><div class="formgrid"><div class="field"><label class="required">Asset_Name</label><input class="input" data-asset="${i}" data-ak="assetName" value="${escapeAttr(a.assetName||'')}"></div><div class="field"><label class="required">Holding date / تاريخ الاستلام</label><input class="input ltr" type="date" data-asset="${i}" data-ak="holdingDate" value="${escapeAttr(a.holdingDate||'')}"></div><div class="field full"><label class="required">Description</label><textarea class="input" data-asset="${i}" data-ak="description">${escapeHtml(a.description||'')}</textarea></div></div></div>`).join('');
+      $$('[data-asset]').forEach(el=>el.oninput=()=>{state.assets[+el.dataset.asset][el.dataset.ak]=el.value;saveDraft(false);});
+      $$('[data-remove-asset]').forEach(b=>b.onclick=()=>{state.assets.splice(+b.dataset.removeAsset,1);render();});
+    }
+    function validateAssets(){
+      if(state.noAssets) return true;
+      if(!state.assets.length){ showInline('assetArea','اختر عهدة واحدة على الأقل أو اختر ليس لدي عهدة.'); return false; }
+      return state.assets.every(a=>a.assetName && a.description && a.holdingDate);
+    }
+    function bindFamily(){ renderFamilyCards(); $('#addFamilyBtn')?.addEventListener('click',()=>{state.family.push({relation:'Child',firstName:'',secondName:'',thirdName:'',lastName:state.data.lastNameEn||'',birthdate:'',gender:'',maritalStatus:'Single'});renderFamilyCards();}); }
+    function renderFamilyCards(){
+      const box=$('#familyCards'); if(!box) return;
+      box.innerHTML = state.family.map((m,i)=>`<div class="subcard"><div class="subHead"><strong>فرد عائلة ${i+1}</strong><button class="btn danger" data-remove-family="${i}">حذف</button></div><div class="formgrid">
+        ${familyField(i,'relation','Relation / صلة القرابة','select',['Spouse','Child','Father','Mother','Other'])}${familyField(i,'firstName','First Name','text')}${familyField(i,'secondName','Second Name','text')}${familyField(i,'thirdName','Third Name','text')}${familyField(i,'lastName','Last Name','text')}${familyField(i,'birthdate','Birthdate','date')}${familyField(i,'gender','Gender','select',['Male','Female'])}${familyField(i,'maritalStatus','Marital Status','select',['Single','Married','Divorced','Widowed'])}</div></div>`).join('') || '<div class="notice warn">أضف فرد عائلة واحد على الأقل، أو راجع الحالة الاجتماعية إذا لا يوجد.</div>';
+      $$('[data-family]').forEach(el=>el.oninput=el.onchange=()=>{state.family[+el.dataset.family][el.dataset.fk]=el.value;saveDraft(false);});
+      $$('[data-remove-family]').forEach(b=>b.onclick=()=>{state.family.splice(+b.dataset.removeFamily,1);renderFamilyCards();});
+    }
+    function familyField(i,k,label,type,opts=[]){
+      const val=state.family[i]?.[k]||'';
+      if(type==='select') return `<div class="field"><label class="required">${label}</label><select class="input" data-family="${i}" data-fk="${k}"><option value="">${t('select')}</option>${opts.map(o=>`<option ${val===o?'selected':''}>${o}</option>`).join('')}</select></div>`;
+      return `<div class="field"><label class="required">${label}</label><input class="input ${type==='date'?'ltr':''}" type="${type}" data-family="${i}" data-fk="${k}" value="${escapeAttr(val)}"></div>`;
+    }
+    function validateFamily(){
+      if(!needsFamily(state.data)) return true;
+      if(!state.family.length) return false;
+      return state.family.every(m=>m.relation&&m.firstName&&m.secondName&&m.thirdName&&m.lastName&&m.birthdate&&m.gender&&m.maritalStatus);
+    }
+
+    /******************** Save, submit, admin ********************/
+    function loadLocalSubmissions(){ try{return JSON.parse(localStorage.getItem('zenhrSubmissionsV2')||'{}')}catch{return {}} }
+    function saveLocalSubmissions(){ localStorage.setItem('zenhrSubmissionsV2',JSON.stringify(state.submissions)); }
+    function loadDraft(id){ try{return JSON.parse(localStorage.getItem('zenhrDraft_'+id)||'null')}catch{return null} }
+    function saveDraft(show=true){ if(!state.matched) return; const now=new Date().toISOString(); const payload={...state.data, assets:state.assets, noAssets:state.noAssets, familyMembers:state.family, savedAt:now}; localStorage.setItem('zenhrDraft_'+state.matched.employmentNumber,JSON.stringify(payload)); state.lastSavedAt=now; updateAutosaveStatus(show ? (uiLang==='ar'?'تم حفظ المسودة على هذا الجهاز.':'Draft saved on this device.') : (uiLang==='ar'?'تم الحفظ تلقائيًا':'Auto-saved')); if(show) toast(uiLang==='ar'?'تم حفظ المسودة على هذا الجهاز.':'Draft saved on this device.'); }
+    async function submitForm(){
+      const ok=validateAll(); if(!ok){ $('#finalErrors').innerHTML='<div class="notice bad" style="margin-top:12px">يوجد حقول ناقصة أو غير صحيحة. ارجع للخطوات السابقة.</div>'; return; }
+      if(fb.enabled && !fb.auth.currentUser){ try { await fb.signInAnonymously(fb.auth); } catch(e) { console.warn(e); } }
+      const id=state.matched.employmentNumber;
+      const changes = computeChanges();
+      const now = new Date().toISOString();
+      const payload={
+        employeeId:id,
+        temporaryEmploymentNumber:id,
+        submittedAt:state.submissions[id]?.submittedAt || now,
+        updatedAt:now,
+        status:'Completed',
+        employee:{...state.data, employeeName:fullNameFromData(), company:state.data.company||''},
+        familyMembers:needsFamily(state.data)?state.family:[],
+        assets:state.noAssets?[]:state.assets,
+        changeSummary:changes,
+        clientInfo:{userAgent:navigator.userAgent, timezone:Intl.DateTimeFormat().resolvedOptions().timeZone || '', authUid:fb.currentUser?.uid || ''}
+      };
+      state.submissions[id]=payload; saveLocalSubmissions();
+      if(fb.enabled){
+        try{
+          await fb.setDoc(fb.doc(fb.db,'submissions',id),payload,{merge:true});
+          for(const c of changes){
+            const logId = `${id}_${Date.now()}_${Math.random().toString(36).slice(2,8)}`;
+            await fb.setDoc(fb.doc(fb.db,'editLogs',logId),{...c, employeeId:id, employeeName:fullNameFromData(), changedAt:now, authUid:fb.currentUser?.uid || ''});
+          }
+        } catch(e){ console.warn(e); toast('تم الحفظ محليًا، لكن فشل Firebase. تأكد من القواعد والصلاحيات.'); }
+      }
+      state.submitted=true; localStorage.removeItem('zenhrDraft_'+id);
+      $('#content').innerHTML=`<div class="screenCard"><div class="sectionIntro"><div class="sectionIcon">✓</div><div class="sectionMeta"><strong>Completed</strong><h1>تم اعتماد الإرسال</h1><p class="lead">تم حفظ بياناتك بنجاح. ستراجع الإدارة أي تعديلات مقارنة بسجلات الشركة.</p></div></div><div class="notice ok">رقمك المؤقت: <strong>${escapeHtml(id)}</strong></div></div>`;
+      updateProgress();
+    }
+    function computeChanges(){
+      const base=state.matched||{}; const changes=[];
+      Object.keys(state.data).forEach(k=>{
+        if(['assets','familyMembers'].includes(k)) return;
+        const before=(base[k]??'').toString().trim(); const after=(state.data[k]??'').toString().trim();
+        if(before && after && before!==after) changes.push({field:k,before,after});
+      });
+      return changes;
+    }
+    function openAdmin(){ document.body.classList.add('admin-open'); $('#adminModal').classList.add('active'); renderAdminAuth(); }
+    function closeAdmin(){ document.body.classList.remove('admin-open'); $('#adminModal').classList.remove('active'); }
+    async function checkAdmin(){
+      if(!fb.enabled || !fb.auth?.currentUser) return false;
+      try{
+        const snap = await fb.getDoc(fb.doc(fb.db,'admins',fb.auth.currentUser.uid));
+        return snap.exists() && snap.data().active === true;
+      }catch(e){ console.warn(e); return false; }
+    }
+    async function renderAdminAuth(){
+      const panel=$('#adminAuthPanel'), dash=$('#adminDashboardPanel');
+      if(!fb.enabled){ panel.className='notice bad'; panel.innerHTML= uiLang==='ar' ? 'الاتصال غير مفعّل.' : 'Connection is not enabled.'; dash.style.display='none'; return; }
+      adminAllowed = await checkAdmin();
+      if(adminAllowed){
+        panel.className='notice ok';
+        panel.innerHTML=`<div class="admin-auth-ok"><strong>${uiLang==='ar'?'تم تسجيل الدخول للإدارة':'Management access confirmed'}</strong><button class="btn ghost" id="adminSignOutBtn">${t('signOut')}</button></div>`;
+        $('#adminSignOutBtn').onclick=async()=>{ await fb.signOut(fb.auth); try{ await fb.signInAnonymously(fb.auth); }catch(e){console.warn(e);} adminAllowed=false; dash.style.display='none'; renderAdminAuth(); };
+        dash.style.display='block'; await loadAdmin(); return;
+      }
+      const uid = fb.auth.currentUser?.uid || '';
+      const bootstrapHint = uid===ADMIN_UID ? `<div class="notice warn" style="margin-top:14px">${uiLang==='ar'?'تم التعرف على حساب الأدمن، لكن صلاحية الأدمن لم تُنشأ بعد. اضغط التهيئة مرة واحدة.':'Admin account detected, but the admin document has not been created yet. Initialize once.'}</div><button class="btn success" id="bootstrapAdminBtn" style="margin-top:10px">${t('setupAdmin')}</button>` : '';
+      panel.className='admin-login-card'; dash.style.display='none';
+      panel.innerHTML=`<h2>${t('adminLogin')}</h2><p>${uiLang==='ar'?'يرجى تسجيل الدخول لمتابعة النتائج وإدارة التصدير.':'Please sign in to review results and manage exports.'}</p><div class="formgrid" style="margin-top:14px"><div class="field"><label>${t('email')}</label><input class="input ltr" id="adminEmail" type="email" autocomplete="username"></div><div class="field"><label>${t('password')}</label><input class="input ltr" id="adminPassword" type="password" autocomplete="current-password"></div></div><div class="actions"><button class="btn primary" id="adminLoginBtn">${t('login')}</button></div>${bootstrapHint}`;
+      $('#adminLoginBtn').onclick=async()=>{
+        try{ await fb.signInWithEmailAndPassword(fb.auth,$('#adminEmail').value,$('#adminPassword').value); await renderAdminAuth(); }
+        catch(e){ console.warn(e); toast(uiLang==='ar'?'فشل دخول الأدمن. تأكد من الإيميل وكلمة السر.':'Login failed. Please verify email and password.'); }
+      };
+      $('#bootstrapAdminBtn')?.addEventListener('click',bootstrapAdmin);
+    }
+    async function bootstrapAdmin(){
+      if(!fb.enabled || fb.auth.currentUser?.uid !== ADMIN_UID){ toast('يجب الدخول بحساب الأدمن الصحيح أولًا.'); return; }
+      try{
+        await fb.setDoc(fb.doc(fb.db,'admins',ADMIN_UID),{role:'admin', active:true, createdAt:new Date().toISOString()},{merge:true});
+        await fb.setDoc(fb.doc(fb.db,'meta','setup'),{initializedAt:new Date().toISOString(), collections:['admins','employeeDirectory','loginIndex','submissions','editLogs']},{merge:true});
+        toast('تم إنشاء صلاحية الأدمن. الآن يمكنك استيراد بيانات الموظفين.');
+        await renderAdminAuth();
+      }catch(e){ console.warn(e); toast('لم تنجح التهيئة. استخدم قواعد Firestore الجديدة الموجودة في الملف.'); }
+    }
+    async function loadAdmin(){
+      if(!adminAllowed){ await renderAdminAuth(); return; }
+      if(fb.enabled){
+        try{
+          const subSnap=await fb.getDocs(fb.collection(fb.db,'submissions')); state.submissions={}; subSnap.forEach(d=>state.submissions[d.id]=d.data()); saveLocalSubmissions();
+          const dirSnap=await fb.getDocs(fb.collection(fb.db,'employeeDirectory')); const directory=[]; dirSnap.forEach(d=>directory.push({...d.data(), employmentNumber:d.id, temporaryId:d.id})); if(directory.length) EMPLOYEES=directory;
+        }catch(e){console.warn(e); toast('تعذر تحميل بيانات الأدمن من Firestore.');}
+      }
+      renderAdmin();
+    }
+    function renderAdmin(){
+      const submitted=Object.values(state.submissions);
+      const submittedIds=new Set(submitted.map(s=>s.employeeId));
+      const missing=EMPLOYEES.filter(e=>!submittedIds.has(e.employmentNumber));
+      const changes=submitted.flatMap(s=>(s.changeSummary||s.changes||[]).map(c=>({...c,employeeId:s.employeeId,employeeName:submissionName(s),company:submissionCompany(s),department:submissionEmployee(s).departmentEn||''})));
+      const q=($('#adminFilter')?.value||'').toLowerCase();
+      const filterRow = row => !q || JSON.stringify(row).toLowerCase().includes(q);
+      $('#kpiTotal').textContent=EMPLOYEES.length; $('#kpiDone').textContent=submitted.length; $('#kpiMissing').textContent=missing.length; $('#kpiChanges').textContent=changes.length;
+      renderCompanyChart(submitted, missing); renderMissingHeatmap(submitted);
+      const box=$('#adminTabContent');
+      if(state.adminTab==='submissions') box.innerHTML=tableHtml(['Employee ID','Name','Company','Department','Submitted At','Changes'], submitted.map(s=>[s.employeeId,submissionName(s),submissionCompany(s),submissionEmployee(s).departmentEn||'',formatDT(s.submittedAt),(s.changeSummary||s.changes||[]).length]).filter(filterRow));
+      if(state.adminTab==='missing') box.innerHTML=tableHtml(['Employee ID','Name EN','Name AR','Company','Work Email','Birthdate'], missing.map(e=>[e.employmentNumber,e.fullNameEn,e.fullNameAr,e.company,e.workEmail,e.birthdate]).filter(filterRow));
+      if(state.adminTab==='changes') box.innerHTML=tableHtml(['Employee ID','Name','Company','Field','Before','After','Changed At'], changes.map(c=>[c.employeeId,c.employeeName,c.company,c.field,c.before,c.after,formatDT(c.changedAt)]).filter(filterRow));
+      if(state.adminTab==='seed') box.innerHTML=tableHtml(['Employee ID','Name EN','Name AR','Company','Work Email','DOB','Department'], EMPLOYEES.map(e=>[e.employmentNumber,e.fullNameEn,e.fullNameAr,e.company,e.workEmail,e.birthdate,e.departmentEn]).filter(filterRow));
+    }
+    function renderCompanyChart(submitted, missing){
+      const box=$('#companyChart'); if(!box) return;
+      const companies=[...new Set(EMPLOYEES.map(e=>e.company||'Unknown'))];
+      box.innerHTML=companies.map(c=>{ const total=EMPLOYEES.filter(e=>(e.company||'Unknown')===c).length; const done=submitted.filter(s=>(submissionCompany(s)||'Unknown')===c).length; const pct=Math.round(done/Math.max(1,total)*100); return `<div class="chartRow"><span>${escapeHtml(c)}</span><div class="chartTrack"><div class="chartFill" style="width:${pct}%"></div></div><b>${pct}%</b></div>`; }).join('') || '<p class="small">No data loaded.</p>';
+    }
+    function renderMissingHeatmap(submitted){
+      const box=$('#missingHeatmap'); if(!box) return;
+      const important=['workEmail','personalEmail','passportNumber','ibanNumber','commercialRegister','family','assets','departmentAr','sectionAr','nationalId'];
+      box.innerHTML=important.map(k=>{ let miss=0; submitted.forEach(s=>{ const a=submissionEmployee(s); if(k==='family'){ if(needsFamily(a)&&!(s.familyMembers||[]).length) miss++; } else if(k==='assets'){ if(!(s.assets||[]).length) miss++; } else if(!String(a[k]||'').trim()) miss++; }); return `<div class="heatCell"><strong>${miss}</strong>${escapeHtml(k)}</div>`; }).join('');
+    }
+    function tableHtml(headers, rows){ return `<div class="tableWrap"><table class="adminTable"><thead><tr>${headers.map(h=>`<th>${escapeHtml(h)}</th>`).join('')}</tr></thead><tbody>${rows.map(r=>`<tr>${r.map(c=>`<td>${escapeHtml(c??'')}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`; }
+    async function importSeedToFirebase(){
+      if(!fb.enabled){toast('Firebase غير مفعل.');return;}
+      if(!adminAllowed){toast('سجل دخول الأدمن أولًا.');return;}
+      if(!EMPLOYEES.length){ $('#seedFileInput').click(); return; }
+      await uploadSeedRecords(EMPLOYEES);
+    }
+    async function handleSeedFile(ev){
+      const file=ev.target.files?.[0]; if(!file) return;
+      try{
+        const json=JSON.parse(await file.text());
+        const records=(json.records||json.employees||json||[]).map(r=>({...r}));
+        if(!Array.isArray(records) || !records.length){ toast('ملف seed غير صحيح.'); return; }
+        SEED=json; EMPLOYEES=records;
+        await uploadSeedRecords(records);
+      }catch(e){ console.warn(e); toast('تعذر قراءة ملف seed.'); }
+      ev.target.value='';
+    }
+    async function uploadSeedRecords(records){
+      if(!confirm(`سيتم رفع ${records.length} موظف إلى Firestore وإنشاء loginIndex. متابعة؟`)) return;
+      let count=0;
+      for(const raw of records){
+        const e={...raw}; const id=e.employmentNumber || e.temporaryId; if(!id) continue;
+        await fb.setDoc(fb.doc(fb.db,'employeeDirectory',id),e,{merge:true});
+        const key=loginKey(e.birthdateKey||e.birthdate, e.firstInitialKey||String(e.firstNameEn||'').slice(0,1));
+        if(key) await fb.setDoc(fb.doc(fb.db,'loginIndex',key),{employeeIds:fb.arrayUnion(id), updatedAt:new Date().toISOString()},{merge:true});
+        count++;
+      }
+      await fb.setDoc(fb.doc(fb.db,'meta','directory'),{count, importedAt:new Date().toISOString()},{merge:true});
+      toast('تم رفع قاعدة الموظفين وإنشاء Collections تلقائيًا.');
+      await loadAdmin();
+    }
+
+    /******************** Export ********************/
+    function buildEmployeeRows(){
+      return Object.values(state.submissions).map(s=>{ const a=submissionEmployee(s), seed=findEmployeeSeed(s.employeeId)||{}; return {
+        'Employment_Number':s.employeeId,'First Name En':a.firstNameEn,'Second Name En':a.secondNameEn,'Third Name En':a.thirdNameEn,'Last Name En':a.lastNameEn,'First Name Ar':a.firstNameAr,'Second Name Ar':a.secondNameAr,'Third Name Ar':a.thirdNameAr,'Last Name Ar':a.lastNameAr,'Passport_Number':a.passportNumber,'Passport Issue Date':a.passportIssueDate,'Passport Expiry Date':a.passportExpiryDate,'Labor Card ID':a.laborCardId,'Labor Card Expiry':a.laborCardExpiry,'Resident ID':a.residentId,'MOL Number':a.molNumber,'Hiring Date':a.hiringDate,'End_of_Probation_Date':a.endOfProbationDate,'Work_Email':a.workEmail,'Personal_Email':a.personalEmail,'Birthdate':a.birthdate,'Mobile Number':a.mobileNumber,'Phone Number':a.phoneNumber,'Extension Number':a.extensionNumber,'Gender':a.gender,'Marital Status':a.maritalStatus,'Religion':a.religion,'National ID':a.nationalId,'Nationality':a.nationality,'Address':a.address,'Attendance Card ID':a.attendanceCardId,'Contract_Type':a.contractType,'Contract Duration':a.contractDuration,'End_Of_Contract_Date':a.endOfContractDate,'Direct Manager Employment No':a.directManagerEmploymentNo||'','Supervisor Employment No':a.supervisorEmploymentNo||'','Position in English':a.positionEn,'Position in Arabic':a.positionAr,'Work Location in English':a.workLocationEn,'Work Location in Arabic':a.workLocationAr,'Department in English':a.departmentEn,'Department in Arabic':a.departmentAr,'Section in English':a.sectionEn,'Section in Arabic':a.sectionAr,'Work Type':a.workType,'Payment Method':a.paymentMethod,'Bank Name':a.bankName,'Bank Branch':a.bankBranch,'Account Number':a.accountNumber,'IBAN Number':a.ibanNumber,'Basic Salary':seed.basicSalary||a.basicSalary||'','Social Security Salary':seed.socialSecuritySalary||'','Social Security Number':seed.socialSecurityNumber||'','Allowances 1':'','Allowances 2':'','Allowances 3':'','Commercial Register':a.commercialRegister||a.company||'', 'Submitted At':s.submittedAt, 'Changes Count':(s.changeSummary||s.changes||[]).length}; });
+    }
+    function buildFamilyRows(){ return Object.values(state.submissions).flatMap(s=>(s.familyMembers||[]).map(m=>({'Employment_Number':s.employeeId,'Relation':m.relation,"Family Member's First Name":m.firstName,"Family Member's Second Name":m.secondName,"Family Member's Third Name":m.thirdName,"Family Member's Last Name":m.lastName,'Birthdate':m.birthdate,'Gender':m.gender,'Marital Status':m.maritalStatus}))); }
+    function buildAssetRows(){ return Object.values(state.submissions).flatMap(s=>(s.assets||[]).map(a=>({'Asset_ID':a.assetId,'Asset_Type':a.assetType,'Asset_Name':a.assetName,'Description':a.description,'Holder_ID (Employment_Number)':s.employeeId,'Holding date':a.holdingDate}))); }
+    function exportRows(rows, filename, sheetName='Sheet1'){
+      if(window.XLSX){ const wb=XLSX.utils.book_new(); const ws=XLSX.utils.json_to_sheet(rows); XLSX.utils.book_append_sheet(wb,ws,sheetName); XLSX.writeFile(wb,filename); return; }
+      const csv = toCSV(rows); downloadBlob(csv, filename.replace(/\.xlsx$/i,'.csv'), 'text/csv;charset=utf-8');
+    }
+    function toCSV(rows){ if(!rows.length) return ''; const headers=Object.keys(rows[0]); return [headers.join(','),...rows.map(r=>headers.map(h=>'"'+String(r[h]??'').replace(/"/g,'""')+'"').join(','))].join('\n'); }
+
+    /******************** Helpers ********************/
+    function loginKey(dob, init){ if(!dob || !init) return ''; return `${dob}_${String(init).trim().slice(0,1).toUpperCase()}`; }
+    function submissionEmployee(s){ return s.employee || s.answers || {}; }
+    function submissionName(s){ const a=submissionEmployee(s); return a.employeeName || [a.firstNameEn,a.secondNameEn,a.thirdNameEn,a.lastNameEn].filter(Boolean).join(' ') || s.employeeName || ''; }
+    function submissionCompany(s){ const a=submissionEmployee(s); return a.company || s.company || ''; }
+    function findEmployeeSeed(id){ return EMPLOYEES.find(e=>e.employmentNumber===id || e.temporaryId===id) || {}; }
+    function updateProgress(){
+      const visible=fields.filter(f=>shouldShow(f));
+      const total=visible.filter(f=>isRequired(f)).length;
+      const done=visible.filter(f=>isRequired(f) && (state.data[f.k]||'').trim() && validateFieldNoDom(f)).length + (state.noAssets||state.assets.length?1:0) + (!needsFamily(state.data)||state.family.length?1:0);
+      const denominator=total+2;
+      const pct=Math.round((done/Math.max(1,denominator))*100);
+      const safePct=Math.min(100,Math.max(0,pct));
+      const remaining=Math.max(0,denominator-done);
+      const bar=$('#progressBar'); if(bar) bar.style.width=safePct+'%';
+      const pt=$('#progressText'); if(pt) pt.textContent=safePct+'%';
+      const cf=$('#completedFields'); if(cf) cf.textContent=done;
+      const rf=$('#remainingFields'); if(rf) rf.textContent=remaining;
+      const eta=$('#etaBox'); if(eta){ const minutes=Math.max(1,Math.ceil(remaining/8)); eta.textContent = state.matched ? (uiLang==='ar' ? `متبقي تقريبًا ${minutes} دقيقة لإكمال النموذج.` : `Approximately ${minutes} minute(s) remaining.`) : (uiLang==='ar' ? 'ابدأ التحقق لاحتساب الوقت المتوقع بدقة.' : 'Start verification to calculate the estimate.'); }
+    }
+    function fullNameFromData(){ return [state.data.firstNameEn,state.data.secondNameEn,state.data.thirdNameEn,state.data.lastNameEn].filter(Boolean).join(' ') || state.data.fullNameEn || state.data.fullNameAr || ''; }
+    function addDays(iso,days){ if(!iso) return ''; const d=new Date(iso+'T00:00:00'); if(isNaN(d)) return ''; d.setDate(d.getDate()+days); return d.toISOString().slice(0,10); }
+    function normalizeDateInput(s){ const m=s.match(/(\d{1,2})[\/-](\d{1,2})[\/-](\d{4})/); if(!m) return ''; const d=String(m[1]).padStart(2,'0'), mo=String(m[2]).padStart(2,'0'); return `${m[3]}-${mo}-${d}`; }
+    function escapeHtml(v){ return String(v??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+    function escapeAttr(v){ return escapeHtml(v).replace(/'/g,'&#39;'); }
+    function formatDT(x){ try{return new Date(x).toLocaleString('en-GB')}catch{return x||''} }
+    function downloadBlob(content,filename,type='application/json'){ const blob=new Blob([content],{type}); const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=filename; a.click(); setTimeout(()=>URL.revokeObjectURL(a.href),1000); }
+    function toast(msg){ const t=document.createElement('div'); t.textContent=msg; t.style.cssText='position:fixed;bottom:20px;left:20px;z-index:80;background:rgba(21,32,51,.92);color:white;padding:12px 16px;border-radius:14px;box-shadow:0 12px 30px rgba(0,0,0,.22);font-weight:800'; document.body.appendChild(t); setTimeout(()=>t.remove(),2600); }
+    function showInline(id,msg){ const el=document.getElementById(id); if(el && !el.querySelector('.inlineErr')) el.insertAdjacentHTML('beforeend',`<div class="notice bad inlineErr" style="margin-top:12px">${escapeHtml(msg)}</div>`); }
+
+    function applyStaticI18n(){
+      document.querySelectorAll('[data-i18n]').forEach(el=>{ el.textContent=t(el.dataset.i18n); });
+      const btn = document.getElementById('langToggle'); if(btn) btn.textContent=t('langOther');
+      const fs = document.getElementById('firebaseState'); if(fs && (fs.textContent==='Local Mode' || fs.textContent==='وضع محلي' || fs.textContent==='Offline draft')) fs.textContent=t('local');
+    }
+
+    /******************** Events ********************/
+    $('#secretAdminMark').addEventListener('dblclick',openAdmin); $('#secretAdminWord')?.addEventListener('dblclick',openAdmin); $('#langToggle')?.addEventListener('click',()=>setLang(uiLang==='ar'?'en':'ar')); $('#scanMissingBtn')?.addEventListener('click',()=>{state.scanOpen=!state.scanOpen; render();}); $('#fieldSearch')?.addEventListener('input',renderFieldSearchResults); $('#adminFilter')?.addEventListener('input',renderAdmin); applyStaticI18n();
+    $('#closeAdminBtn').onclick=closeAdmin; $('#refreshAdminBtn').onclick=loadAdmin; $('#importSeedBtn').onclick=importSeedToFirebase; $('#seedFileInput').addEventListener('change',handleSeedFile);
+    $('#downloadSeedBtn').onclick=()=>downloadBlob(JSON.stringify({generatedAt:new Date().toISOString(), records:EMPLOYEES},null,2),'employee-seed.json');
+    $('#exportEmployeesBtn').onclick=()=>exportRows(buildEmployeeRows(),'zenhr-employees.xlsx','Employees');
+    $('#exportFamilyBtn').onclick=()=>exportRows(buildFamilyRows(),'zenhr-family-members.xlsx','Family');
+    $('#exportAssetsBtn').onclick=()=>exportRows(buildAssetRows(),'zenhr-assets.xlsx','Assets');
+    $$('.tab').forEach(t=>t.onclick=()=>{ $$('.tab').forEach(x=>x.classList.remove('active')); t.classList.add('active'); state.adminTab=t.dataset.tab; renderAdmin(); });
+    $('#saveDraftBtn').onclick=()=>saveDraft(true); $('#resetBtn').onclick=()=>{ if(confirm('مسح بيانات الشاشة الحالية؟')){ state.current=0; state.matched=null; state.data={}; state.family=[]; state.assets=[]; state.noAssets=false; render(); }};
+    window.addEventListener('keydown',e=>{ if(e.key==='Enter' && (e.metaKey||e.ctrlKey)) nextStep(); if(e.key==='Escape') closeAdmin(); });
+    setInterval(()=>{ if(state.matched) saveDraft(false); },5000);
+
+    document.documentElement.lang = uiLang; document.documentElement.dir = uiLang === 'ar' ? 'rtl' : 'ltr'; document.body.classList.toggle('lang-en', uiLang === 'en'); await initFirebase(); applyStaticI18n(); render();
+  </script>
+</body>
+</html>
