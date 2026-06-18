@@ -1,37 +1,45 @@
-# Employee Information Form – Responsive Corporate Edition v5
+# Enterprise Employee Data Journey v8
 
-هذه النسخة مخصصة للرفع على GitHub Pages وتشغيل نموذج بيانات الموظفين بشكل رسمي ومتجاوب على جميع الأجهزة.
+نسخة v8 تعيد بناء تجربة الموظف بالكامل كمسار مؤسسي واضح بدل نموذج تقليدي.
 
-## أهم ما تم تحسينه في v5
+## أهم التغييرات
 
-- إعادة ضبط واجهة الموظف لتناسب الهاتف، التابلت، اللابتوب، والشاشات الكبيرة.
-- تصغير بطاقة العنوان في الشاشات الصغيرة حتى لا تغطي الصفحة أو تمنع ظهور النموذج.
-- تحويل قائمة الخطوات في التابلت إلى شريط أفقي قابل للسحب.
-- إخفاء التفاصيل غير الضرورية على الهاتف، مع إبقاء شريط التقدم واضحًا.
-- جعل أزرار التنقل في أسفل الشاشة على الهاتف لتسهيل الإكمال بيد واحدة.
-- تحسين صفحة الإدارة لتعمل كلوحة كاملة على الهاتف والتابلت، مع جداول قابلة للسحب أفقيًا.
-- إخفاء مؤشرات تقنية لا يحتاج الموظف لرؤيتها.
-- الحفاظ على نفس قواعد التحقق، Firebase config، التصدير، والاستيراد.
+- Dashboard افتتاحية قبل الدخول للنموذج.
+- Timeline احترافي بحالات Completed / Current / Pending.
+- Identity Header ثابت بعد التعرف على الموظف.
+- Smart Section Cards لكل قسم مع وصف وتنبيهات.
+- Live Validation لكل حقل.
+- Auto Save كل 5 ثواني بعد التعرف على الموظف.
+- Resume Later من المسودة المحلية.
+- Missing Information Scanner.
+- Search Inside Form.
+- Change Detection System يظهر للموظف وللإدارة.
+- Professional final review بصيغة قريبة من أنظمة Enterprise.
+- Admin Dashboard داكن وموسع مع KPIs و Completion chart و Missing Fields Heatmap و Audit Center.
+- تصميم responsive للموبايل والتابلت واللابتوب بدون 100vh أو overflow clipping في تجربة الموظف.
 
-## ملاحظات مهمة
+## الرفع على GitHub
 
-- لا ترفع ملف `employee-seed-private.json` على GitHub.
-- لا ترفع أي ملفات Excel أصلية تحتوي بيانات موظفين إلى مستودع عام.
-- حماية الأدمن الحقيقية تعتمد على Firebase Authentication و Firestore Rules، وليس على مكان الضغط المخفي.
+ارفع كل الملفات الموجودة في هذا المجلد، وليس index.html فقط، لأن favicon والـ apple-touch-icon مطلوبان.
 
-## التشغيل
+## الخصوصية
 
-افتح `index.html` مباشرة أو ارفعه إلى GitHub Pages.
+لا ترفع ملفات employee seed أو ملفات Excel الأصلية إلى GitHub العام.
 
-## لوحة الإدارة
 
-تفتح عبر double click على علامة HR، ثم تسجيل دخول الأدمن من Firebase.
+## v8.1 Admin Accessibility and Login Fix
 
-## الأجهزة المدعومة
+- Fixed the admin modal accessibility warning caused by opening the dashboard while `aria-hidden="true"` was still applied.
+- Added `inert` to the employee application while the admin dashboard is open.
+- Added safer focus handling when opening and closing the admin dashboard.
+- Improved admin login validation and error messaging for invalid Firebase credentials.
 
-تم تحسين التخطيط للفئات التالية:
+Note: `auth/invalid-credential` is not a layout bug. It means the email/password entered does not match an existing Firebase Authentication user, Email/Password sign-in is not enabled, or the password is incorrect.
 
-- Mobile: أقل من 430px
-- Large Mobile: حتى 760px
-- Tablet / Small Laptop: حتى 1180px
-- Desktop: أكبر من 1180px
+
+## v8.2 Stability Fix
+
+- Fixed Arabic **ابدأ التحقق** button not responding due to decorative overlay intercepting clicks in RTL layout.
+- Added delegated event binding for the start-verification action.
+- Prevented decorative pseudo-elements from capturing pointer events.
+- Preserved Firebase configuration, admin flow, validation rules, and export logic.
