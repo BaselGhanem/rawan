@@ -1,0 +1,8 @@
+{
+  "version": "10.0.0",
+  "build": "2026-06-19-admin-separation",
+  "files": [
+    "index.html",
+    "admin.html"
+  ]
+}
