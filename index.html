@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Enterprise Employee Data Journey | نموذج بيانات الموظف</title>
-  <meta name="description" content="Enterprise guided employee data update journey with management dashboard." />
+  <title>Employee Data Experience | نموذج بيانات الموظف</title>
+  <meta name="description" content="Official employee information update experience with guided validation and management dashboard." />
   <meta name="theme-color" content="#0b1f3a" />
   <link rel="icon" href="./favicon.ico" sizes="any" />
   <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
@@ -35,10 +35,22 @@ button,input,select,textarea{font-family:inherit} h1,h2,h3,p{margin-top:0} h1{fo
 .openingHero > *,.heroPanel > *{position:relative;z-index:1;}
 button,[role="button"],input,select,textarea,label{position:relative;z-index:2;}
 
-</style>
+
+
+/* ============================== v9 Enterprise UX/UI Transformation Layer ============================== */
+:root{--brand-navy:#061b33;--brand-navy-700:#0b2b4f;--brand-teal:#099999;--brand-teal-50:#e8f7f7;--brand-gold:#b98a2d;--focus-ring:0 0 0 4px rgba(9,153,153,.16);--elevated:0 24px 76px rgba(6,27,51,.13);}
+.skipLink{position:absolute;top:-80px;inset-inline-start:16px;z-index:200;background:#fff;color:var(--brand-navy);border:2px solid var(--brand-teal);border-radius:12px;padding:10px 14px;font-weight:900;text-decoration:none}.skipLink:focus{top:14px}
+.brandMark{background:linear-gradient(145deg,var(--brand-teal),#0b7b88);color:#fff}.btn:focus-visible,.input:focus-visible,.tab:focus-visible,.step:focus-visible,.searchItem:focus-visible,.missingItem:focus-visible{outline:none;box-shadow:var(--focus-ring)}.primary{background:linear-gradient(135deg,var(--brand-navy),var(--brand-navy-700))}.success{background:linear-gradient(135deg,var(--brand-teal),#35c0b8);color:#fff}.status-pill{background:var(--brand-teal-50);color:#057070;border-color:#bce7e5}.journeyLayout{grid-template-columns:minmax(290px,340px) minmax(0,1fr);align-items:start}.journeyPanel,.screenCard{box-shadow:var(--elevated)}.step.active .num{background:var(--brand-teal)}.openingHero,.heroPanel{background:linear-gradient(145deg,var(--brand-navy),#0a355f)}.sectionIntro{background:linear-gradient(135deg,#f8fafc,#fff);border:1px solid #e4ebf3;border-radius:26px;padding:16px}.sectionIcon{background:linear-gradient(145deg,var(--brand-teal-50),#fff);border-color:#bce7e5;color:#057070}.field{position:relative;background:#fff;border:1px solid #dde8f2;border-radius:22px;padding:15px;box-shadow:0 8px 24px rgba(6,27,51,.035);transition:.18s ease}.field:hover{border-color:#c8d8e8;box-shadow:0 12px 30px rgba(6,27,51,.055)}.field:focus-within{border-color:var(--brand-teal);box-shadow:var(--focus-ring)}.field.status-complete{border-color:#bfe8d8}.field.status-changed{border-color:#e8c472;background:linear-gradient(180deg,#fff,#fffaf0)}.field.status-missing,.field.invalid{border-color:#efbeb8;background:linear-gradient(180deg,#fff,#fff7f5)}.fieldMetaLine{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:10px}.miniBadge{display:inline-flex;align-items:center;gap:5px;border-radius:999px;padding:4px 8px;font-size:10px;font-weight:950;border:1px solid #e4ebf3;background:#f8fafc;color:#536276}.miniBadge.source{background:#effafa;color:#057070;border-color:#bce7e5}.miniBadge.changed{background:#fff6df;color:#744b00;border-color:#f0d49a}.qualityStrip{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:16px 0}.qualityItem{background:#fff;border:1px solid #e4ebf3;border-radius:18px;padding:13px}.qualityItem strong{display:block;color:var(--brand-navy);font-size:20px}.qualityItem span{font-size:11px;color:var(--muted);font-weight:900}.tableToolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:12px}.emptyState{display:grid;place-items:center;text-align:center;padding:34px 18px;border:1px dashed rgba(255,255,255,.18);border-radius:20px;background:rgba(255,255,255,.055);color:#dfeaf7}.emptyState strong{display:block;color:#fff;margin-bottom:6px}.statusBadge{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:4px 9px;font-size:11px;font-weight:950;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.08);color:#dfeaf7}.statusBadge.done{background:rgba(20,134,90,.22);border-color:rgba(20,134,90,.42);color:#c7f4e0}.statusBadge.warn{background:rgba(185,138,45,.20);border-color:rgba(185,138,45,.42);color:#ffe7ad}.sortableTh{cursor:pointer;user-select:none}.sortableTh:after{content:"↕";opacity:.55;margin-inline-start:6px}.globalLoader{position:fixed;inset:0;z-index:160;display:none;place-items:center;background:rgba(6,27,51,.34);backdrop-filter:blur(7px)}.globalLoader.active{display:grid}.loaderCard{width:min(360px,calc(100vw - 32px));background:#fff;border:1px solid #dce5ef;border-radius:26px;padding:22px;box-shadow:var(--elevated);text-align:center}.spinner{width:34px;height:34px;border-radius:50%;border:4px solid #dce5ef;border-top-color:var(--brand-teal);animation:spin .75s linear infinite;margin:0 auto 12px}@keyframes spin{to{transform:rotate(360deg)}}#toastRegion{position:fixed;bottom:20px;inset-inline-start:20px;z-index:170;display:grid;gap:10px;max-width:min(420px,calc(100vw - 40px))}.toastItem{background:rgba(16,32,51,.96);color:#fff;padding:12px 16px;border-radius:16px;box-shadow:0 16px 36px rgba(0,0,0,.22);font-weight:850;line-height:1.55;animation:toastIn .22s ease}@keyframes toastIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@media(max-width:1180px){.employeeTop{grid-template-columns:1fr}.topSearch{min-width:0}.journeyLayout{grid-template-columns:1fr}.journeyPanel{position:relative;top:0;max-height:none}.timelineCard{overflow:auto}.timeline{display:flex;min-width:max-content}.step{min-width:174px}.adminLayout{grid-template-columns:1fr}.adminSide{position:relative;height:auto}.adminNav{display:flex;overflow:auto}.adminGrid{grid-template-columns:repeat(2,minmax(0,1fr))}.executiveGrid{grid-template-columns:1fr}.tableWrap{max-height:none}}
+@media(max-width:760px){.topActions{display:grid;grid-template-columns:1fr 1fr}.openingGrid{grid-template-columns:1fr}.openingMeta,.qualityStrip{grid-template-columns:1fr}.formgrid{grid-template-columns:1fr!important}.adminGrid{grid-template-columns:1fr}.adminTable{min-width:780px}#toastRegion{inset-inline:10px;bottom:10px;max-width:none}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+
+  </style>
 </head>
 <body>
-  
+  <a class="skipLink" href="#content">Skip to form content</a>
+  <div class="globalLoader" id="globalLoader" aria-hidden="true"><div class="loaderCard"><div class="spinner"></div><strong id="loaderTitle">Processing</strong><p class="small" id="loaderText">Please wait...</p></div></div>
+  <div id="toastRegion" aria-live="polite" aria-atomic="true"></div>
   <div class="enterpriseApp">
     <header class="employeeTop">
       <div class="brandMini">
@@ -198,7 +210,7 @@ button,[role="button"],input,select,textarea,label{position:relative;z-index:2;}
     const needsFamily = data => ['Married','Divorced','Widowed'].includes(data.maritalStatus);
 
     const state = {
-      current:0, matched:null, matches:[], data:{}, family:[], assets:[], noAssets:false, submitted:false, adminTab:'submissions', submissions: loadLocalSubmissions(), scanOpen:false, searchQuery:'', lastSavedAt:null
+      current:0, matched:null, matches:[], data:{}, family:[], assets:[], noAssets:false, submitted:false, adminTab:'submissions', submissions: loadLocalSubmissions(), scanOpen:false, searchQuery:'', lastSavedAt:null, adminSort:{index:0,dir:'asc'}, adminPage:1, adminPageSize:25, busy:false
     };
 
     let uiLang = localStorage.getItem('zenhr_ui_lang') || 'ar';
@@ -311,13 +323,21 @@ button,[role="button"],input,select,textarea,label{position:relative;z-index:2;}
     };
     function tr(ar,en){ return uiLang === 'ar' ? ar : en; }
     function render(){
-      renderSteps(); updateProgress(); renderIdentityHeader(); renderSideAlerts();
-      const step = steps[state.current] || steps[0];
-      const top = $('#topTitle'); if(top) top.textContent = stepTitle(step);
-      const content = $('#content');
-      const map = {dashboard:screenDashboard, login:screenLogin, review:screenReview, names:()=>screenFields('names'), identity:()=>screenFields('identity'), contact:()=>screenFields('contact'), employment:()=>screenFields('employment'), bank:()=>screenFields('bank'), assets:screenAssets, family:screenFamily, submit:screenSubmit};
-      content.innerHTML = (map[step.id] || screenDashboard)();
-      bindScreen(); renderFieldSearchResults();
+      try{
+        renderSteps(); updateProgress(); renderIdentityHeader(); renderSideAlerts();
+        const step = steps[state.current] || steps[0];
+        const top = $('#topTitle'); if(top) top.textContent = stepTitle(step);
+        document.title = `${stepTitle(step)} | ${tr('نموذج بيانات الموظف','Employee Information Form')}`;
+        const content = $('#content');
+        const map = {dashboard:screenDashboard, login:screenLogin, review:screenReview, names:()=>screenFields('names'), identity:()=>screenFields('identity'), contact:()=>screenFields('contact'), employment:()=>screenFields('employment'), bank:()=>screenFields('bank'), assets:screenAssets, family:screenFamily, submit:screenSubmit};
+        content.innerHTML = (map[step.id] || screenDashboard)();
+        bindScreen(); renderFieldSearchResults();
+      }catch(err){
+        console.error('Render failed', err);
+        const content = $('#content');
+        if(content) content.innerHTML = `<div class="screenCard"><div class="notice bad"><strong>${tr('حدث خطأ في عرض الشاشة','A screen rendering error occurred')}</strong><p>${escapeHtml(err?.message || String(err))}</p></div><button class="btn primary" onclick="location.reload()">${tr('إعادة تحميل الصفحة','Reload page')}</button></div>`;
+        toast(tr('حدث خطأ غير متوقع في الواجهة.','An unexpected interface error occurred.'));
+      }
     }
     function renderSteps(){
       const nav = $('#stepsNav'); if(!nav) return;
@@ -348,7 +368,9 @@ button,[role="button"],input,select,textarea,label{position:relative;z-index:2;}
     }
     function screenDashboard(){
       const total=fields.filter(f=>typeof f.req==='function' || f.req).length + 2;
-      return `<div class="screenCard"><div class="openingGrid"><div class="openingHero"><span class="heroBadge">${tr('نموذج رسمي للموظفين','Official Employee Form')}</span><h1>${tr('مسار واضح لتحديث بياناتك','A clear path to update your information')}</h1><p>${tr('سيتم إرشادك خطوة بخطوة. كل حقل يحتوي على تنبيه أو مثال أو تحقق مباشر، ويمكنك إكمال النموذج لاحقًا من نفس الجهاز.','You will be guided step by step. Each field includes tips, examples, and live validation. You can resume later from the same device.')}</p><div class="openingMeta"><div class="mini"><strong>10</strong><span>${tr('مراحل منظمة','guided stages')}</span></div><div class="mini"><strong>${total}</strong><span>${tr('حقل تقريبًا','approx. fields')}</span></div><div class="mini"><strong>3-7</strong><span>${tr('دقائق متوقعة','estimated minutes')}</span></div></div><button class="btn success" id="startJourneyBtn" type="button" data-action="start-verification">${tr('ابدأ التحقق','Start verification')}</button></div><div class="featureStack"><div class="feature"><div class="featureIcon">✓</div><div><h3>${tr('حفظ تلقائي','Auto save')}</h3><p>${tr('يتم حفظ التقدم كل 5 ثواني بعد الدخول.','Progress is saved every 5 seconds after verification.')}</p></div></div><div class="feature"><div class="featureIcon">!</div><div><h3>${tr('تنبيهات فورية','Live warnings')}</h3><p>${tr('أي خطأ أو حقل ناقص يظهر مباشرة أثناء التعبئة.','Errors and missing information appear while typing.')}</p></div></div><div class="feature"><div class="featureIcon">↻</div><div><h3>${tr('استكمال لاحقًا','Resume later')}</h3><p>${tr('يمكنك الرجوع وإكمال النموذج من آخر بيانات محفوظة.','Return later and continue from saved progress.')}</p></div></div><div class="feature"><div class="featureIcon">◉</div><div><h3>${tr('مراجعة نهائية احترافية','Professional final review')}</h3><p>${tr('ستراجع ملخصًا واضحًا قبل الإرسال النهائي.','Review a clear summary before final submission.')}</p></div></div></div></div></div>`;
+      const completion = state.matched ? Math.min(100, Math.round((sectionStats('names').done + sectionStats('identity').done + sectionStats('contact').done + sectionStats('employment').done + sectionStats('bank').done) / Math.max(1,total) * 100)) : 0;
+      const lastSaved = state.lastSavedAt ? formatDT(state.lastSavedAt) : tr('لم يبدأ بعد','Not started yet');
+      return `<div class="screenCard"><div class="openingGrid"><div class="openingHero"><span class="heroBadge">${tr('نموذج رسمي للموظفين','Official Employee Form')}</span><h1>${tr('تجربة موجهة لتحديث بياناتك بثقة','A guided experience to update your information confidently')}</h1><p>${tr('هذه الصفحة تقودك في مسار واضح: تحقق من هويتك، راجع البيانات المسجلة، أكمل النواقص، ثم اعتمد الإرسال بعد مراجعة نهائية.','This page guides you through a clear path: verify your identity, review existing records, complete missing information, then submit after a final review.')}</p><div class="openingMeta"><div class="mini"><strong>${completion}%</strong><span>${tr('نسبة الإكمال','completion')}</span></div><div class="mini"><strong>${total}</strong><span>${tr('حقل مطلوب تقريبًا','approx. required fields')}</span></div><div class="mini"><strong>3-7</strong><span>${tr('دقائق متوقعة','estimated minutes')}</span></div></div><button class="btn success" id="startJourneyBtn" type="button" data-action="start-verification">${tr('ابدأ التحقق','Start verification')}</button></div><div class="featureStack"><div class="feature"><div class="featureIcon">01</div><div><h3>${tr('تحقق واضح','Clear verification')}</h3><p>${tr('استخدم تاريخ الميلاد وأول حرف من الاسم الإنجليزي للوصول إلى سجل الموظف.','Use date of birth and first English initial to access the employee record.')}</p></div></div><div class="feature"><div class="featureIcon">02</div><div><h3>${tr('تنبيهات داخل كل خطوة','In-step alerts')}</h3><p>${tr('كل قسم يحتوي على إرشادات، أمثلة، وتنبيهات فورية عند الخطأ.','Each section includes guidance, examples, and immediate validation messages.')}</p></div></div><div class="feature"><div class="featureIcon">03</div><div><h3>${tr('حفظ تلقائي واستكمال لاحق','Auto-save and resume')}</h3><p>${tr('يتم حفظ المسودة على الجهاز كل 5 ثواني بعد الدخول.','Drafts are saved on this device every 5 seconds after verification.')}</p></div></div><div class="feature"><div class="featureIcon">04</div><div><h3>${tr('مراجعة مؤسسية نهائية','Enterprise final review')}</h3><p>${tr('قبل الإرسال سترى ملخصًا واضحًا للنواقص والتعديلات.','Before submission you will see a clear summary of missing data and detected changes.')}</p></div></div></div></div><div class="qualityStrip"><div class="qualityItem"><strong>${tr('آمن','Secure')}</strong><span>${tr('صلاحيات الإدارة منفصلة','separate admin access')}</span></div><div class="qualityItem"><strong>${tr('ذكي','Smart')}</strong><span>${tr('إظهار الحقول حسب الحالة','conditional fields')}</span></div><div class="qualityItem"><strong>${tr('قابل للتوسع','Scalable')}</strong><span>${tr('جاهز لقوالب الدول لاحقًا','country-template ready')}</span></div><div class="qualityItem"><strong>${escapeHtml(lastSaved)}</strong><span>${tr('آخر حفظ','last saved')}</span></div></div></div>`;
     }
     function goToStartVerification(){
       state.current = 1;
@@ -383,13 +405,14 @@ button,[role="button"],input,select,textarea,label{position:relative;z-index:2;}
     }
     function fieldHtml(f){
       const val=state.data[f.k]??''; const req=isRequired(f); const changed=isChanged(f.k); const valid=validateFieldNoDom(f); const missing=req&&!String(val).trim();
-      const status = missing ? tr('ناقص','Missing') : changed ? tr('معدل','Changed') : valid ? tr('صحيح','OK') : tr('تحقق','Check');
+      const status = missing ? tr('ناقص','Missing') : changed ? tr('معدل','Changed') : valid && String(val).trim() ? tr('مكتمل','Complete') : valid ? tr('جاهز','Ready') : tr('تحقق','Check');
       const cls = missing||!valid ? 'status-missing' : changed ? 'status-changed' : String(val).trim() ? 'status-complete' : '';
-      let input=''; const common=`id="${f.k}" class="input ${f.type==='date'||f.type==='email'||f.type==='tel'?'ltr':''} ${f.readonly?'readonly':''}" ${f.readonly?'readonly':''}`;
+      const original = state.matched?.[f.k];
+      let input=''; const common=`id="${f.k}" class="input ${f.type==='date'||f.type==='email'||f.type==='tel'?'ltr':''} ${f.readonly?'readonly':''}" ${f.readonly?'readonly':''} aria-describedby="${f.k}_tip ${f.k}_err" aria-invalid="${(!valid||missing) ? 'true' : 'false'}"`;
       if(f.type==='select') input=`<select ${common}><option value="">${t('select')}</option>${(f.opts||[]).map(o=>`<option value="${escapeAttr(o)}" ${val===o?'selected':''}>${escapeHtml(o)}</option>`).join('')}</select>`;
       else if(f.type==='textarea') input=`<textarea ${common} placeholder="${escapeAttr(f.tip||'')}">${escapeHtml(val)}</textarea>`;
       else input=`<input ${common} type="${f.type||'text'}" value="${escapeAttr(val)}" list="${datalistFor(f)}" placeholder="${escapeAttr(f.tip||'')}">`;
-      return `<div class="field ${f.type==='textarea'?'full':''} ${cls}" data-field="${f.k}"><div class="fieldTop"><label class="${req?'required':''}">${escapeHtml(f.label)}</label><span class="fieldStatus">${status}</span></div>${input}<div class="tip">${escapeHtml(f.tip||'')}</div>${changed?`<div class="changeNote">${tr('تم تعديل هذا الحقل عن القيمة المسجلة لدى الشركة.','This field was changed from the company record.')}</div>`:''}<div class="error"></div></div>`;
+      return `<div class="field ${f.type==='textarea'?'full':''} ${cls}" data-field="${f.k}"><div class="fieldTop"><label class="${req?'required':''}" for="${f.k}">${escapeHtml(f.label)}</label><span class="fieldStatus">${status}</span></div>${input}<div class="fieldMetaLine"><span class="miniBadge source">${original ? tr('من سجلات الشركة','company record') : tr('إدخال الموظف','employee input')}</span>${req?`<span class="miniBadge">${tr('إجباري','required')}</span>`:`<span class="miniBadge">${tr('اختياري','optional')}</span>`}${changed?`<span class="miniBadge changed">${tr('تم التعديل','changed')}</span>`:''}</div><div class="tip" id="${f.k}_tip">${escapeHtml(f.tip||'')}</div>${changed?`<div class="changeNote">${tr('تم تعديل هذا الحقل عن القيمة المسجلة لدى الشركة. القيمة الأصلية:','This field was changed from the company record. Original value:')} <strong>${escapeHtml(original||'—')}</strong></div>`:''}<div class="error" id="${f.k}_err" role="alert"></div></div>`;
     }
     function screenAssets(){
       const checkedNone=state.noAssets?'checked':'';
@@ -425,7 +448,14 @@ button,[role="button"],input,select,textarea,label{position:relative;z-index:2;}
       saveDraft(false); updateProgress(); renderSideAlerts(); updateAutosaveStatus(tr('جارٍ الحفظ...','Saving...'));
       if(['hiringDate','contractType','nationality','maritalStatus'].includes(k)) render(); else validateField(k);
     }
-    function nextStep(){ const id=steps[state.current].id; if(!['dashboard','login'].includes(id) && !validateCurrent()) return; if(state.current<steps.length-1){ state.current++; render(); } }
+    function nextStep(){
+      const id=steps[state.current].id;
+      if(!['dashboard','login'].includes(id) && !validateCurrent()){
+        state.scanOpen = true; renderSideAlerts(); toast(tr('راجع الحقول الناقصة أو غير الصحيحة قبل المتابعة.','Review missing or invalid fields before continuing.'));
+        setTimeout(()=>document.querySelector('.field.invalid,.status-missing')?.scrollIntoView({behavior:'smooth',block:'center'}),80); return;
+      }
+      if(state.current<steps.length-1){ state.current++; render(); window.scrollTo({top:0,behavior:'smooth'}); }
+    }
     function sectionStats(id){ const list=fields.filter(f=>f.section===id && shouldShow(f) && isRequired(f)); if(id==='assets') return {total:1, done:(state.noAssets||state.assets.length)?1:0, pct:(state.noAssets||state.assets.length)?100:0}; if(id==='family') return {total:needsFamily(state.data)?1:0, done:!needsFamily(state.data)||state.family.length?1:0, pct:!needsFamily(state.data)||state.family.length?100:0}; const done=list.filter(f=>String(state.data[f.k]||'').trim() && validateFieldNoDom(f)).length; return {total:list.length, done, pct:Math.round((done/Math.max(1,list.length))*100)}; }
     function sectionInstruction(id){ const m=SECTION_META[id]||{}; return tr(m.descAr||'راجع هذا القسم بعناية.', m.descEn||'Review this section carefully.'); }
     function isChanged(k){ const before=(state.matched?.[k]??'').toString().trim(); const after=(state.data?.[k]??'').toString().trim(); return !!before && !!after && before!==after; }
@@ -444,14 +474,18 @@ button,[role="button"],input,select,textarea,label{position:relative;z-index:2;}
 /******************** Login and data ********************/
     async function loginEmployee(){
       const dob=$('#loginDob').value, init=($('#loginInitial').value||'').toUpperCase(); const out=$('#loginResult');
-      if(!dob || !init){out.innerHTML='<div class="notice bad" style="margin-top:14px">أدخل تاريخ الميلاد وأول حرف.</div>';return;}
-      out.innerHTML='<div class="notice" style="margin-top:14px">جاري البحث عن بياناتك...</div>';
-      const matches = await findEmployeesByLogin(dob, init);
-      if(!matches.length){out.innerHTML='<div class="notice bad" style="margin-top:14px">لم نجد موظف بهذه البيانات. تأكد من التاريخ والحرف، أو تواصل مع HR.</div>';return;}
-      state.matches=matches;
-      if(matches.length===1){ selectEmployee(matches[0]); return; }
-      out.innerHTML = `<div class="notice warn" style="margin-top:14px">وجدنا أكثر من نتيجة. اختر اسمك:</div><div class="matchList">${matches.map((m,i)=>`<button class="matchCard" data-pick="${i}"><strong>${escapeHtml(m.fullNameEn||m.fullNameAr)}</strong><div class="small">${escapeHtml(m.company||'')} • ${escapeHtml(m.workEmail||'لا يوجد إيميل')}</div></button>`).join('')}</div>`;
-      $$('[data-pick]').forEach(b=>b.onclick=()=>selectEmployee(matches[+b.dataset.pick]));
+      if(!dob || !init){out.innerHTML=`<div class="notice bad" style="margin-top:14px">${tr('أدخل تاريخ الميلاد وأول حرف من الاسم الإنجليزي.','Enter date of birth and first English initial.')}</div>`;return;}
+      setBusy(true, tr('جاري التحقق من البيانات','Verifying employee record'), tr('يرجى الانتظار أثناء البحث في سجلات الموظفين.','Please wait while employee records are checked.'));
+      out.innerHTML=`<div class="notice" style="margin-top:14px">${tr('جاري البحث عن بياناتك...','Searching for your record...')}</div>`;
+      try{
+        const matches = await findEmployeesByLogin(dob, init);
+        if(!matches.length){out.innerHTML=`<div class="notice bad" style="margin-top:14px"><strong>${tr('لم نجد سجلًا مطابقًا','No matching record found')}</strong><p>${tr('تأكد من تاريخ الميلاد والحرف الأول، أو تواصل مع قسم الموارد البشرية.','Check the date of birth and first initial, or contact HR.')}</p></div>`; return;}
+        state.matches=matches;
+        if(matches.length===1){ selectEmployee(matches[0]); return; }
+        out.innerHTML = `<div class="notice warn" style="margin-top:14px">${tr('وجدنا أكثر من نتيجة. اختر اسمك من القائمة.','More than one record matched. Select your name from the list.')}</div><div class="matchList">${matches.map((m,i)=>`<button class="matchCard" type="button" data-pick="${i}"><strong>${escapeHtml(m.fullNameEn||m.fullNameAr)}</strong><div class="small">${escapeHtml(m.company||'')} • ${escapeHtml(m.workEmail||tr('لا يوجد إيميل','No email'))}</div></button>`).join('')}</div>`;
+        $$('[data-pick]').forEach(b=>b.onclick=()=>selectEmployee(matches[+b.dataset.pick]));
+      }catch(err){ console.warn('Employee verification failed', err); out.innerHTML=`<div class="notice bad" style="margin-top:14px">${tr('تعذر إكمال التحقق الآن. حاول مرة أخرى أو تواصل مع الموارد البشرية.','Verification could not be completed now. Try again or contact HR.')}</div>`; }
+      finally{ setBusy(false); }
     }
     async function findEmployeesByLogin(dob, init){
       const localMatches = () => EMPLOYEES.filter(e=>(e.birthdateKey||e.birthdate)===dob && (e.firstInitialKey||'').toUpperCase()===init);
@@ -718,16 +752,15 @@ button,[role="button"],input,select,textarea,label{position:relative;z-index:2;}
       const submitted=Object.values(state.submissions);
       const submittedIds=new Set(submitted.map(s=>s.employeeId));
       const missing=EMPLOYEES.filter(e=>!submittedIds.has(e.employmentNumber));
-      const changes=submitted.flatMap(s=>(s.changeSummary||s.changes||[]).map(c=>({...c,employeeId:s.employeeId,employeeName:submissionName(s),company:submissionCompany(s),department:submissionEmployee(s).departmentEn||''})));
-      const q=($('#adminFilter')?.value||'').toLowerCase();
-      const filterRow = row => !q || JSON.stringify(row).toLowerCase().includes(q);
+      const changes=submitted.flatMap(s=>(s.changeSummary||s.changes||[]).map(c=>({...c,employeeId:s.employeeId,employeeName:submissionName(s),company:submissionCompany(s),department:submissionEmployee(s).departmentEn||'',changedAt:c.changedAt||s.updatedAt||s.submittedAt})));
+      const q=($('#adminFilter')?.value||'').toLowerCase(); const filterRow = row => !q || JSON.stringify(row).toLowerCase().includes(q);
       $('#kpiTotal').textContent=EMPLOYEES.length; $('#kpiDone').textContent=submitted.length; $('#kpiMissing').textContent=missing.length; $('#kpiChanges').textContent=changes.length;
-      renderCompanyChart(submitted, missing); renderMissingHeatmap(submitted);
-      const box=$('#adminTabContent');
-      if(state.adminTab==='submissions') box.innerHTML=tableHtml(['Employee ID','Name','Company','Department','Submitted At','Changes'], submitted.map(s=>[s.employeeId,submissionName(s),submissionCompany(s),submissionEmployee(s).departmentEn||'',formatDT(s.submittedAt),(s.changeSummary||s.changes||[]).length]).filter(filterRow));
-      if(state.adminTab==='missing') box.innerHTML=tableHtml(['Employee ID','Name EN','Name AR','Company','Work Email','Birthdate'], missing.map(e=>[e.employmentNumber,e.fullNameEn,e.fullNameAr,e.company,e.workEmail,e.birthdate]).filter(filterRow));
+      renderCompanyChart(submitted, missing); renderMissingHeatmap(submitted); const box=$('#adminTabContent'); if(!box) return;
+      if(state.adminTab==='submissions') box.innerHTML=tableHtml(['Employee ID','Name','Company','Department','Submitted At','Status','Changes'], submitted.map(s=>[s.employeeId,submissionName(s),submissionCompany(s),submissionEmployee(s).departmentEn||'',formatDT(s.submittedAt),statusBadge('done',tr('مكتمل','Completed')),(s.changeSummary||s.changes||[]).length]).filter(filterRow));
+      if(state.adminTab==='missing') box.innerHTML=tableHtml(['Employee ID','Name EN','Name AR','Company','Work Email','Birthdate','Status'], missing.map(e=>[e.employmentNumber,e.fullNameEn,e.fullNameAr,e.company,e.workEmail,e.birthdate,statusBadge('warn',tr('لم يعبئ','Not submitted'))]).filter(filterRow));
       if(state.adminTab==='changes') box.innerHTML=tableHtml(['Employee ID','Name','Company','Field','Before','After','Changed At'], changes.map(c=>[c.employeeId,c.employeeName,c.company,c.field,c.before,c.after,formatDT(c.changedAt)]).filter(filterRow));
       if(state.adminTab==='seed') box.innerHTML=tableHtml(['Employee ID','Name EN','Name AR','Company','Work Email','DOB','Department'], EMPLOYEES.map(e=>[e.employmentNumber,e.fullNameEn,e.fullNameAr,e.company,e.workEmail,e.birthdate,e.departmentEn]).filter(filterRow));
+      bindAdminTable();
     }
     function renderCompanyChart(submitted, missing){
       const box=$('#companyChart'); if(!box) return;
@@ -739,7 +772,21 @@ button,[role="button"],input,select,textarea,label{position:relative;z-index:2;}
       const important=['workEmail','personalEmail','passportNumber','ibanNumber','commercialRegister','family','assets','departmentAr','sectionAr','nationalId'];
       box.innerHTML=important.map(k=>{ let miss=0; submitted.forEach(s=>{ const a=submissionEmployee(s); if(k==='family'){ if(needsFamily(a)&&!(s.familyMembers||[]).length) miss++; } else if(k==='assets'){ if(!(s.assets||[]).length) miss++; } else if(!String(a[k]||'').trim()) miss++; }); return `<div class="heatCell"><strong>${miss}</strong>${escapeHtml(k)}</div>`; }).join('');
     }
-    function tableHtml(headers, rows){ return `<div class="tableWrap"><table class="adminTable"><thead><tr>${headers.map(h=>`<th>${escapeHtml(h)}</th>`).join('')}</tr></thead><tbody>${rows.map(r=>`<tr>${r.map(c=>`<td>${escapeHtml(c??'')}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`; }
+    function tableHtml(headers, rows){
+      const cleanRows = rows.map(r=>r.map(c=>c ?? ''));
+      const sort = state.adminSort || {index:0,dir:'asc'};
+      const sorted = [...cleanRows].sort((a,b)=>String(a[sort.index]??'').localeCompare(String(b[sort.index]??''), undefined, {numeric:true}) * (sort.dir==='asc'?1:-1));
+      const pageSize = state.adminPageSize || 25; const pages = Math.max(1, Math.ceil(sorted.length / pageSize)); state.adminPage = Math.min(Math.max(1,state.adminPage||1), pages);
+      const start = (state.adminPage-1)*pageSize; const visible = sorted.slice(start,start+pageSize);
+      if(!sorted.length) return `<div class="emptyState"><strong>${tr('لا توجد بيانات للعرض','No records to display')}</strong><span>${tr('جرّب تغيير البحث أو تأكد من استيراد بيانات الموظفين.','Try changing the search or make sure employee data has been imported.')}</span></div>`;
+      return `<div class="tableToolbar"><p class="small">${tr('يعرض','Showing')} ${start+1}-${Math.min(start+pageSize,sorted.length)} ${tr('من','of')} ${sorted.length}</p><div class="topActions"><button class="btn ghost" data-page="prev" ${state.adminPage<=1?'disabled':''}>${tr('السابق','Previous')}</button><span class="statusBadge">${state.adminPage}/${pages}</span><button class="btn ghost" data-page="next" ${state.adminPage>=pages?'disabled':''}>${tr('التالي','Next')}</button></div></div><div class="tableWrap"><table class="adminTable"><thead><tr>${headers.map((h,i)=>`<th class="sortableTh" data-sort-index="${i}">${escapeHtml(h)}</th>`).join('')}</tr></thead><tbody>${visible.map(r=>`<tr>${r.map(c=>`<td>${String(c).startsWith('<span class="statusBadge')?c:escapeHtml(c)}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
+    }
+    function bindAdminTable(){
+      $$('[data-sort-index]').forEach(th=>th.onclick=()=>{ const index=+th.dataset.sortIndex; if(state.adminSort.index===index) state.adminSort.dir = state.adminSort.dir === 'asc' ? 'desc' : 'asc'; else state.adminSort={index,dir:'asc'}; state.adminPage=1; renderAdmin(); });
+      $$('[data-page]').forEach(btn=>btn.onclick=()=>{ state.adminPage += btn.dataset.page === 'next' ? 1 : -1; renderAdmin(); });
+    }
+    function statusBadge(type,label){ return `<span class="statusBadge ${type}">${escapeHtml(label)}</span>`; }
+
     async function importSeedToFirebase(){
       if(!fb.enabled){toast('Firebase غير مفعل.');return;}
       if(!adminAllowed){toast('سجل دخول الأدمن أولًا.');return;}
@@ -780,8 +827,10 @@ button,[role="button"],input,select,textarea,label{position:relative;z-index:2;}
     function buildFamilyRows(){ return Object.values(state.submissions).flatMap(s=>(s.familyMembers||[]).map(m=>({'Employment_Number':s.employeeId,'Relation':m.relation,"Family Member's First Name":m.firstName,"Family Member's Second Name":m.secondName,"Family Member's Third Name":m.thirdName,"Family Member's Last Name":m.lastName,'Birthdate':m.birthdate,'Gender':m.gender,'Marital Status':m.maritalStatus}))); }
     function buildAssetRows(){ return Object.values(state.submissions).flatMap(s=>(s.assets||[]).map(a=>({'Asset_ID':a.assetId,'Asset_Type':a.assetType,'Asset_Name':a.assetName,'Description':a.description,'Holder_ID (Employment_Number)':s.employeeId,'Holding date':a.holdingDate}))); }
     function exportRows(rows, filename, sheetName='Sheet1'){
-      if(window.XLSX){ const wb=XLSX.utils.book_new(); const ws=XLSX.utils.json_to_sheet(rows); XLSX.utils.book_append_sheet(wb,ws,sheetName); XLSX.writeFile(wb,filename); return; }
-      const csv = toCSV(rows); downloadBlob(csv, filename.replace(/\.xlsx$/i,'.csv'), 'text/csv;charset=utf-8');
+      if(!rows.length){ toast(tr('لا توجد بيانات للتنزيل.','No data available to download.')); return; }
+      setBusy(true, tr('تجهيز ملف Excel','Preparing Excel file'), tr('يتم إنشاء الملف بناءً على البيانات الحالية.','Creating the file from the current data.'));
+      try{ if(window.XLSX){ const wb=XLSX.utils.book_new(); const ws=XLSX.utils.json_to_sheet(rows); XLSX.utils.book_append_sheet(wb,ws,sheetName); XLSX.writeFile(wb,filename); return; } const csv = toCSV(rows); downloadBlob(csv, filename.replace(/\.xlsx$/i,'.csv'), 'text/csv;charset=utf-8'); }
+      finally{ setTimeout(()=>setBusy(false),350); }
     }
     function toCSV(rows){ if(!rows.length) return ''; const headers=Object.keys(rows[0]); return [headers.join(','),...rows.map(r=>headers.map(h=>'"'+String(r[h]??'').replace(/"/g,'""')+'"').join(','))].join('\n'); }
 
@@ -802,7 +851,16 @@ button,[role="button"],input,select,textarea,label{position:relative;z-index:2;}
     function escapeAttr(v){ return escapeHtml(v).replace(/'/g,'&#39;'); }
     function formatDT(x){ try{return new Date(x).toLocaleString('en-GB')}catch{return x||''} }
     function downloadBlob(content,filename,type='application/json'){ const blob=new Blob([content],{type}); const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=filename; a.click(); setTimeout(()=>URL.revokeObjectURL(a.href),1000); }
-    function toast(msg){ const t=document.createElement('div'); t.textContent=msg; t.style.cssText='position:fixed;bottom:20px;left:20px;z-index:80;background:rgba(21,32,51,.92);color:white;padding:12px 16px;border-radius:14px;box-shadow:0 12px 30px rgba(0,0,0,.22);font-weight:800'; document.body.appendChild(t); setTimeout(()=>t.remove(),2600); }
+    function toast(msg){
+      const region=document.getElementById('toastRegion') || document.body;
+      const t=document.createElement('div'); t.className='toastItem'; t.textContent=msg; region.appendChild(t);
+      setTimeout(()=>{ t.style.opacity='0'; t.style.transform='translateY(8px)'; },2400); setTimeout(()=>t.remove(),2900);
+    }
+    function setBusy(active,title='',text=''){
+      state.busy=!!active; const loader=$('#globalLoader'); if(!loader) return;
+      $('#loaderTitle').textContent = title || tr('جاري المعالجة','Processing'); $('#loaderText').textContent = text || tr('يرجى الانتظار...','Please wait...');
+      loader.classList.toggle('active',!!active); loader.setAttribute('aria-hidden', active ? 'false' : 'true');
+    }
     function showInline(id,msg){ const el=document.getElementById(id); if(el && !el.querySelector('.inlineErr')) el.insertAdjacentHTML('beforeend',`<div class="notice bad inlineErr" style="margin-top:12px">${escapeHtml(msg)}</div>`); }
 
     function applyStaticI18n(){
@@ -812,13 +870,13 @@ button,[role="button"],input,select,textarea,label{position:relative;z-index:2;}
     }
 
     /******************** Events ********************/
-    $('#secretAdminMark').addEventListener('dblclick',openAdmin); $('#secretAdminWord')?.addEventListener('dblclick',openAdmin); $('#langToggle')?.addEventListener('click',()=>setLang(uiLang==='ar'?'en':'ar')); $('#scanMissingBtn')?.addEventListener('click',()=>{state.scanOpen=!state.scanOpen; render();}); $('#fieldSearch')?.addEventListener('input',renderFieldSearchResults); $('#adminFilter')?.addEventListener('input',renderAdmin); applyStaticI18n();
+    $('#secretAdminMark').addEventListener('dblclick',openAdmin); $('#secretAdminWord')?.addEventListener('dblclick',openAdmin); $('#langToggle')?.addEventListener('click',()=>setLang(uiLang==='ar'?'en':'ar')); $('#scanMissingBtn')?.addEventListener('click',()=>{state.scanOpen=!state.scanOpen; render();}); $('#fieldSearch')?.addEventListener('input',renderFieldSearchResults); $('#adminFilter')?.addEventListener('input',()=>{state.adminPage=1; renderAdmin();}); applyStaticI18n();
     $('#closeAdminBtn').onclick=closeAdmin; $('#refreshAdminBtn').onclick=loadAdmin; $('#importSeedBtn').onclick=importSeedToFirebase; $('#seedFileInput').addEventListener('change',handleSeedFile);
     $('#downloadSeedBtn').onclick=()=>downloadBlob(JSON.stringify({generatedAt:new Date().toISOString(), records:EMPLOYEES},null,2),'employee-seed.json');
     $('#exportEmployeesBtn').onclick=()=>exportRows(buildEmployeeRows(),'zenhr-employees.xlsx','Employees');
     $('#exportFamilyBtn').onclick=()=>exportRows(buildFamilyRows(),'zenhr-family-members.xlsx','Family');
     $('#exportAssetsBtn').onclick=()=>exportRows(buildAssetRows(),'zenhr-assets.xlsx','Assets');
-    $$('.tab').forEach(t=>t.onclick=()=>{ $$('.tab').forEach(x=>x.classList.remove('active')); t.classList.add('active'); state.adminTab=t.dataset.tab; renderAdmin(); });
+    $$('.tab').forEach(t=>t.onclick=()=>{ $$('.tab').forEach(x=>x.classList.remove('active')); t.classList.add('active'); state.adminTab=t.dataset.tab; state.adminPage=1; state.adminSort={index:0,dir:'asc'}; renderAdmin(); });
     $('#saveDraftBtn').onclick=()=>saveDraft(true); $('#resetBtn').onclick=()=>{ if(confirm('مسح بيانات الشاشة الحالية؟')){ state.current=0; state.matched=null; state.data={}; state.family=[]; state.assets=[]; state.noAssets=false; render(); }};
     window.addEventListener('keydown',e=>{ if(e.key==='Enter' && (e.metaKey||e.ctrlKey)) nextStep(); if(e.key==='Escape') closeAdmin(); });
     setInterval(()=>{ if(state.matched) saveDraft(false); },5000);
